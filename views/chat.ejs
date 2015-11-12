@@ -14,31 +14,85 @@
     </style>
   </head>
   <body>
+    <input id="alias" type="text" autocomplete="off" /><button id="saveAlias">save</button>
+    <div id="player"></div>
     <ul id="messages"></ul>
     <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
+      <input id="m" type="text" autocomplete="off" /><button>Send</button>
     </form>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="/js.cookie.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      var roomId = '<%= room %>';
-      var socket = io();
-      var user = '';
+      var tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-      socket.emit('login', roomId);
 
-      $('form').submit(function(){
-        socket.emit('message', $('#m').val());
-        $('#m').val('');
-        return false;
-      });
-      socket.on('message', function(msg){
-        console.log(socket.id);
-        $('#messages').append($('<li>').text(msg));
-      });
-      socket.on('welcome', function(msg){
-        user = msg;
-        $('#messages').append($('<li>').text('hi ' + msg));
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '390',
+          width: '640',
+          videoId: 'qGUwombcfY0',
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      setInterval(function() {
+        console.log(player.getCurrentTime());
+      }, 1500);
+
+      // 4. The API will call this function when the video player is ready.
+      function onPlayerReady(event) {
+        console.log('onPlayerReady');
+        event.target.playVideo();
+      }
+
+      // 5. The API calls this function when the player's state changes.
+      //    The function indicates that when playing a video (state=1),
+      //    the player should play for six seconds and then stop.
+      // var done = false;
+      function onPlayerStateChange(event) {
+        console.log('onPlayerStateChange')
+        // if (event.data == YT.PlayerState.PLAYING && !done) {
+        //   setTimeout(stopVideo, 6000);
+        //   done = true;
+        // }
+      }
+      $( document ).ready(function() {
+        var COOKIE_NAME = 'tunetab_alias';
+        var roomId = '<%= room %>';
+        var socket = io();
+        var alias = Cookies.get(COOKIE_NAME) || false;
+
+        console.log(alias);
+
+        socket.emit('login', {room: roomId, alias: alias});
+
+        $('#saveAlias').click(function() {
+          var alias = $('#alias').val();
+          Cookies.set(COOKIE_NAME, alias, { expires: 666});
+          socket.emit('updateAlias', {alias: alias});
+        });
+
+        $('form').submit(function(){
+          socket.emit('message', {msg: alias + ': ' + $('#m').val()});
+          $('#m').val('');
+          return false;
+        });
+        socket.on('message', function(data){
+          $('#messages').append($('<li>').text(data.msg));
+        });
+        socket.on('welcome', function(data){
+          $('#messages').append($('<li>').text('hi ' + data.msg));
+        });
       });
     </script>
   </body>

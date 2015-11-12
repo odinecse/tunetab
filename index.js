@@ -1,16 +1,19 @@
 var mongodb = require('mongodb');
 var crypto = require('crypto');
 var MongoClient = mongodb.MongoClient;
-
-var url = 'mongodb://localhost:27017/tunetab';
-
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var animal = require('node-animal');
 
+var url = 'mongodb://localhost:27017/tunetab';
 var appPort = 7076;
-
 var userStore = {};
+
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 function getToken(ln) {
   var buf = crypto.randomBytes(ln);
@@ -18,7 +21,7 @@ function getToken(ln) {
 }
 
 app.engine('html', require('ejs').renderFile);
-
+app.use(express.static(__dirname + '/public'));
 app.get('/', function(req, res) {
   var newRoom = getToken(8);
   res.redirect('/r/' + newRoom);
@@ -30,24 +33,32 @@ app.get('/r/:token', function(req, res) {
 
 io.on('connection', function(socket){
   var roomId = '';
+  var alias = animal.rand() + randInt(1, 999)
 
-  socket.on('login', function(room){
-    roomId = room;
+  socket.on('login', function(data){
+    alias = data.alias ? data.alias : alias;
+    roomId = data.room;
     userStore[roomId] = userStore[roomId] || {};
-    userStore[roomId][socket.id] = userStore[roomId][socket.id] || {};
+    userStore[roomId][socket.id] = userStore[roomId][socket.id] || alias;
 
-    console.log();
     console.log(userStore);
     socket.join(roomId);
-    io.to(socket.id).emit('welcome', 'bob');
+
+    io.to(roomId).emit('message', {msg: alias + ' connected!!'});
   });
 
-  socket.on('message', function(msg){
-    io.to(roomId).emit('message', msg);
+  socket.on('message', function(data){
+    io.to(roomId).emit('message', {msg: data.msg});
+  });
+
+  socket.on('updateAlias', function(data){
+    io.to(roomId).emit('message', {msg: userStore[roomId][socket.id] + ' is now ' + data.alias +'!!!'});
+    userStore[roomId][socket.id] = data.alias;
   });
 
   socket.on('disconnect', function () {
-    io.emit('user disconnected');
+    io.to(roomId).emit('message', {msg: userStore[roomId][socket.id] + ' disconnected!!!!'});
+    delete userStore[roomId][socket.id];
   });
 
 });
