@@ -58,21 +58,34 @@
 
       function onPlayerReady(event) {
         socket.emit('getVideoTime');
+
         console.log('onPlayerReady');
       }
 
-      socket.on('currentVideoTime', function(data){
+      socket.on('officialVideoTime', function(data){
         console.log('videoSubmitted placeholder');
         // set video time here
-        player.playVideo();
+        player.seekTo(data.video.currentVideoTime);
+        // player.playVideo();
       });
 
       function onPlayerStateChange(event) {
-        console.log('onPlayerStateChange');
-        tickInterval =  setInterval(function() {
-          socket.emit('tick', {videoTime: player.getCurrentTime().toFixed(0)});
-        }, 1111);
-        // if paused , clear interval
+        // event.data = 
+        // -1 (unstarted)
+        // 0 (ended)
+        // 1 (playing)
+        // 2 (paused)
+        // 3 (buffering)
+        // 5 (video cued).
+        console.log('onPlayerStateChange', event.data);
+        if(event.data < 2) {
+          tickInterval = setInterval(function() {
+            socket.emit('tick', {videoTime: player.getCurrentTime().toFixed(0)});
+          }, 1111);  
+        } else {
+          console.log('unset interval');
+          window.clearInterval(tickInterval);
+        }
       }
 
       socket.emit('login', {room: roomId, alias: alias});
@@ -94,6 +107,12 @@
         $('#messages').append($('<li style="background-color:pink">').text(data.msg));
       });
 
+      socket.on('startVideo', function(data){
+        video = data.video;
+        onYouTubeIframeAPIReady();
+      });
+
+      
       socket.on('videoSubmitted', function(data){
         console.log('videoSubmitted placeholder');
       });
@@ -112,8 +131,7 @@
       $('#submitVideo').click(function() {
         var video = $('#videourl').val();
         video = video.match(youtubeRX);
-        console.log(video[1]);
-        socket.emit('submitVideo', {video: video});
+        socket.emit('submitVideo', {video: video[1]});
       });
 
       $('form').submit(function(){

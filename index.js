@@ -4,6 +4,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var animal = require('node-animal');
+var request = require('request');
 // var assert = require('assert');
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
@@ -32,10 +33,11 @@ var mdb = {};
 //     }
 //   ]
 // };
-
+var YOUTUBE_API_KEY = 'AIzaSyBlK4TcgxsU4KRFsvSCrBaxerOF6fya0Eo';
+var YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/';
 var appPort = 7076;
 
-// https://www.googleapis.com/youtube/v3/videos?part=id%2Csnippet&id=iCRqE59VXT0&key=AIzaSyBlK4TcgxsU4KRFsvSCrBaxerOF6fya0Eo
+
 
 function randInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -77,7 +79,7 @@ io.on('connection', function(socket){
     // how to check if obj is empty
     if(typeof videoStore[roomId].currentVideo === "undefined") {
       videoStore[roomId].currentVideo = null;
-      videoStore[roomId].currentVideoTime = 0;
+      videoStore[roomId].currentVideoTime = 90;
       videoStore[roomId].upcomingVideos = [];
     }
     socket.join(roomId);
@@ -90,18 +92,55 @@ io.on('connection', function(socket){
   });
 
   socket.on('submitVideo', function(data){
-    io.to(roomId).emit('message', {msg: data.msg});
+    var videoID = data.video;
+    var url = YOUTUBE_API_URL + 'videos?part=id%2Csnippet&id=' 
+            + videoID + '&key=' + YOUTUBE_API_KEY;
+    console.log(url);
+    request({
+        uri: url, 
+        json: true
+      }, function (error, response, body) {
+          if (!error && response.statusCode == 200) {
+            if(typeof body.items !== 'undefiend' && typeof body.items[0] !== 'undefiend') {
+              console.log(body.items[0].snippet.title);
+              console.log(body.items[0].snippet.thumbnails.default);
+              if(!videoStore[roomId].currentVideo) {
+                videoStore[roomId].currentVideo = videoID;
+                io.to(roomId).emit('startVideo', {video: videoStore[roomId]});
+              } else {
+                console.log('add to upcoming');
+              }
+              
+            } else {
+              console.log('api error');
+            }
+          } else {
+            console.log('api error');
+          }
+    });
+    // io.to(roomId).emit('message', {msg: data.msg});
   });
 
-  socket.on('submitVideo', function(data){
-    // getVideoTime
+  socket.on('videoSubmitted', function(data){
+    // 
+  });
+
+  socket.on('getVideoTime', function(data){
+     io.to(roomId).emit('officialVideoTime', {video: videoStore[roomId]});
   });
 
   socket.on('tick', function(data){
-    if(videoStore[roomId].currentVideoTime < data.videoTime) {
-      videoStore[roomId].currentVideoTime = data.videoTime;
-      console.log(videoStore[roomId].currentVideoTime);
+    if(typeof videoStore[roomId] !== 'undefiend') {
+      if(videoStore[roomId].currentVideoTime < parseInt(data.videoTime), 10) {
+        videoStore[roomId].currentVideoTime = data.videoTime;
+        console.log(videoStore[roomId].currentVideoTime);
+      } else {
+        console.log('tickkking and doing nothing');
+      }
+    } else {
+      console.log('undefined!!!videoStore[roomId]')
     }
+    
   });
 
   socket.on('skipVideo', function(data){
