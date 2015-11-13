@@ -1,15 +1,41 @@
-var mongodb = require('mongodb');
 var crypto = require('crypto');
-var MongoClient = mongodb.MongoClient;
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var animal = require('node-animal');
-
-var url = 'mongodb://localhost:27017/tunetab';
-var appPort = 7076;
+// var assert = require('assert');
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient;
+// var mongoObjectId = require('mongodb').ObjectID;
+var mongoUrl = 'mongodb://localhost:27017/tunetab';
 var userStore = {};
+var videoStore = {};
+var mdb = {};
+
+// how to get fresh object
+// var schema = {
+//   roomId: '',
+//   users: {},
+//   currentVideo: null,
+//   currentVideoTime: null,
+//   upcomingVideos: [
+//     {
+//       user: null,
+//       video: ''
+//     }
+//   ],
+//   previousVideos: [
+//     {
+//       user: null,
+//       video: ''
+//     }
+//   ]
+// };
+
+var appPort = 7076;
+
+// https://www.googleapis.com/youtube/v3/videos?part=id%2Csnippet&id=iCRqE59VXT0&key=AIzaSyBlK4TcgxsU4KRFsvSCrBaxerOF6fya0Eo
 
 function randInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -33,42 +59,77 @@ app.get('/r/:token', function(req, res) {
 
 io.on('connection', function(socket){
   var roomId = '';
-  var alias = animal.rand() + randInt(1, 999)
+  var alias = animal.rand() + randInt(1, 999);
+  // db.collection('rooms');
 
   socket.on('login', function(data){
     alias = data.alias ? data.alias : alias;
     roomId = data.room;
+    // mdb.collection('rooms').findOne(
+    //   {"roomId": roomId},
+    //   function(err, results) {
+    //     console.log(results);
+    // });
+
     userStore[roomId] = userStore[roomId] || {};
     userStore[roomId][socket.id] = userStore[roomId][socket.id] || alias;
-
-    console.log(userStore);
+    videoStore[roomId] = videoStore[roomId] || {};
+    // how to check if obj is empty
+    if(typeof videoStore[roomId].currentVideo === "undefined") {
+      videoStore[roomId].currentVideo = null;
+      videoStore[roomId].currentVideoTime = 0;
+      videoStore[roomId].upcomingVideos = [];
+    }
     socket.join(roomId);
-
-    io.to(roomId).emit('message', {msg: alias + ' connected!!'});
+    io.to(socket.id).emit('welcome', {alias: alias, video: videoStore[roomId]});
+    io.to(roomId).emit('announcement', {msg: alias + ' connected!'});
   });
 
   socket.on('message', function(data){
     io.to(roomId).emit('message', {msg: data.msg});
   });
 
+  socket.on('submitVideo', function(data){
+    io.to(roomId).emit('message', {msg: data.msg});
+  });
+
+  socket.on('submitVideo', function(data){
+    // getVideoTime
+  });
+
+  socket.on('tick', function(data){
+    if(videoStore[roomId].currentVideoTime < data.videoTime) {
+      videoStore[roomId].currentVideoTime = data.videoTime;
+      console.log(videoStore[roomId].currentVideoTime);
+    }
+  });
+
+  socket.on('skipVideo', function(data){
+    console.log('skipVideo placeholder');
+    // io.to(roomId).emit('message', {msg: data.msg});
+  });
+
   socket.on('updateAlias', function(data){
-    io.to(roomId).emit('message', {msg: userStore[roomId][socket.id] + ' is now ' + data.alias +'!!!'});
+    io.to(roomId).emit('announcement', {msg: userStore[roomId][socket.id] + ' is now ' + data.alias +'!'});
     userStore[roomId][socket.id] = data.alias;
   });
 
   socket.on('disconnect', function () {
-    io.to(roomId).emit('message', {msg: userStore[roomId][socket.id] + ' disconnected!!!!'});
-    delete userStore[roomId][socket.id];
+    // disconnect occasionally misfires of fires before login...
+    if(typeof userStore[roomId] !== "undefined") {
+      io.to(roomId).emit('announcement', {msg: userStore[roomId][socket.id] + ' disconnected!'});
+      delete userStore[roomId][socket.id];
+    }
   });
 
 });
 
-MongoClient.connect(url, function (err, db) {
+MongoClient.connect(mongoUrl, function (err, db) {
   if (err) {
     console.log('Unable to connect to the mongoDB server. Error:', err);
   } else {
-    console.log('Connection established to', url);
-    Rooms = db.collection('rooms');
+    console.log('Connection established to', mongoUrl);
+    mdb = db;
     http.listen(appPort, function(){
       console.log('listening on *:' + appPort);
     });
