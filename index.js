@@ -22,6 +22,7 @@ var mdb = {};
 //   currentVideoTime: null,
 //   upcomingVideos: [
 //     {
+//        ADD USERS COMMENT ABOUT THE VIDEO, FOR FUN!!!
 //       user: null,
 //       video: ''
 //     }
