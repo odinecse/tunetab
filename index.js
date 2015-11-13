@@ -9,7 +9,7 @@ var request = require('request');
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 // var mongoObjectId = require('mongodb').ObjectID;
-var mongoUrl = 'mongodb://localhost:27017/tunetab';
+var MONGO_URL = 'mongodb://localhost:27017/tunetab';
 var userStore = {};
 var videoStore = {};
 var mdb = {};
@@ -36,7 +36,7 @@ var mdb = {};
 // };
 var YOUTUBE_API_KEY = 'AIzaSyBlK4TcgxsU4KRFsvSCrBaxerOF6fya0Eo';
 var YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/';
-var appPort = 7076;
+var APP_PORT = 7076;
 
 
 
@@ -164,14 +164,14 @@ io.on('connection', function(socket){
 
 });
 
-MongoClient.connect(mongoUrl, function (err, db) {
+MongoClient.connect(MONGO_URL, function (err, db) {
   if (err) {
     console.log('Unable to connect to the mongoDB server. Error:', err);
   } else {
-    console.log('Connection established to', mongoUrl);
+    console.log('Connection established to', MONGO_URL);
     mdb = db;
-    http.listen(appPort, function(){
-      console.log('listening on *:' + appPort);
+    http.listen(APP_PORT, function(){
+      console.log('listening on *:' + APP_PORT);
     });
   }
 });
