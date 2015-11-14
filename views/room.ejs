@@ -11,6 +11,10 @@
     <input id="alias" type="text" autocomplete="off" /><button id="saveAlias">save</button>
     <ul id="previous"></ul>
     <div id="ytplayer"></div>
+    <div id="skip">
+      <button id="skipVideo">Skip (0)</button>
+      (votes required to skip: 2)
+    </div>
     <ul id="upcoming"></ul>
     <ul id="messages"></ul>
     <form action="">
@@ -29,8 +33,10 @@
       var alias = Cookies.get(COOKIE_NAME) || false;
       var video = {};
       var tickInterval = {};
+      var YT_API_RDY = false;
 
       function onYouTubeIframeAPIReady() {
+        YT_API_RDY = true;
         console.log('onYouTubeIframeAPIReady', video);
         if(video.current) {
           ytplayer = new YT.Player('ytplayer', {
@@ -62,7 +68,7 @@
       }
 
       socket.on('officialVideoTime', function(data){
-        console.log('officialVideoTime');
+        console.log('officialVideoTime', data);
         ytplayer.seekTo(data.video.currentVideoTime);
       });
 
@@ -89,6 +95,34 @@
         }
       }
 
+      function buildList(videos, reverse) {
+        var out = '';
+        if(typeof reverse !== 'undefined') {
+          videos.reverse();
+        }
+        videos.forEach(function(video) {
+          out += '<li><h4>' + video.videoTitle + '</h4>'
+              + '<img height="' + video.videoThumb.height
+              + '" width="' + video.videoThumb.height
+              + '" src="' + video.videoThumb.url + '" />'
+              + video.user + '</li>';
+        });
+        return out;
+      }
+
+      function renderPlaylist() {
+        var previousList = '';
+        var upcomingList = '';
+        if(video.upcomingVideos.length > 0) {
+          previousList = buildList(video.upcomingVideos, true);
+        }
+        if(video.previousVideos.length > 0) {
+          upcomingList = buildList(video.previousVideos);
+        }
+        $('#previous').html(previousList);
+        $('#upcoming').html(upcomingList);
+      }
+
       socket.emit('login', {room: roomId, alias: alias});
 
       socket.on('welcome', function(data){
@@ -96,36 +130,45 @@
         video = data.video;
         $('#alias').val(alias);
         console.log('welcome', data);
-        onYouTubeIframeAPIReady();
+        if(YT_API_RDY) {
+          onYouTubeIframeAPIReady();
+          renderPlaylist();
+        }
       });
 
       socket.on('message', function(data){
+        console.log('message', data);
         $('#messages').append($('<li>').text(data.msg));
       });
 
       socket.on('announcement', function(data){
+        console.log('announcement', data);
         $('#messages').append($('<li style="background-color:pink">').text(data.msg));
       });
 
       socket.on('firstVideo', function(data){
-        console.log('firstVideo')
+        console.log('firstVideo', data);
         video = data.video;
-        onYouTubeIframeAPIReady();
+        if(YT_API_RDY) {
+          onYouTubeIframeAPIReady();
+        }
       });
 
       socket.on('playVideo', function(data){
-        console.log('playVideo')
+        console.log('playVideo');
         video = data.video;
         if(video.current) {
           ytplayer.loadVideoById(video.current.videoId);
         } else {
           console.log('playlist done');
         }
+        renderPlaylist();
       });
 
       socket.on('videoSubmitted', function(data){
-        console.log('videoSubmitted placeholder');
-        // rerender stuff here
+        console.log('videoSubmitted', data);
+        video = data.video;
+        renderPlaylist();
       });
 
       // events
