@@ -6,39 +6,17 @@ var io = require('socket.io')(http);
 var animal = require('node-animal');
 var request = require('request');
 // var assert = require('assert');
-var mongodb = require('mongodb');
-var MongoClient = mongodb.MongoClient;
+// var mongodb = require('mongodb');
+// var MongoClient = mongodb.MongoClient;
 // var mongoObjectId = require('mongodb').ObjectID;
-var MONGO_URL = 'mongodb://localhost:27017/tunetab';
+// var MONGO_URL = 'mongodb://localhost:27017/tunetab';
 var userStore = {};
 var videoStore = {};
-var mdb = {};
+// var mdb = {};
 
-// how to get fresh object
-// var schema = {
-//   roomId: '',
-//   users: {},
-//   currentVideo: null,
-//   currentVideoTime: null,
-//   upcomingVideos: [
-//     {
-//        ADD USERS COMMENT ABOUT THE VIDEO, FOR FUN!!!
-//       user: null,
-//       video: ''
-//     }
-//   ],
-//   previousVideos: [
-//     {
-//       user: null,
-//       video: ''
-//     }
-//   ]
-// };
 var YOUTUBE_API_KEY = 'AIzaSyBlK4TcgxsU4KRFsvSCrBaxerOF6fya0Eo';
 var YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/';
 var APP_PORT = 7076;
-
-
 
 function randInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -49,6 +27,30 @@ function getToken(ln) {
   return buf.toString('hex');
 }
 
+function processVideoSubmit(io, socket, roomId, alias, videoStore, videoID, body) {
+  console.log('processVideoSubmit');
+  if(typeof body.items !== 'undefined' && typeof body.items[0] !== 'undefined') {
+    var submittedVideo = {
+      videoId: videoID,
+      videoTitle: body.items[0].snippet.title,
+      videoThumb: body.items[0].snippet.thumbnails.default,
+      user: alias,
+      comment: ''
+    };
+    if(videoStore[roomId].current === null) {
+      videoStore[roomId].current = submittedVideo;
+      io.to(roomId).emit('firstVideo', {video: videoStore[roomId]});
+    } else {
+      videoStore[roomId].upcomingVideos.push(submittedVideo);
+      io.to(roomId).emit('videoSubmitted', {video: videoStore[roomId]});
+    }
+    console.log(videoStore[roomId]);
+  } else {
+    console.log('api error');
+    io.to(socket.id).emit('error', {msg: 'invalid video url'});
+  }
+}
+
 app.engine('html', require('ejs').renderFile);
 app.use(express.static(__dirname + '/public'));
 app.get('/', function(req, res) {
@@ -57,35 +59,30 @@ app.get('/', function(req, res) {
 });
 
 app.get('/r/:token', function(req, res) {
-  res.render('chat.ejs', {room: req.params.token});
+  res.render('room.ejs', {room: req.params.token});
 });
 
 io.on('connection', function(socket){
   var roomId = '';
   var alias = animal.rand() + randInt(1, 999);
-  // db.collection('rooms');
 
   socket.on('login', function(data){
     alias = data.alias ? data.alias : alias;
     roomId = data.room;
-    // mdb.collection('rooms').findOne(
-    //   {"roomId": roomId},
-    //   function(err, results) {
-    //     console.log(results);
-    // });
-
     userStore[roomId] = userStore[roomId] || {};
     userStore[roomId][socket.id] = userStore[roomId][socket.id] || alias;
     videoStore[roomId] = videoStore[roomId] || {};
-    // how to check if obj is empty
-    if(typeof videoStore[roomId].currentVideo === "undefined") {
-      videoStore[roomId].currentVideo = null;
-      videoStore[roomId].currentVideoTime = 90;
+    if(typeof videoStore[roomId].current === "undefined") {
+      videoStore[roomId].current = null;
+      videoStore[roomId].currentVideoTime = 0;
       videoStore[roomId].upcomingVideos = [];
+      videoStore[roomId].previousVideos = [];
     }
     socket.join(roomId);
     io.to(socket.id).emit('welcome', {alias: alias, video: videoStore[roomId]});
     io.to(roomId).emit('announcement', {msg: alias + ' connected!'});
+    console.log('USERSTORE:', userStore);
+    console.log('VIDEOSTORE:', videoStore);
   });
 
   socket.on('message', function(data){
@@ -94,59 +91,52 @@ io.on('connection', function(socket){
 
   socket.on('submitVideo', function(data){
     var videoID = data.video;
-    var url = YOUTUBE_API_URL + 'videos?part=id%2Csnippet&id=' 
+    var url = YOUTUBE_API_URL + 'videos?part=id%2Csnippet&id='
             + videoID + '&key=' + YOUTUBE_API_KEY;
-    console.log(url);
     request({
-        uri: url, 
+        uri: url,
         json: true
       }, function (error, response, body) {
           if (!error && response.statusCode == 200) {
-            if(typeof body.items !== 'undefiend' && typeof body.items[0] !== 'undefiend') {
-              console.log(body.items[0].snippet.title);
-              console.log(body.items[0].snippet.thumbnails.default);
-              if(!videoStore[roomId].currentVideo) {
-                videoStore[roomId].currentVideo = videoID;
-                io.to(roomId).emit('startVideo', {video: videoStore[roomId]});
-              } else {
-                console.log('add to upcoming');
-              }
-              
-            } else {
-              console.log('api error');
-            }
+            processVideoSubmit(io, socket, roomId, alias, videoStore, videoID, body);
           } else {
-            console.log('api error');
+            io.to(socket.id).emit('error', {msg: 'invalid video url'});
           }
     });
-    // io.to(roomId).emit('message', {msg: data.msg});
-  });
-
-  socket.on('videoSubmitted', function(data){
-    // 
   });
 
   socket.on('getVideoTime', function(data){
      io.to(roomId).emit('officialVideoTime', {video: videoStore[roomId]});
   });
 
-  socket.on('tick', function(data){
-    if(typeof videoStore[roomId] !== 'undefiend') {
-      if(videoStore[roomId].currentVideoTime < parseInt(data.videoTime), 10) {
+  socket.on('tick', function(data) {
+    var time = data.videoTime ? parseInt(data.videoTime, 10) : 0;
+    if(typeof videoStore[roomId] !== 'undefined' && typeof videoStore[roomId].currentVideoTime !== 'undefined') {
+      if(videoStore[roomId].current !== null && videoStore[roomId].currentVideoTime < time) {
         videoStore[roomId].currentVideoTime = data.videoTime;
-        console.log(videoStore[roomId].currentVideoTime);
-      } else {
-        console.log('tickkking and doing nothing');
+        console.log('videotime: ', videoStore[roomId].currentVideoTime);
       }
-    } else {
-      console.log('undefined!!!videoStore[roomId]')
     }
-    
   });
 
-  socket.on('skipVideo', function(data){
-    console.log('skipVideo placeholder');
-    // io.to(roomId).emit('message', {msg: data.msg});
+  socket.on('playNextVideo', function(data){
+    console.log('playNextVideo');
+    if(videoStore[roomId].current !== null && videoStore[roomId].current.videoId === data.videoId) {
+      if(videoStore[roomId].previousVideos.length > 10) {
+        videoStore[roomId].previousVideos.pop();
+      }
+      videoStore[roomId].previousVideos.unshift(videoStore[roomId].current);
+      if(videoStore[roomId].upcomingVideos.length > 0) {
+        videoStore[roomId].current = videoStore[roomId].upcomingVideos.shift();
+      } else {
+        videoStore[roomId].current = null;
+      }
+      videoStore[roomId].currentVideoTime = 0;
+    } else {
+      console.log('not: if(videoStore[roomId].current.videoId === data.videoId {');
+    }
+    console.log(videoStore[roomId]);
+    io.to(socket.id).emit('playVideo', {video: videoStore[roomId]});
   });
 
   socket.on('updateAlias', function(data){
@@ -164,14 +154,14 @@ io.on('connection', function(socket){
 
 });
 
-MongoClient.connect(MONGO_URL, function (err, db) {
-  if (err) {
-    console.log('Unable to connect to the mongoDB server. Error:', err);
-  } else {
-    console.log('Connection established to', MONGO_URL);
-    mdb = db;
+// MongoClient.connect(MONGO_URL, function (err, db) {
+//   if (err) {
+//     console.log('Unable to connect to the mongoDB server. Error:', err);
+//   } else {
+//     console.log('Connection established to', MONGO_URL);
+//     mdb = db;
     http.listen(APP_PORT, function(){
       console.log('listening on *:' + APP_PORT);
     });
-  }
-});
+//   }
+// });

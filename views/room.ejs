@@ -9,7 +9,9 @@
   <body>
     <input id="videourl" type="text" autocomplete="off" /><button id="submitVideo">submitvideo</button>
     <input id="alias" type="text" autocomplete="off" /><button id="saveAlias">save</button>
+    <ul id="previous"></ul>
     <div id="ytplayer"></div>
+    <ul id="upcoming"></ul>
     <ul id="messages"></ul>
     <form action="">
       <input id="m" type="text" autocomplete="off" /><button>Send</button>
@@ -29,14 +31,12 @@
       var tickInterval = {};
 
       function onYouTubeIframeAPIReady() {
-        console.log('onYouTubeIframeAPIReady')
-        if(!video.currentVideo) {
-          $('#messages').append($('<li style="background-color:pink">').text('submit a video ' + alias + '!'));
-        } else {
-          player = new YT.Player('ytplayer', {
+        console.log('onYouTubeIframeAPIReady', video);
+        if(video.current) {
+          ytplayer = new YT.Player('ytplayer', {
             height: '390',
             width: '640',
-            videoId: video.currentVideo,
+            videoId: video.current.videoId,
             playerVars: {
               autoplay: 1,
               controls: 0,
@@ -57,20 +57,17 @@
       }
 
       function onPlayerReady(event) {
-        socket.emit('getVideoTime');
-
         console.log('onPlayerReady');
+        socket.emit('getVideoTime');
       }
 
       socket.on('officialVideoTime', function(data){
-        console.log('videoSubmitted placeholder');
-        // set video time here
-        player.seekTo(data.video.currentVideoTime);
-        // player.playVideo();
+        console.log('officialVideoTime');
+        ytplayer.seekTo(data.video.currentVideoTime);
       });
 
       function onPlayerStateChange(event) {
-        // event.data = 
+        // event.data =
         // -1 (unstarted)
         // 0 (ended)
         // 1 (playing)
@@ -78,11 +75,15 @@
         // 3 (buffering)
         // 5 (video cued).
         console.log('onPlayerStateChange', event.data);
-        if(event.data < 2) {
+        if(event.data === 1) {
           tickInterval = setInterval(function() {
-            socket.emit('tick', {videoTime: player.getCurrentTime().toFixed(0)});
-          }, 1111);  
+            socket.emit('tick', {videoTime: ytplayer.getCurrentTime().toFixed(0)});
+          }, 1111);
         } else {
+          if(event.data === 0) {
+            console.log(video.current.videoId, 'over!');
+            socket.emit('playNextVideo', {videoId: video.current.videoId});
+          }
           console.log('unset interval');
           window.clearInterval(tickInterval);
         }
@@ -91,12 +92,11 @@
       socket.emit('login', {room: roomId, alias: alias});
 
       socket.on('welcome', function(data){
-        if(alias === false) {
-          alias = data.alias;
-          Cookies.set(COOKIE_NAME, alias, { expires: 666});
-        }
+        Cookies.set(COOKIE_NAME, data.alias, { expires: 666});
         video = data.video;
         $('#alias').val(alias);
+        console.log('welcome', data);
+        onYouTubeIframeAPIReady();
       });
 
       socket.on('message', function(data){
@@ -107,18 +107,25 @@
         $('#messages').append($('<li style="background-color:pink">').text(data.msg));
       });
 
-      socket.on('startVideo', function(data){
+      socket.on('firstVideo', function(data){
+        console.log('firstVideo')
         video = data.video;
         onYouTubeIframeAPIReady();
       });
 
-      
-      socket.on('videoSubmitted', function(data){
-        console.log('videoSubmitted placeholder');
+      socket.on('playVideo', function(data){
+        console.log('playVideo')
+        video = data.video;
+        if(video.current) {
+          ytplayer.loadVideoById(video.current.videoId);
+        } else {
+          console.log('playlist done');
+        }
       });
 
-      socket.on('nextVideo', function(data){
+      socket.on('videoSubmitted', function(data){
         console.log('videoSubmitted placeholder');
+        // rerender stuff here
       });
 
       // events
@@ -131,7 +138,11 @@
       $('#submitVideo').click(function() {
         var video = $('#videourl').val();
         video = video.match(youtubeRX);
-        socket.emit('submitVideo', {video: video[1]});
+        if(video) {
+          socket.emit('submitVideo', {video: video[1]});
+        } else {
+          console.log('error url');
+        }
       });
 
       $('form').submit(function(){
