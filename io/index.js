@@ -18,6 +18,9 @@ module.exports = function(io) {
         alias: animal.rand() + randInt(1, 999),
         skip: false
       },
+      userCount: 0,
+      skipVotes: 0,
+      skipThreshold: 1,
       users: {},
       videos: {}
     }

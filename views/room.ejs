@@ -7,13 +7,16 @@
     </style>
   </head>
   <body>
+    to do: submit only one video? make sure reset of users skip vote is reset on next video...
+    
+    <button id="mute">mute</button>
     <input id="videourl" type="text" autocomplete="off" /><button id="submitVideo">submitvideo</button>
     <input id="alias" type="text" autocomplete="off" /><button id="saveAlias">save</button>
     <ul id="previous"></ul>
     <div id="ytplayer"></div>
     <div id="skip">
       <button id="skipVideo">Skip (<span id="currentSkipVotes">0</span>)</button>
-      (votes required to skip: <span id="skipVotesRequired">2</span>)
+      (votes required to skip: <span id="skipVotesRequired">1</span>)
     </div>
     <ul id="upcoming"></ul>
     <ul id="messages"></ul>
@@ -33,6 +36,10 @@
       var alias = Cookies.get(COOKIE_NAME) || false;
       var videos = {};
       var tickInterval = {};
+      var users = {}
+      var userCount = 0;
+      var skipVotes = 0;
+      var skipThreshold = 1;
       var YT_API_RDY = false;
 
       function onYouTubeIframeAPIReady() {
@@ -87,8 +94,8 @@
           }, 777);
         } else {
           if(event.data === 0) {
-            console.log(video.current.id, 'over!');
-            socket.emit('playNextVideo', {videoId: video.current.id});
+            console.log(videos.current.id, 'over!');
+            socket.emit('playNextVideo', {videoId: videos.current.id});
           }
           console.log('unset interval');
           window.clearInterval(tickInterval);
@@ -123,6 +130,11 @@
         $('#upcoming').html(upcomingList);
       }
 
+      function renderSkipStuff() {
+        $('#currentSkipVotes').text(skipVotes)
+        $('#skipVotesRequired').text(skipThreshold)
+      }
+
       socket.emit('login', {room: roomId, alias: alias});
 
       socket.on('welcome', function(data){
@@ -135,6 +147,15 @@
           onYouTubeIframeAPIReady();
           renderPlaylist();
         }
+      });
+
+      socket.on('usersInfo', function(data){
+        console.log('usersInfo', data);
+        users = data.users;
+        userCount = data.userCount;
+        skipVotes = data.skipVotes;
+        skipThreshold = data.skipThreshold;
+        renderSkipStuff();
       });
 
       socket.on('message', function(data){
@@ -172,11 +193,26 @@
         renderPlaylist();
       });
 
-      $('#skipVideo').click(function() {
-        socket.emit('skip');
+      socket.on('skippingVideo', function(data){
+        console.log('skippingVideo', data);
+        skipVotes = data.skipVotes;
+        socket.emit('playNextVideo', {videoId: videos.current.id});
+        renderSkipStuff()
       });
-      // #currentSkipVotes
-      // #skipVotesRequired
+
+      socket.on('skipVoteChanged', function(data){
+        console.log('skipVoteChanged', data);
+        skipVotes = skipVotes;
+        renderSkipStuff();
+      });
+      
+      socket.on('pm', function(data){
+        console.log('pm placeholder', data);
+      });      
+
+      $('#skipVideo').click(function() {
+        socket.emit('skipVideo');
+      });
 
       // events
       $('#saveAlias').click(function() {
@@ -186,10 +222,10 @@
       });
 
       $('#submitVideo').click(function() {
-        var video = $('#videourl').val();
-        video = video.match(youtubeRX);
-        if(video) {
-          socket.emit('submitVideo', {video: video[1]});
+        var v = $('#videourl').val();
+        v = v.match(youtubeRX);
+        if(v) {
+          socket.emit('submitVideo', {video: v[1]});
         } else {
           console.log('error url');
         }

@@ -1,5 +1,5 @@
 function nextTest(roomVideos, videoId) {
-  return roomVideos.current !== null && roomVideos.current.id === data.videoId;
+  return roomVideos.current !== null && roomVideos.current.id === videoId;
 }
 
 module.exports = function playNextVideo(room) {
@@ -16,6 +16,7 @@ module.exports = function playNextVideo(room) {
         room.videos.current = null;
       }
       room.videos.videoTime = 0;
+      room.user.skip = false;
     }
     room.io.to(room.socket.id).emit('playVideo', 
       {videos: room.videos});
