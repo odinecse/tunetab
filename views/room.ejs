@@ -12,8 +12,8 @@
     <ul id="previous"></ul>
     <div id="ytplayer"></div>
     <div id="skip">
-      <button id="skipVideo">Skip (0)</button>
-      (votes required to skip: 2)
+      <button id="skipVideo">Skip (<span id="currentSkipVotes">0</span>)</button>
+      (votes required to skip: <span id="skipVotesRequired">2</span>)
     </div>
     <ul id="upcoming"></ul>
     <ul id="messages"></ul>
@@ -31,18 +31,18 @@
       var youtubeRX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
       var COOKIE_NAME = 'tunetab_alias';
       var alias = Cookies.get(COOKIE_NAME) || false;
-      var video = {};
+      var videos = {};
       var tickInterval = {};
       var YT_API_RDY = false;
 
       function onYouTubeIframeAPIReady() {
         YT_API_RDY = true;
-        console.log('onYouTubeIframeAPIReady', video);
-        if(video.current) {
+        console.log('onYouTubeIframeAPIReady', videos);
+        if(videos.current) {
           ytplayer = new YT.Player('ytplayer', {
             height: '390',
             width: '640',
-            videoId: video.current.videoId,
+            videoId: videos.current.id,
             playerVars: {
               autoplay: 1,
               controls: 0,
@@ -69,7 +69,7 @@
 
       socket.on('officialVideoTime', function(data){
         console.log('officialVideoTime', data);
-        ytplayer.seekTo(data.video.currentVideoTime);
+        ytplayer.seekTo(data.videoTime);
       });
 
       function onPlayerStateChange(event) {
@@ -84,11 +84,11 @@
         if(event.data === 1) {
           tickInterval = setInterval(function() {
             socket.emit('tick', {videoTime: ytplayer.getCurrentTime().toFixed(0)});
-          }, 1111);
+          }, 777);
         } else {
           if(event.data === 0) {
-            console.log(video.current.videoId, 'over!');
-            socket.emit('playNextVideo', {videoId: video.current.videoId});
+            console.log(video.current.id, 'over!');
+            socket.emit('playNextVideo', {videoId: video.current.id});
           }
           console.log('unset interval');
           window.clearInterval(tickInterval);
@@ -101,10 +101,10 @@
           videos.reverse();
         }
         videos.forEach(function(video) {
-          out += '<li><h4>' + video.videoTitle + '</h4>'
-              + '<img height="' + video.videoThumb.height
-              + '" width="' + video.videoThumb.height
-              + '" src="' + video.videoThumb.url + '" />'
+          out += '<li><h4>' + video.title + '</h4>'
+              + '<img height="' + video.thumb.height
+              + '" width="' + video.thumb.height
+              + '" src="' + video.thumb.url + '" />'
               + video.user + '</li>';
         });
         return out;
@@ -113,11 +113,11 @@
       function renderPlaylist() {
         var previousList = '';
         var upcomingList = '';
-        if(video.upcomingVideos.length > 0) {
-          previousList = buildList(video.upcomingVideos, true);
+        if(videos.upcoming.length > 0) {
+          previousList = buildList(videos.upcoming, true);
         }
-        if(video.previousVideos.length > 0) {
-          upcomingList = buildList(video.previousVideos);
+        if(videos.previous.length > 0) {
+          upcomingList = buildList(videos.previous);
         }
         $('#previous').html(previousList);
         $('#upcoming').html(upcomingList);
@@ -126,8 +126,9 @@
       socket.emit('login', {room: roomId, alias: alias});
 
       socket.on('welcome', function(data){
+        alias = data.alias;
         Cookies.set(COOKIE_NAME, data.alias, { expires: 666});
-        video = data.video;
+        videos = data.videos;
         $('#alias').val(alias);
         console.log('welcome', data);
         if(YT_API_RDY) {
@@ -148,7 +149,7 @@
 
       socket.on('firstVideo', function(data){
         console.log('firstVideo', data);
-        video = data.video;
+        videos = data.videos;
         if(YT_API_RDY) {
           onYouTubeIframeAPIReady();
         }
@@ -156,9 +157,9 @@
 
       socket.on('playVideo', function(data){
         console.log('playVideo');
-        video = data.video;
-        if(video.current) {
-          ytplayer.loadVideoById(video.current.videoId);
+        videos = data.videos;
+        if(videos.current) {
+          ytplayer.loadVideoById(videos.current.id);
         } else {
           console.log('playlist done');
         }
@@ -167,9 +168,15 @@
 
       socket.on('videoSubmitted', function(data){
         console.log('videoSubmitted', data);
-        video = data.video;
+        videos = data.videos;
         renderPlaylist();
       });
+
+      $('#skipVideo').click(function() {
+        socket.emit('skip');
+      });
+      // #currentSkipVotes
+      // #skipVotesRequired
 
       // events
       $('#saveAlias').click(function() {
