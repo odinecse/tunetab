@@ -3,7 +3,9 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-
+var webpack = require('webpack');
+var webpackConfig = require('./webpack.config.dev');
+var compiler = webpack(webpackConfig);
 var applicationIo = require('./io/index')(io);
 var APP_PORT = 7076;
 
@@ -12,8 +14,15 @@ function getToken(ln) {
   return buf.toString('hex');
 }
 
-app.engine('html', require('ejs').renderFile);
+app.use(require('webpack-dev-middleware')(compiler, {
+  noInfo: true,
+  publicPath: webpackConfig.output.publicPath
+}));
+app.use(require('webpack-hot-middleware')(compiler));
 app.use(express.static(__dirname + '/public'));
+
+app.engine('html', require('ejs').renderFile);
+
 app.get('/', function(req, res) {
   var newRoom = getToken(8);
   res.redirect('/r/' + newRoom);
