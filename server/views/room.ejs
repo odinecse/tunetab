@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat <%= room %></title>
+    <link href='/css/bundle.css' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id="tunetab"></div>
+    <script type="text/javascript">
+      window.TUNETAB_ROOM_ID = '<%= room %>';
+    </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/bundle.js"></script>
+  </body>
+</html>
