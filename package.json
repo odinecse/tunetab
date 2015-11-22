@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean": "rimraf public/dist",
-    "build:webpack": "NODE_ENV=production webpack --config webpack.config.prod.js",
-    "build": "npm run clean && npm run build:webpack",
+    "clean": "rimraf public/js && rimraf public/css",
+    "build-prod": "npm run clean && webpack --optimize-minimize",
     "start": "node index.js",
-    "lint": "eslint src"
+    "build": "npm run clean && webpack --watch"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +21,7 @@
     "node-sass": "^3.3.3",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
+    "rimraf": "^2.4.4",
     "sass-loader": "^2.0.1",
     "style-loader": "^0.12.4",
     "webpack": "^1.9.6",
