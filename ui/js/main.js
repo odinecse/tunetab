@@ -1,10 +1,11 @@
 import 'babel-core/polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './components/App';
 
 require('../styles/main.scss');
 
 ReactDOM.render(
-  <h1>Hello, world!</h1>,
+  <App />,
   document.getElementById('tunetab')
 );
