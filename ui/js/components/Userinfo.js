@@ -4,7 +4,7 @@ export default class Userinfo extends Component {
   render() {
     return (
       <div>
-        Userinfo
+        {this.props.alias}
       </div>
     );
   }

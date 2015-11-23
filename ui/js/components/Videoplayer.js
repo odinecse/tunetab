@@ -9,7 +9,7 @@ import UpcomingVideos from './UpcomingVideos';
 export default class App extends Component {
   render() {
     return (
-      <div id="tt-videoplayer">
+      <div id="tt-videoplayer" className="tt-grid col-2-3">
         <PreviousVideos />
         <YoutubePlayer />
         <SubmitVideo />

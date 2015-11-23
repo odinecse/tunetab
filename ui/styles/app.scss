@@ -2,3 +2,29 @@ body {
 	background-color: #111;
 	color: #fafafa;
 }
+
+#tunetab {
+  height: 100%;
+  width: 100%;
+  clear: both;
+}
+
+.tt-grid {
+  float: left;
+}
+
+.tt-grid.col-2-3 {
+  width: 66.6%;
+} 
+
+.tt-grid.col-1-3 {
+  width: 33.3%;
+}
+
+#tt-videoplayer {
+  
+}
+
+#tt-chat {
+  
+}
