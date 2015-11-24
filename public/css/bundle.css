@@ -2378,6 +2378,14 @@ body {
   background-color: #111;
   color: #fafafa; }
 
+input[type="text"] {
+  background-color: #222;
+  color: #fefefe;
+  border: 1px solid #444; }
+
+.hidden {
+  display: none; }
+
 #tunetab {
   height: 100%;
   width: 100%;
