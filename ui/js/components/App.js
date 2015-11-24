@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 import dataStore from '../dataStore';
+import {COOKIE_NAME, ROOM_ID} from '../constants';
 import Chat from './Chat';
 import Videoplayer from './Videoplayer';
 
-const roomId = window.TUNETAB_ROOM_ID;
-const COOKIE_NAME = 'tunetab_alias';
-var socket = io();
+var socket = window.io();
 var alias = Cookies.get(COOKIE_NAME) || false;
 
-socket.emit('login', {room: roomId, alias: alias});
+socket.emit('login', {room: ROOM_ID, alias: alias});
 
 socket.on('welcome', function(data){
   console.log('welcome', data);
@@ -51,9 +50,9 @@ export default class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="main-container">
         <Videoplayer />
-        <Chat alias={this.state.alias} editAlias={this.state.editAlias} />
+        <Chat alias={this.state.alias} editAlias={this.state.editAlias} settingsDropdown={this.state.settingsDropdown} />
       </div>
     );
   }

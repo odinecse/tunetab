@@ -11,8 +11,14 @@ export default class Settings extends Component {
     this.editAlias = this.editAlias.bind(this);
     this.hide = this.hide.bind(this);
     this.state = {
-      drowdown: false,
+      dropdown: false,
     };
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({
+      dropdown: props.settingsDropdown,
+    });
   }
 
   editAlias(e) {
@@ -20,14 +26,18 @@ export default class Settings extends Component {
   }
 
   toggleDropdown(e) {
-    if(!this.state.drowdown) {
+    if(!this.state.dropdown) {
+      this.setState({dropdown: true});
+      dataStore.setSettingsDropdown({settingsDropdown: true});
       document.addEventListener("click", this.hide);
+    } else {
+      this.hide();
     }
-    this.setState({drowdown: !this.state.drowdown});
   }
 
-  hide() {
-    this.setState({drowdown: false});
+  hide(e) {
+    this.setState({dropdown: false});
+    dataStore.setSettingsDropdown({settingsDropdown: false});
     document.removeEventListener("click", this.hide);
   }
 
@@ -35,7 +45,7 @@ export default class Settings extends Component {
     return (
       <div id="tt-settings">
         <a href="#" onClick={this.toggleDropdown}><i className="fa fa-cogs"></i> Settings</a>
-        <div id="tt-settings-dropdown" className={classNames({hidden: !this.state.drowdown})}>
+        <div id="tt-settings-dropdown" className={classNames({hidden: !this.state.dropdown})}>
           <a href="#" onClick={this.editAlias}><i className="fa fa-pencil"></i> Edit Alias</a>
         </div>
       </div>

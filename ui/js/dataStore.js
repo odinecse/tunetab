@@ -1,13 +1,19 @@
 import {EventEmitter} from 'events';
+import Cookies from 'js-cookie';
+import {COOKIE_NAME} from './constants';
+
+var socket = window.io();
 
 var _data = {
   editAlias: false,
+  settingsDropdown: false,
   alias: '',
   skipVotes: 0,
   skipThreshold: 1,
   users: {},
   userCount: 0,
-  videos: {}
+  videos: {},
+  messages: []
 }
 
 var dataStore = Object.assign({}, EventEmitter.prototype, {
@@ -21,8 +27,14 @@ var dataStore = Object.assign({}, EventEmitter.prototype, {
     _data.editAlias = data.editAlias;
     dataStore.emit('change');
   },
+  setSettingsDropdown(data) {
+    _data.settingsDropdown = data.settingsDropdown;
+    dataStore.emit('change');
+  },
   setAlias(data) {
     _data.alias = data.alias;
+    Cookies.set(COOKIE_NAME, data.alias, { expires: 666});
+    socket.emit('updateAlias', {alias: data.alias});
     _data.editAlias = false;
     dataStore.emit('change');
   },
@@ -42,6 +54,4 @@ var dataStore = Object.assign({}, EventEmitter.prototype, {
   }
 });
 
-
-
-module.exports = dataStore;
+export default dataStore;

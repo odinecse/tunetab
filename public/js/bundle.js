@@ -69,7 +69,7 @@
 
 	var _componentsApp2 = _interopRequireDefault(_componentsApp);
 
-	__webpack_require__(367);
+	__webpack_require__(368);
 
 	_reactDom2['default'].render(_react2['default'].createElement(_componentsApp2['default'], null), document.getElementById('tunetab'));
 
@@ -25235,25 +25235,25 @@
 
 	var _dataStore2 = _interopRequireDefault(_dataStore);
 
-	var _Chat = __webpack_require__(354);
+	var _constants = __webpack_require__(354);
+
+	var _Chat = __webpack_require__(355);
 
 	var _Chat2 = _interopRequireDefault(_Chat);
 
-	var _Videoplayer = __webpack_require__(361);
+	var _Videoplayer = __webpack_require__(362);
 
 	var _Videoplayer2 = _interopRequireDefault(_Videoplayer);
 
-	var roomId = window.TUNETAB_ROOM_ID;
-	var COOKIE_NAME = 'tunetab_alias';
-	var socket = io();
-	var alias = _jsCookie2['default'].get(COOKIE_NAME) || false;
+	var socket = window.io();
+	var alias = _jsCookie2['default'].get(_constants.COOKIE_NAME) || false;
 
-	socket.emit('login', { room: roomId, alias: alias });
+	socket.emit('login', { room: _constants.ROOM_ID, alias: alias });
 
 	socket.on('welcome', function (data) {
 	  console.log('welcome', data);
 	  _dataStore2['default'].setAlias({ alias: data.alias });
-	  _jsCookie2['default'].set(COOKIE_NAME, data.alias, { expires: 666 });
+	  _jsCookie2['default'].set(_constants.COOKIE_NAME, data.alias, { expires: 666 });
 	  _dataStore2['default'].setVideos({ videos: data.videos });
 	});
 
@@ -25300,9 +25300,9 @@
 	    value: function render() {
 	      return _react2['default'].createElement(
 	        'div',
-	        null,
+	        { className: 'main-container' },
 	        _react2['default'].createElement(_Videoplayer2['default'], null),
-	        _react2['default'].createElement(_Chat2['default'], { alias: this.state.alias, editAlias: this.state.editAlias })
+	        _react2['default'].createElement(_Chat2['default'], { alias: this.state.alias, editAlias: this.state.editAlias, settingsDropdown: this.state.settingsDropdown })
 	      );
 	    }
 	  }]);
@@ -25460,16 +25460,32 @@
 
 	'use strict';
 
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 	var _events = __webpack_require__(353);
+
+	var _jsCookie = __webpack_require__(351);
+
+	var _jsCookie2 = _interopRequireDefault(_jsCookie);
+
+	var _constants = __webpack_require__(354);
+
+	var socket = window.io();
 
 	var _data = {
 	  editAlias: false,
+	  settingsDropdown: false,
 	  alias: '',
 	  skipVotes: 0,
 	  skipThreshold: 1,
 	  users: {},
 	  userCount: 0,
-	  videos: {}
+	  videos: {},
+	  messages: []
 	};
 
 	var dataStore = Object.assign({}, _events.EventEmitter.prototype, {
@@ -25483,8 +25499,14 @@
 	    _data.editAlias = data.editAlias;
 	    dataStore.emit('change');
 	  },
+	  setSettingsDropdown: function setSettingsDropdown(data) {
+	    _data.settingsDropdown = data.settingsDropdown;
+	    dataStore.emit('change');
+	  },
 	  setAlias: function setAlias(data) {
 	    _data.alias = data.alias;
+	    _jsCookie2['default'].set(_constants.COOKIE_NAME, data.alias, { expires: 666 });
+	    socket.emit('updateAlias', { alias: data.alias });
 	    _data.editAlias = false;
 	    dataStore.emit('change');
 	  },
@@ -25504,7 +25526,8 @@
 	  }
 	});
 
-	module.exports = dataStore;
+	exports['default'] = dataStore;
+	module.exports = exports['default'];
 
 /***/ },
 /* 353 */
@@ -25776,6 +25799,20 @@
 
 /***/ },
 /* 354 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var ROOM_ID = window.TUNETAB_ROOM_ID;
+	exports.ROOM_ID = ROOM_ID;
+	var COOKIE_NAME = 'tunetab_alias';
+	exports.COOKIE_NAME = COOKIE_NAME;
+
+/***/ },
+/* 355 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25798,23 +25835,23 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Userinfo = __webpack_require__(355);
+	var _Userinfo = __webpack_require__(356);
 
 	var _Userinfo2 = _interopRequireDefault(_Userinfo);
 
-	var _Settings = __webpack_require__(356);
+	var _Settings = __webpack_require__(357);
 
 	var _Settings2 = _interopRequireDefault(_Settings);
 
-	var _Notifications = __webpack_require__(358);
+	var _Notifications = __webpack_require__(359);
 
 	var _Notifications2 = _interopRequireDefault(_Notifications);
 
-	var _Messages = __webpack_require__(359);
+	var _Messages = __webpack_require__(360);
 
 	var _Messages2 = _interopRequireDefault(_Messages);
 
-	var _Chatform = __webpack_require__(360);
+	var _Chatform = __webpack_require__(361);
 
 	var _Chatform2 = _interopRequireDefault(_Chatform);
 
@@ -25837,7 +25874,7 @@
 	          'div',
 	          { id: 'tt-userbar' },
 	          _react2['default'].createElement(_Userinfo2['default'], { alias: this.props.alias, editAlias: this.props.editAlias }),
-	          _react2['default'].createElement(_Settings2['default'], null)
+	          _react2['default'].createElement(_Settings2['default'], { settingsDropdown: this.props.settingsDropdown })
 	        ),
 	        _react2['default'].createElement(_Notifications2['default'], null),
 	        _react2['default'].createElement(_Messages2['default'], null),
@@ -25853,7 +25890,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 355 */
+/* 356 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25948,7 +25985,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 356 */
+/* 357 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25971,7 +26008,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _classnames = __webpack_require__(357);
+	var _classnames = __webpack_require__(358);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -25990,11 +26027,18 @@
 	    this.editAlias = this.editAlias.bind(this);
 	    this.hide = this.hide.bind(this);
 	    this.state = {
-	      drowdown: false
+	      dropdown: false
 	    };
 	  }
 
 	  _createClass(Settings, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(props) {
+	      this.setState({
+	        dropdown: props.settingsDropdown
+	      });
+	    }
+	  }, {
 	    key: 'editAlias',
 	    value: function editAlias(e) {
 	      _dataStore2['default'].setEditAlias({ editAlias: true });
@@ -26002,15 +26046,19 @@
 	  }, {
 	    key: 'toggleDropdown',
 	    value: function toggleDropdown(e) {
-	      if (!this.state.drowdown) {
+	      if (!this.state.dropdown) {
+	        this.setState({ dropdown: true });
+	        _dataStore2['default'].setSettingsDropdown({ settingsDropdown: true });
 	        document.addEventListener("click", this.hide);
+	      } else {
+	        this.hide();
 	      }
-	      this.setState({ drowdown: !this.state.drowdown });
 	    }
 	  }, {
 	    key: 'hide',
-	    value: function hide() {
-	      this.setState({ drowdown: false });
+	    value: function hide(e) {
+	      this.setState({ dropdown: false });
+	      _dataStore2['default'].setSettingsDropdown({ settingsDropdown: false });
 	      document.removeEventListener("click", this.hide);
 	    }
 	  }, {
@@ -26027,7 +26075,7 @@
 	        ),
 	        _react2['default'].createElement(
 	          'div',
-	          { id: 'tt-settings-dropdown', className: (0, _classnames2['default'])({ hidden: !this.state.drowdown }) },
+	          { id: 'tt-settings-dropdown', className: (0, _classnames2['default'])({ hidden: !this.state.dropdown }) },
 	          _react2['default'].createElement(
 	            'a',
 	            { href: '#', onClick: this.editAlias },
@@ -26046,7 +26094,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 357 */
+/* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -26101,7 +26149,7 @@
 	})();
 
 /***/ },
-/* 358 */
+/* 359 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26136,11 +26184,7 @@
 	  _createClass(Notifications, [{
 	    key: 'render',
 	    value: function render() {
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        'Notifications'
-	      );
+	      return _react2['default'].createElement('div', null);
 	    }
 	  }]);
 
@@ -26151,7 +26195,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 359 */
+/* 360 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26201,7 +26245,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 360 */
+/* 361 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26238,7 +26282,7 @@
 	    value: function render() {
 	      return _react2["default"].createElement(
 	        "div",
-	        null,
+	        { id: "tt-chatform" },
 	        _react2["default"].createElement("input", { type: "text", autoComplete: "off" })
 	      );
 	    }
@@ -26251,7 +26295,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 361 */
+/* 362 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26274,23 +26318,23 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _PreviousVideos = __webpack_require__(362);
+	var _PreviousVideos = __webpack_require__(363);
 
 	var _PreviousVideos2 = _interopRequireDefault(_PreviousVideos);
 
-	var _YoutubePlayer = __webpack_require__(363);
+	var _YoutubePlayer = __webpack_require__(364);
 
 	var _YoutubePlayer2 = _interopRequireDefault(_YoutubePlayer);
 
-	var _SubmitVideo = __webpack_require__(364);
+	var _SubmitVideo = __webpack_require__(365);
 
 	var _SubmitVideo2 = _interopRequireDefault(_SubmitVideo);
 
-	var _SkipVideo = __webpack_require__(365);
+	var _SkipVideo = __webpack_require__(366);
 
 	var _SkipVideo2 = _interopRequireDefault(_SkipVideo);
 
-	var _UpcomingVideos = __webpack_require__(366);
+	var _UpcomingVideos = __webpack_require__(367);
 
 	var _UpcomingVideos2 = _interopRequireDefault(_UpcomingVideos);
 
@@ -26325,7 +26369,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 362 */
+/* 363 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26375,7 +26419,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 363 */
+/* 364 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26425,7 +26469,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 364 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26475,7 +26519,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 365 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26525,7 +26569,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 366 */
+/* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26575,7 +26619,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 367 */
+/* 368 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

@@ -1,6 +1,13 @@
+html {
+  min-height: 100%;
+  height: 100%;
+}
+
 body {
-	background-color: #111;
-	color: #fafafa;
+  background-color: #111;
+  min-height: 100%;
+  height: 100%;
+  color: #fafafa;
 }
 
 input[type="text"] {
@@ -19,23 +26,29 @@ input[type="text"] {
   clear: both;
 }
 
-.tt-grid {
-  float: left;
+.main-container {
+  display: -ms-flex;
+  display: -webkit-flex;
+  display: flex;
+  height: 100%;
+  min-height: 100%;
 }
 
-.tt-grid.col-2-3 {
+.main-container .col-2-3 {
   width: 66.6%;
 }
 
-.tt-grid.col-1-3 {
+.main-container .col-1-3 {
   width: 33.3%;
 }
 
 #tt-videoplayer {
-
+  height: 100%;
+  position: relative;
 }
 
 #tt-chat {
-
+  height: 100%;
+  position: relative;
 }
 

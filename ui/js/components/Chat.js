@@ -16,7 +16,7 @@ export default class Chat extends Component {
       <div id="tt-chat" className="tt-grid col-1-3">
         <div id="tt-userbar">
           <Userinfo alias={this.props.alias} editAlias={this.props.editAlias} />
-          <Settings />
+          <Settings settingsDropdown={this.props.settingsDropdown} />
         </div>
         <Notifications />
         <Messages />
