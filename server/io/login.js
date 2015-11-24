@@ -23,23 +23,23 @@ module.exports = function login(global, room) {
     room.videos = global.videos[room.id];
     room.socket.join(room.id);
 
-    room.io.to(room.socket.id).emit('welcome', 
+    room.io.to(room.socket.id).emit('welcome',
       {
-        alias: room.user.alias, 
+        alias: room.user.alias,
         videos: room.videos
       }
     );
-    room.io.to(room.id).emit('announcement', 
+    room.socket.broadcast.to(room.id).emit('announcement',
       {msg: room.user.alias + ' connected!'});
-    room.io.to(room.id).emit('usersInfo', 
+    room.io.to(room.id).emit('usersInfo',
       {
-        users: room.users, 
-        userCount: room.userCount, 
-        skipVotes: room.skipVotes, 
+        users: room.users,
+        userCount: room.userCount,
+        skipVotes: room.skipVotes,
         skipThreshold: room.skipThreshold
       }
     );
-    
+
     console.log('USERSTORE:', global.users);
     console.log('VIDEOSTORE:', global.videos);
   }

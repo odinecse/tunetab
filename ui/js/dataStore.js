@@ -13,8 +13,37 @@ var _data = {
   users: {},
   userCount: 0,
   videos: {},
-  messages: []
-}
+  messages: [],
+  notifications: []
+};
+
+socket.on('message', function(data){
+  console.log('message', data);
+  _data.messages.push({
+    msg: data.msg,
+    alias: data.alias,
+    type: data.type
+  });
+  dataStore.emit('change');
+});
+
+socket.on('announcement', function(data){
+  console.log('announcement', data);
+  _data.messages.push({
+    msg: data.msg,
+    alias: 'room',
+    type: 'announcement'
+  });
+  dataStore.emit('change');
+});
+
+socket.on('notification', function(data){
+  console.log('pm', data);
+  _data.notifications.push({
+    msg: data.msg
+  });
+  dataStore.emit('change');
+});
 
 var dataStore = Object.assign({}, EventEmitter.prototype, {
   addChangeListener(callback) {
@@ -49,9 +78,15 @@ var dataStore = Object.assign({}, EventEmitter.prototype, {
     _data.skipThreshold  = data.skipThreshold;
     dataStore.emit('change');
   },
+  sendMsg(data) {
+    var msg = {alias: data.alias, msg: data.msg, type: data.type};
+    socket.emit('message', msg);
+  },
   getData() {
     return _data;
   }
 });
+
+
 
 export default dataStore;

@@ -69,7 +69,7 @@
 
 	var _componentsApp2 = _interopRequireDefault(_componentsApp);
 
-	__webpack_require__(368);
+	__webpack_require__(369);
 
 	_reactDom2['default'].render(_react2['default'].createElement(_componentsApp2['default'], null), document.getElementById('tunetab'));
 
@@ -25241,7 +25241,7 @@
 
 	var _Chat2 = _interopRequireDefault(_Chat);
 
-	var _Videoplayer = __webpack_require__(362);
+	var _Videoplayer = __webpack_require__(363);
 
 	var _Videoplayer2 = _interopRequireDefault(_Videoplayer);
 
@@ -25302,7 +25302,10 @@
 	        'div',
 	        { className: 'main-container' },
 	        _react2['default'].createElement(_Videoplayer2['default'], null),
-	        _react2['default'].createElement(_Chat2['default'], { alias: this.state.alias, editAlias: this.state.editAlias, settingsDropdown: this.state.settingsDropdown })
+	        _react2['default'].createElement(_Chat2['default'], { alias: this.state.alias,
+	          editAlias: this.state.editAlias,
+	          settingsDropdown: this.state.settingsDropdown,
+	          messages: this.state.messages })
 	      );
 	    }
 	  }]);
@@ -25485,8 +25488,37 @@
 	  users: {},
 	  userCount: 0,
 	  videos: {},
-	  messages: []
+	  messages: [],
+	  notifications: []
 	};
+
+	socket.on('message', function (data) {
+	  console.log('message', data);
+	  _data.messages.push({
+	    msg: data.msg,
+	    alias: data.alias,
+	    type: data.type
+	  });
+	  dataStore.emit('change');
+	});
+
+	socket.on('announcement', function (data) {
+	  console.log('announcement', data);
+	  _data.messages.push({
+	    msg: data.msg,
+	    alias: 'room',
+	    type: 'announcement'
+	  });
+	  dataStore.emit('change');
+	});
+
+	socket.on('notification', function (data) {
+	  console.log('pm', data);
+	  _data.notifications.push({
+	    msg: data.msg
+	  });
+	  dataStore.emit('change');
+	});
 
 	var dataStore = Object.assign({}, _events.EventEmitter.prototype, {
 	  addChangeListener: function addChangeListener(callback) {
@@ -25520,6 +25552,10 @@
 	    _data.skipVotes = data.skipVotes;
 	    _data.skipThreshold = data.skipThreshold;
 	    dataStore.emit('change');
+	  },
+	  sendMsg: function sendMsg(data) {
+	    var msg = { alias: data.alias, msg: data.msg, type: data.type };
+	    socket.emit('message', msg);
 	  },
 	  getData: function getData() {
 	    return _data;
@@ -25851,7 +25887,7 @@
 
 	var _Messages2 = _interopRequireDefault(_Messages);
 
-	var _Chatform = __webpack_require__(361);
+	var _Chatform = __webpack_require__(362);
 
 	var _Chatform2 = _interopRequireDefault(_Chatform);
 
@@ -25877,8 +25913,8 @@
 	          _react2['default'].createElement(_Settings2['default'], { settingsDropdown: this.props.settingsDropdown })
 	        ),
 	        _react2['default'].createElement(_Notifications2['default'], null),
-	        _react2['default'].createElement(_Messages2['default'], null),
-	        _react2['default'].createElement(_Chatform2['default'], null)
+	        _react2['default'].createElement(_Messages2['default'], { messages: this.props.messages }),
+	        _react2['default'].createElement(_Chatform2['default'], { alias: this.props.alias })
 	      );
 	    }
 	  }]);
@@ -25964,8 +26000,7 @@
 	    value: function render() {
 	      var user = this.state.alias;
 	      if (this.state.editable) {
-	        user = _react2['default'].createElement('input', { ref: 'query',
-	          value: this.state.alias,
+	        user = _react2['default'].createElement('input', { value: this.state.alias,
 	          onKeyPress: this.handleOnKeyPress,
 	          onChange: this.handleChange,
 	          type: 'text' });
@@ -26218,6 +26253,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _Message = __webpack_require__(361);
+
+	var _Message2 = _interopRequireDefault(_Message);
+
 	var Messages = (function (_Component) {
 	  _inherits(Messages, _Component);
 
@@ -26230,10 +26269,17 @@
 	  _createClass(Messages, [{
 	    key: 'render',
 	    value: function render() {
+	      var messages = null;
+	      if (this.props.messages.length > 0) {
+	        messages = this.props.messages.map(function (msg, i) {
+	          return _react2['default'].createElement(_Message2['default'], { alias: msg.alias, msg: msg.msg, msgType: msg.type, key: i });
+	        });
+	      }
+
 	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        'Messages'
+	        'ul',
+	        { id: 'tt-msg' },
+	        messages
 	      );
 	    }
 	  }]);
@@ -26268,30 +26314,35 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var Chatform = (function (_Component) {
-	  _inherits(Chatform, _Component);
+	var Message = (function (_Component) {
+	  _inherits(Message, _Component);
 
-	  function Chatform() {
-	    _classCallCheck(this, Chatform);
+	  function Message() {
+	    _classCallCheck(this, Message);
 
-	    _get(Object.getPrototypeOf(Chatform.prototype), "constructor", this).apply(this, arguments);
+	    _get(Object.getPrototypeOf(Message.prototype), "constructor", this).apply(this, arguments);
 	  }
 
-	  _createClass(Chatform, [{
+	  _createClass(Message, [{
 	    key: "render",
 	    value: function render() {
 	      return _react2["default"].createElement(
-	        "div",
-	        { id: "tt-chatform" },
-	        _react2["default"].createElement("input", { type: "text", autoComplete: "off" })
+	        "li",
+	        { className: "tt-msg-{this.props.msgType}" },
+	        _react2["default"].createElement(
+	          "span",
+	          { className: "tt-msg-alias" },
+	          this.props.alias
+	        ),
+	        this.props.msg
 	      );
 	    }
 	  }]);
 
-	  return Chatform;
+	  return Message;
 	})(_react.Component);
 
-	exports["default"] = Chatform;
+	exports["default"] = Message;
 	module.exports = exports["default"];
 
 /***/ },
@@ -26318,23 +26369,113 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _PreviousVideos = __webpack_require__(363);
+	var _dataStore = __webpack_require__(352);
+
+	var _dataStore2 = _interopRequireDefault(_dataStore);
+
+	var Chatform = (function (_Component) {
+	  _inherits(Chatform, _Component);
+
+	  function Chatform(props) {
+	    _classCallCheck(this, Chatform);
+
+	    _get(Object.getPrototypeOf(Chatform.prototype), 'constructor', this).call(this, props);
+	    this.handleChange = this.handleChange.bind(this);
+	    this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
+	    this.state = {
+	      msg: ''
+	    };
+	  }
+
+	  _createClass(Chatform, [{
+	    key: 'handleChange',
+	    value: function handleChange(e) {
+	      this.setState({ msg: e.target.value });
+	    }
+	  }, {
+	    key: 'handleOnKeyPress',
+	    value: function handleOnKeyPress(e) {
+	      var key = e.charCode;
+	      var msg = e.target.value.trim();
+	      if (key === 13) {
+	        if (msg !== '') {
+	          console.log(this.props.alias);
+	          _dataStore2['default'].sendMsg({
+	            alias: this.props.alias,
+	            msg: msg,
+	            type: 'user'
+	          });
+	          this.setState({ msg: '' });
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement(
+	        'div',
+	        { id: 'tt-chatform' },
+	        _react2['default'].createElement('input', { ref: function (input) {
+	            if (input != null) {
+	              input.focus();
+	            }
+	          },
+	          value: this.state.msg,
+	          onKeyPress: this.handleOnKeyPress,
+	          onChange: this.handleChange,
+	          type: 'text',
+	          autoComplete: 'off' })
+	      );
+	    }
+	  }]);
+
+	  return Chatform;
+	})(_react.Component);
+
+	exports['default'] = Chatform;
+	module.exports = exports['default'];
+
+/***/ },
+/* 363 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(193);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _PreviousVideos = __webpack_require__(364);
 
 	var _PreviousVideos2 = _interopRequireDefault(_PreviousVideos);
 
-	var _YoutubePlayer = __webpack_require__(364);
+	var _YoutubePlayer = __webpack_require__(365);
 
 	var _YoutubePlayer2 = _interopRequireDefault(_YoutubePlayer);
 
-	var _SubmitVideo = __webpack_require__(365);
+	var _SubmitVideo = __webpack_require__(366);
 
 	var _SubmitVideo2 = _interopRequireDefault(_SubmitVideo);
 
-	var _SkipVideo = __webpack_require__(366);
+	var _SkipVideo = __webpack_require__(367);
 
 	var _SkipVideo2 = _interopRequireDefault(_SkipVideo);
 
-	var _UpcomingVideos = __webpack_require__(367);
+	var _UpcomingVideos = __webpack_require__(368);
 
 	var _UpcomingVideos2 = _interopRequireDefault(_UpcomingVideos);
 
@@ -26369,7 +26510,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 363 */
+/* 364 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26419,7 +26560,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 364 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26469,7 +26610,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 365 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26519,7 +26660,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 366 */
+/* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26569,7 +26710,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 367 */
+/* 368 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26619,7 +26760,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 368 */
+/* 369 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

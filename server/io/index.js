@@ -32,7 +32,7 @@ module.exports = function(io) {
     var message = require('./message')(socketData);
     var getVideoTime = require('./getVideoTime')(socketData);
     var updateAlias = require('./updateAlias')(socketData);
-    var disconnect = require('./disconnect')(socketData);
+    var disconnect = require('./disconnect')(globalData, socketData);
 
     socket.on('login', login);
     socket.on('submitVideo', submitVideo);

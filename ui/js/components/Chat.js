@@ -19,8 +19,8 @@ export default class Chat extends Component {
           <Settings settingsDropdown={this.props.settingsDropdown} />
         </div>
         <Notifications />
-        <Messages />
-        <Chatform />
+        <Messages messages={this.props.messages} />
+        <Chatform alias={this.props.alias} />
       </div>
     );
   }

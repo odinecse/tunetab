@@ -52,7 +52,10 @@ export default class App extends Component {
     return (
       <div className="main-container">
         <Videoplayer />
-        <Chat alias={this.state.alias} editAlias={this.state.editAlias} settingsDropdown={this.state.settingsDropdown} />
+        <Chat alias={this.state.alias}
+              editAlias={this.state.editAlias}
+              settingsDropdown={this.state.settingsDropdown}
+              messages={this.state.messages} />
       </div>
     );
   }

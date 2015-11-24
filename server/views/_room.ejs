@@ -8,7 +8,7 @@
   </head>
   <body>
     to do: submit only one video? make sure reset of users skip vote is reset on next video...
-    
+
     <button id="mute">mute</button>
     <input id="videourl" type="text" autocomplete="off" /><button id="submitVideo">submitvideo</button>
     <input id="alias" type="text" autocomplete="off" /><button id="saveAlias">save</button>
@@ -158,15 +158,8 @@
         renderSkipStuff();
       });
 
-      socket.on('message', function(data){
-        console.log('message', data);
-        $('#messages').append($('<li>').text(data.msg));
-      });
 
-      socket.on('announcement', function(data){
-        console.log('announcement', data);
-        $('#messages').append($('<li style="background-color:pink">').text(data.msg));
-      });
+
 
       socket.on('firstVideo', function(data){
         console.log('firstVideo', data);
@@ -205,10 +198,8 @@
         skipVotes = skipVotes;
         renderSkipStuff();
       });
-      
-      socket.on('pm', function(data){
-        console.log('pm placeholder', data);
-      });      
+
+
 
       $('#skipVideo').click(function() {
         socket.emit('skipVideo');

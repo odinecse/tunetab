@@ -27,8 +27,8 @@ export default class Userinfo extends Component {
   }
 
   handleOnKeyPress(e) {
-    let key = e.charCode;
-    let alias = e.target.value.trim();
+    const key = e.charCode;
+    const alias = e.target.value.trim();
     if(key === 27) {
       dataStore.setEditAlias({editAlias: false});
     } else if(key === 13) {
@@ -41,8 +41,7 @@ export default class Userinfo extends Component {
   render() {
     let user = this.state.alias;
     if(this.state.editable) {
-      user = <input ref="query"
-                    value={this.state.alias}
+      user = <input value={this.state.alias}
                     onKeyPress={this.handleOnKeyPress}
                     onChange={this.handleChange}
                     type='text' />
