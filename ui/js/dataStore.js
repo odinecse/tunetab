@@ -7,15 +7,37 @@ var socket = window.io();
 var _data = {
   editAlias: false,
   settingsDropdown: false,
+  submitVideoForm: false,
   alias: '',
   skipVotes: 0,
   skipThreshold: 1,
   users: {},
   userCount: 0,
-  videos: {},
+  userVoted: false,
+  videos: {
+    current: null,
+    videoTime: 0,
+    previous: [],
+    upcoming: []
+  },
   messages: [],
   notifications: []
 };
+
+socket.on('welcome', function(data){
+  console.log('welcome', data);
+  dataStore.setAlias({alias: data.alias});
+  dataStore.setVideos({videos: data.videos});
+});
+
+socket.on('usersInfo', function(data){
+  console.log('usersInfo', data);
+  _data.users = data.users;
+  _data.userCount = data.userCount;
+  _data.skipVotes = data.skipVotes;
+  _data.skipThreshold  = data.skipThreshold;
+  dataStore.emit('change');
+});
 
 socket.on('message', function(data){
   console.log('message', data);
@@ -39,11 +61,56 @@ socket.on('announcement', function(data){
 
 socket.on('notification', function(data){
   console.log('pm', data);
-  _data.notifications.push({
-    msg: data.msg
-  });
+  dataStore.addNotification(data.msg);
+});
+
+socket.on('videoSubmitted', function(data){
+  console.log('videoSubmitted', data);
+  _data.videos = data.videos;
   dataStore.emit('change');
 });
+
+socket.on('skippingVideo', function(data){
+  console.log('skippingVideo', data);
+  _data.skipVotes = data.skipVotes;
+  socket.emit('playNextVideo', {videoId: _data.videos.current.id});
+  dataStore.emit('change');
+});
+
+socket.on('skipVoteChanged', function(data){
+  console.log('skipVoteChanged', data);
+  _data.skipVotes = data.skipVotes;
+});
+
+
+socket.on('officialVideoTime', function(data){
+  console.log('officialVideoTime', data);
+  dataStore.emit('change');
+  // ytplayer.seekTo(data.videoTime);
+});
+
+socket.on('firstVideo', function(data){
+  console.log('firstVideo', data);
+  _data.videos = data.videos;
+  dataStore.emit('change');
+  // if(YT_API_RDY) {
+  //   onYouTubeIframeAPIReady();
+  // }
+});
+
+socket.on('playVideo', function(data){
+  console.log('playVideo');
+  _data.videos = data.videos;
+  dataStore.emit('change');
+  // if(videos.current) {
+  //   ytplayer.loadVideoById(videos.current.id);
+  // } else {
+  //   console.log('playlist done');
+  // }
+});
+
+
+
 
 var dataStore = Object.assign({}, EventEmitter.prototype, {
   addChangeListener(callback) {
@@ -71,22 +138,26 @@ var dataStore = Object.assign({}, EventEmitter.prototype, {
     _data.videos = data.videos;
     dataStore.emit('change');
   },
-  setUsers(data) {
-    _data.users = data.users;
-    _data.userCount = data.userCount;
-    _data.skipVotes = data.skipVotes;
-    _data.skipThreshold  = data.skipThreshold;
-    dataStore.emit('change');
+  emitSubmitVideo(data) {
+    socket.emit('submitVideo', {video: data.video});
   },
-  sendMsg(data) {
+  emitSkipVideo() {
+    _data.userVoted = true;
+    socket.emit('skipVideo');
+  },
+  emitMsg(data) {
     var msg = {alias: data.alias, msg: data.msg, type: data.type};
     socket.emit('message', msg);
+  },
+  addNotification(data) {
+    _data.notifications.push({
+      msg: data.msg
+    });
+    dataStore.emit('change');
   },
   getData() {
     return _data;
   }
 });
-
-
 
 export default dataStore;

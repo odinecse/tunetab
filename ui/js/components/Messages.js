@@ -9,7 +9,10 @@ export default class Messages extends Component {
     if(this.props.messages.length > 0) {
       messages = this.props.messages.map(function(msg, i) {
         return (
-          <Message alias={msg.alias} msg={msg.msg} msgType={msg.type} key={i} />
+          <Message  alias={msg.alias}
+                    msg={msg.msg}
+                    msgType={msg.type}
+                    key={i} />
         );
       });
     }

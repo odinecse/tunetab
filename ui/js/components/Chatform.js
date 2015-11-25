@@ -22,8 +22,7 @@ export default class Chatform extends Component {
     const msg = e.target.value.trim();
     if(key === 13) {
       if(msg !== '') {
-        console.log(this.props.alias);
-        dataStore.sendMsg({
+        dataStore.emitMsg({
           alias: this.props.alias,
           msg: msg,
           type: 'user'

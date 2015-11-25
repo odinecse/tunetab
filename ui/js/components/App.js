@@ -8,24 +8,8 @@ import Videoplayer from './Videoplayer';
 var socket = window.io();
 var alias = Cookies.get(COOKIE_NAME) || false;
 
+// kicks off handshake, socket events processed in datastore
 socket.emit('login', {room: ROOM_ID, alias: alias});
-
-socket.on('welcome', function(data){
-  console.log('welcome', data);
-  dataStore.setAlias({alias: data.alias});
-  Cookies.set(COOKIE_NAME, data.alias, { expires: 666});
-  dataStore.setVideos({videos: data.videos});
-});
-
-socket.on('usersInfo', function(data){
-  console.log('usersInfo', data);
-  dataStore.setUsers({
-    users: data.users,
-    userCount: data.userCount,
-    skipVotes: data.skipVotes,
-    skipThreshold: data.skipThreshold
-  });
-});
 
 export default class App extends Component {
   constructor(props) {
@@ -51,11 +35,19 @@ export default class App extends Component {
   render() {
     return (
       <div className="main-container">
-        <Videoplayer />
+        <Videoplayer  videos={this.state.videos}
+                      skipVotes={this.state.skipVotes}
+                      skipThreshold={this.state.skipThreshold}
+                      submitVideoForm={this.state.submitVideoForm}
+                      userVoted={this.state.userVoted}
+        />
         <Chat alias={this.state.alias}
               editAlias={this.state.editAlias}
               settingsDropdown={this.state.settingsDropdown}
-              messages={this.state.messages} />
+              messages={this.state.messages}
+              users={this.state.users}
+              userCount={this.state.userCount}
+              notifications={this.state.notifications} />
       </div>
     );
   }

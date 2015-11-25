@@ -8,6 +8,7 @@ export default class Settings extends Component {
   constructor(props) {
     super(props);
     this.toggleDropdown = this.toggleDropdown.bind(this);
+    this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
     this.editAlias = this.editAlias.bind(this);
     this.hide = this.hide.bind(this);
     this.state = {

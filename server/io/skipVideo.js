@@ -8,7 +8,7 @@ module.exports = function skipVideo(room) {
 
     if(room.user.skip) {
       room.io.to(room.socket.id).emit('notification',
-      	{msg: 'you\'ve already voted'});
+        {msg: 'you\'ve already voted'});
     } else {
       room.user.skip = true;
       skipStuff = calcSkipThreshold(room.users);
@@ -16,6 +16,7 @@ module.exports = function skipVideo(room) {
       room.skipVotes = skipStuff.skipVotes;
       room.skipThreshold = skipStuff.skipThreshold;
       if(room.skipVotes >= room.skipThreshold) {
+        // handling for no current video
         room.skipVotes = 0;
         room.io.to(room.id).emit('announcement',
           {msg: 'skipping video!'});
@@ -25,7 +26,7 @@ module.exports = function skipVideo(room) {
         room.io.to(room.id).emit('skipVoteChanged',
           {skipVotes: room.skipVotes});
         room.io.to(room.id).emit('announcement',
-        	{msg: room.user.alias + ' wants to skip this video!'});
+          {msg: room.user.alias + ' wants to skip this video!'});
       }
     }
 
