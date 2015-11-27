@@ -26416,10 +26416,6 @@
 	    _get(Object.getPrototypeOf(YoutubeContainer.prototype), 'constructor', this).call(this, props);
 	    this.cleanup = this.cleanup.bind(this);
 	    this.setPing = this.setPing.bind(this);
-	    this.playerReady = this.playerReady.bind(this);
-	    this.state = {
-	      time: 0
-	    };
 	  }
 
 	  _createClass(YoutubeContainer, [{
@@ -26443,11 +26439,6 @@
 	      }, 500);
 	    }
 	  }, {
-	    key: 'playerReady',
-	    value: function playerReady() {
-	      console.log('playerReady');
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -26456,13 +26447,13 @@
 	      console.log('videoTime', this.props.videoTime);
 	      if (this.props.current) {
 	        player = _react2['default'].createElement(_reactYoutubePlayer2['default'], { ref: function (player) {
-	            return _this2.player = player.player;
+	            _this2.player = player.player;
+	            _this2.player.seekTo(_this2.props.videoTime);
 	          },
 	          videoId: this.props.current.id,
 	          width: 640,
 	          height: 360,
 	          configuration: {
-	            autoplay: 1,
 	            controls: 0,
 	            disablekb: 1,
 	            enablejsapi: 1,
@@ -26470,10 +26461,8 @@
 	            modestbranding: 1,
 	            playsinline: 1,
 	            rel: 0,
-	            showinfo: 0,
-	            start: this.state.time
+	            showinfo: 0
 	          },
-	          onReady: this.playerReady,
 	          onEnd: this.cleanup,
 	          onPlay: this.setPing,
 	          onPause: this.cleanup,

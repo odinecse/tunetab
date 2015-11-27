@@ -13,10 +13,6 @@ export default class YoutubeContainer extends Component {
     super(props);
     this.cleanup = this.cleanup.bind(this);
     this.setPing = this.setPing.bind(this);
-    this.playerReady = this.playerReady.bind(this);
-    this.state = {
-      time: 0
-    }
   }
 
   cleanup() {
@@ -35,21 +31,19 @@ export default class YoutubeContainer extends Component {
     }, 500);
   }
 
-  playerReady() {
-    console.log('playerReady');
-  }
-
   render() {
     let player = null;
     console.log('videoTime', this.props.videoTime)
     if(this.props.current) {
-      player = <YoutubePlayer ref={(player) => this.player = player.player}
+      player = <YoutubePlayer ref={(player) => {
+                                this.player = player.player
+                                this.player.seekTo(this.props.videoTime);
+                              }}
                               videoId={this.props.current.id}
                               width={640}
                               height={360}
                               configuration={
                                 {
-                                  autoplay: 1,
                                   controls: 0,
                                   disablekb: 1,
                                   enablejsapi: 1,
@@ -57,10 +51,8 @@ export default class YoutubeContainer extends Component {
                                   modestbranding: 1,
                                   playsinline: 1,
                                   rel: 0,
-                                  showinfo: 0,
-                                  start: this.state.time
+                                  showinfo: 0
                                 }}
-                              onReady={this.playerReady}
                               onEnd={this.cleanup}
                               onPlay={this.setPing}
                               onPause={this.cleanup}
