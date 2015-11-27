@@ -25182,30 +25182,25 @@
 	  _data.skipVotes = data.skipVotes;
 	});
 
+	// ?
 	socket.on('officialVideoTime', function (data) {
 	  console.log('officialVideoTime', data);
+	  _data.videos.videoTime = data.videoTime;
 	  dataStore.emit('change');
-	  // ytplayer.seekTo(data.videoTime);
 	});
 
+	// ?
 	socket.on('firstVideo', function (data) {
 	  console.log('firstVideo', data);
 	  _data.videos = data.videos;
 	  dataStore.emit('change');
-	  // if(YT_API_RDY) {
-	  //   onYouTubeIframeAPIReady();
-	  // }
 	});
 
+	// ?
 	socket.on('playVideo', function (data) {
 	  console.log('playVideo');
 	  _data.videos = data.videos;
 	  dataStore.emit('change');
-	  // if(videos.current) {
-	  //   ytplayer.loadVideoById(videos.current.id);
-	  // } else {
-	  //   console.log('playlist done');
-	  // }
 	});
 
 	var dataStore = Object.assign({}, _events.EventEmitter.prototype, {
@@ -25233,6 +25228,9 @@
 	  setVideos: function setVideos(data) {
 	    _data.videos = data.videos;
 	    dataStore.emit('change');
+	  },
+	  pingTime: function pingTime(data) {
+	    socket.emit('tick', { videoTime: data.videoTime.toFixed(0) });
 	  },
 	  emitSubmitVideo: function emitSubmitVideo(data) {
 	    socket.emit('submitVideo', { video: data.video });
@@ -25867,7 +25865,7 @@
 /* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	  Copyright (c) 2015 Jed Watson.
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
@@ -25908,9 +25906,9 @@
 			module.exports = classNames;
 		} else if (true) {
 			// register as 'classnames', consistent with npm package name
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
 				return classNames;
-			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		} else {
 			window.classNames = classNames;
 		}
@@ -26199,7 +26197,7 @@
 
 	var _PreviousVideos2 = _interopRequireDefault(_PreviousVideos);
 
-	var _YoutubeContainer = __webpack_require__(410);
+	var _YoutubeContainer = __webpack_require__(366);
 
 	var _YoutubeContainer2 = _interopRequireDefault(_YoutubeContainer);
 
@@ -26376,7 +26374,127 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 366 */,
+/* 366 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(193);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactYoutubePlayer = __webpack_require__(367);
+
+	var _reactYoutubePlayer2 = _interopRequireDefault(_reactYoutubePlayer);
+
+	var _dataStore = __webpack_require__(352);
+
+	var _dataStore2 = _interopRequireDefault(_dataStore);
+
+	var interval = {};
+
+	var YoutubeContainer = (function (_Component) {
+	  _inherits(YoutubeContainer, _Component);
+
+	  function YoutubeContainer(props) {
+	    _classCallCheck(this, YoutubeContainer);
+
+	    _get(Object.getPrototypeOf(YoutubeContainer.prototype), 'constructor', this).call(this, props);
+	    this.cleanup = this.cleanup.bind(this);
+	    this.setPing = this.setPing.bind(this);
+	    this.playerReady = this.playerReady.bind(this);
+	    this.state = {
+	      time: 0
+	    };
+	  }
+
+	  _createClass(YoutubeContainer, [{
+	    key: 'cleanup',
+	    value: function cleanup() {
+	      console.log('cleanup interval');
+	      window.clearInterval(interval);
+	    }
+	  }, {
+	    key: 'setPing',
+	    value: function setPing() {
+	      var _this = this;
+
+	      console.log('setPing');
+	      interval = window.setInterval(function () {
+	        console.log('interval', _this.player);
+	        var promise = _this.player.getCurrentTime();
+	        promise.then(function (time) {
+	          _dataStore2['default'].pingTime({ videoTime: time });
+	        });
+	      }, 500);
+	    }
+	  }, {
+	    key: 'playerReady',
+	    value: function playerReady() {
+	      console.log('playerReady');
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var player = null;
+	      console.log('videoTime', this.props.videoTime);
+	      if (this.props.current) {
+	        player = _react2['default'].createElement(_reactYoutubePlayer2['default'], { ref: function (player) {
+	            return _this2.player = player.player;
+	          },
+	          videoId: this.props.current.id,
+	          width: 640,
+	          height: 360,
+	          configuration: {
+	            autoplay: 1,
+	            controls: 0,
+	            disablekb: 1,
+	            enablejsapi: 1,
+	            fs: 0,
+	            modestbranding: 1,
+	            playsinline: 1,
+	            rel: 0,
+	            showinfo: 0,
+	            start: this.state.time
+	          },
+	          onReady: this.playerReady,
+	          onEnd: this.cleanup,
+	          onPlay: this.setPing,
+	          onPause: this.cleanup,
+	          onError: this.cleanup,
+	          playbackState: 'playing' });
+	      }
+	      return _react2['default'].createElement(
+	        'div',
+	        null,
+	        player
+	      );
+	    }
+	  }]);
+
+	  return YoutubeContainer;
+	})(_react.Component);
+
+	exports['default'] = YoutubeContainer;
+	module.exports = exports['default'];
+
+/***/ },
 /* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -33356,76 +33474,6 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 410 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(193);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactYoutubePlayer = __webpack_require__(367);
-
-	var _reactYoutubePlayer2 = _interopRequireDefault(_reactYoutubePlayer);
-
-	var YoutubeContainer = (function (_Component) {
-	  _inherits(YoutubeContainer, _Component);
-
-	  function YoutubeContainer() {
-	    _classCallCheck(this, YoutubeContainer);
-
-	    _get(Object.getPrototypeOf(YoutubeContainer.prototype), 'constructor', this).apply(this, arguments);
-	  }
-
-	  _createClass(YoutubeContainer, [{
-	    key: 'render',
-	    value: function render() {
-	      var player = null;
-	      if (this.props.current) {
-	        player = _react2['default'].createElement(_reactYoutubePlayer2['default'], { videoId: this.props.current.id,
-	          configuration: {
-	            autoplay: 1,
-	            controls: 0,
-	            disablekb: 1,
-	            enablejsapi: 1,
-	            fs: 0,
-	            modestbranding: 1,
-	            playsinline: 1,
-	            rel: 0,
-	            showinfo: 0
-	          },
-	          playbackState: 'playing' });
-	      }
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        player
-	      );
-	    }
-	  }]);
-
-	  return YoutubeContainer;
-	})(_react.Component);
-
-	exports['default'] = YoutubeContainer;
-	module.exports = exports['default'];
 
 /***/ }
 /******/ ]);

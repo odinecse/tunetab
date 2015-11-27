@@ -82,35 +82,26 @@ socket.on('skipVoteChanged', function(data){
   _data.skipVotes = data.skipVotes;
 });
 
-
+// ?
 socket.on('officialVideoTime', function(data){
   console.log('officialVideoTime', data);
+  _data.videos.videoTime = data.videoTime;
   dataStore.emit('change');
-  // ytplayer.seekTo(data.videoTime);
 });
 
+// ?
 socket.on('firstVideo', function(data){
   console.log('firstVideo', data);
   _data.videos = data.videos;
   dataStore.emit('change');
-  // if(YT_API_RDY) {
-  //   onYouTubeIframeAPIReady();
-  // }
 });
 
+// ?
 socket.on('playVideo', function(data){
   console.log('playVideo');
   _data.videos = data.videos;
   dataStore.emit('change');
-  // if(videos.current) {
-  //   ytplayer.loadVideoById(videos.current.id);
-  // } else {
-  //   console.log('playlist done');
-  // }
 });
-
-
-
 
 var dataStore = Object.assign({}, EventEmitter.prototype, {
   addChangeListener(callback) {
@@ -137,6 +128,9 @@ var dataStore = Object.assign({}, EventEmitter.prototype, {
   setVideos(data) {
     _data.videos = data.videos;
     dataStore.emit('change');
+  },
+  pingTime(data) {
+    socket.emit('tick', {videoTime: data.videoTime.toFixed(0)});
   },
   emitSubmitVideo(data) {
     socket.emit('submitVideo', {video: data.video});
