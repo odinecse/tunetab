@@ -26101,8 +26101,7 @@
 	            'a',
 	            { href: '#', id: 'tt-send-msg', className: 'tt-user-action tt-btn',
 	              onClick: this.send },
-	            _react2['default'].createElement('i', { className: 'fa fa-paper-plane-o' }),
-	            'Send'
+	            _react2['default'].createElement('i', { className: 'fa fa-chevron-right' })
 	          )
 	        )
 	      );

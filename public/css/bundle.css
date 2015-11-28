@@ -2491,7 +2491,8 @@ input.tt-user-alias-form {
   position: absolute;
   right: -5px;
   top: 8px;
-  width: 65px; }
+  padding: 0 8px;
+  width: 25px; }
 
 #tt-msg {
   list-style: none;
