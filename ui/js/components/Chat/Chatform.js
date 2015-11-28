@@ -54,7 +54,7 @@ export default class Chatform extends Component {
                   onChange={this.handleChange}
                   type='text'
                   autoComplete="off" />
-          <a href="#" id="tt-send-msg" className="tt-user-action tt-btn" 
+          <a href="#" id="tt-send-msg" className="tt-btn" 
                       onClick={this.send}>
             <i className="fa fa-chevron-right"></i>
           </a>

@@ -1,5 +1,7 @@
 #tt-msg-c {
   position: absolute;
+  background-color: $backgroundColorChat;
+  box-shadow: inset 10px -3px 7px -8px rgba(46,46,46,1);
   margin-top: 42px;
   margin-bottom: 30px;
   top:0;
@@ -12,9 +14,8 @@
 }
 
 #tt-msg {
-  height: 100%;
-  background-color: $backgroundColorChat;
-  box-shadow: inset 10px -3px 7px -8px rgba(46,46,46,1);
+  height: 95%;
+  
   list-style: none;
   padding: 5px;
   margin: 0;

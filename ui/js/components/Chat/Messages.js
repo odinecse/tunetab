@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 import Message from './Message';
 
@@ -6,14 +7,21 @@ export default class Messages extends Component {
 
   constructor(props) {
     super(props);
-    this.componentDidMount = this.componentDidMount.bind(this);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
+    this.componentWillUpdate = this.componentWillUpdate.bind(this);
   }
 
-  componentDidMount() {
-    console.log('componentDidMount');
-    // if(typeof this.messages !== "undefined") {
-    //   this.messages.scrollTop(this.messages.scrollTop);  
-    // } 
+  componentWillUpdate() {
+    let node = ReactDOM.findDOMNode(this);
+    this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
+  }
+
+  componentDidUpdate() {
+    let node = {};
+    if (this.shouldScrollBottom) {
+      node = ReactDOM.findDOMNode(this);
+      node.scrollTop = node.scrollHeight;
+    }
   }
 
   render() {
@@ -22,13 +30,7 @@ export default class Messages extends Component {
     if(this.props.messages.length > 0) {
       messages = this.props.messages.map(function(msg, i) {
         return (
-          <Message  ref={(messages) => {
-                      console.log(messages);
-                      // if(messages !== null) {
-                      //   this.messages = messages
-                      // }
-                    }}
-                    alias={msg.alias}
+          <Message  alias={msg.alias}
                     msg={msg.msg}
                     msgType={msg.type}
                     userAlias={userAlias}

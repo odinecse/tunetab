@@ -44,6 +44,15 @@ a {
   text-decoration: none;
 }
 
+.tt-btn {
+  font-size: $fontsizeSmaller;
+  margin-left: 12px;
+}
+
+.tt-btn .fa {
+  margin-right: 6px;
+}
+
 .hidden {
   display: none;
 }

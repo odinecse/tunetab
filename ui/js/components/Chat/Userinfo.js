@@ -49,7 +49,7 @@ export default class Userinfo extends Component {
         <span className="tt-alias">
           <i className="fa fa-user"></i> {this.state.alias}
         </span>
-        <a href="#" className="tt-user-action"
+        <a href="#" className="tt-btn"
                     onClick={this.editAlias}>
           <i className="fa fa-pencil"></i>
           Edit Alias
@@ -69,7 +69,7 @@ export default class Userinfo extends Component {
                   onKeyDown={this.handleOnKeyPress}
                   onChange={this.handleChange}
                   type='text' />
-          <a href="#" className="tt-user-action" 
+          <a href="#" className="tt-btn" 
                       onClick={this.editAlias}>
             <i className='fa fa-times'></i>
             Cancel

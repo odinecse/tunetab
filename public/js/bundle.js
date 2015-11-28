@@ -25734,7 +25734,7 @@
 	        ),
 	        _react2['default'].createElement(
 	          'a',
-	          { href: '#', className: 'tt-user-action',
+	          { href: '#', className: 'tt-btn',
 	            onClick: this.editAlias },
 	          _react2['default'].createElement('i', { className: 'fa fa-pencil' }),
 	          'Edit Alias'
@@ -25756,7 +25756,7 @@
 	            type: 'text' }),
 	          _react2['default'].createElement(
 	            'a',
-	            { href: '#', className: 'tt-user-action',
+	            { href: '#', className: 'tt-btn',
 	              onClick: this.editAlias },
 	            _react2['default'].createElement('i', { className: 'fa fa-times' }),
 	            'Cancel'
@@ -25847,6 +25847,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactDom = __webpack_require__(349);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
 	var _Message = __webpack_require__(359);
 
 	var _Message2 = _interopRequireDefault(_Message);
@@ -25858,16 +25862,24 @@
 	    _classCallCheck(this, Messages);
 
 	    _get(Object.getPrototypeOf(Messages.prototype), 'constructor', this).call(this, props);
-	    this.componentDidMount = this.componentDidMount.bind(this);
+	    this.componentDidUpdate = this.componentDidUpdate.bind(this);
+	    this.componentWillUpdate = this.componentWillUpdate.bind(this);
 	  }
 
 	  _createClass(Messages, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      console.log('componentDidMount');
-	      // if(typeof this.messages !== "undefined") {
-	      //   this.messages.scrollTop(this.messages.scrollTop); 
-	      // }
+	    key: 'componentWillUpdate',
+	    value: function componentWillUpdate() {
+	      var node = _reactDom2['default'].findDOMNode(this);
+	      this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      var node = {};
+	      if (this.shouldScrollBottom) {
+	        node = _reactDom2['default'].findDOMNode(this);
+	        node.scrollTop = node.scrollHeight;
+	      }
 	    }
 	  }, {
 	    key: 'render',
@@ -25876,13 +25888,7 @@
 	      var userAlias = this.props.alias;
 	      if (this.props.messages.length > 0) {
 	        messages = this.props.messages.map(function (msg, i) {
-	          return _react2['default'].createElement(_Message2['default'], { ref: function (messages) {
-	              console.log(messages);
-	              // if(messages !== null) {
-	              //   this.messages = messages
-	              // }
-	            },
-	            alias: msg.alias,
+	          return _react2['default'].createElement(_Message2['default'], { alias: msg.alias,
 	            msg: msg.msg,
 	            msgType: msg.type,
 	            userAlias: userAlias,
@@ -26118,7 +26124,7 @@
 	            autoComplete: 'off' }),
 	          _react2['default'].createElement(
 	            'a',
-	            { href: '#', id: 'tt-send-msg', className: 'tt-user-action tt-btn',
+	            { href: '#', id: 'tt-send-msg', className: 'tt-btn',
 	              onClick: this.send },
 	            _react2['default'].createElement('i', { className: 'fa fa-chevron-right' })
 	          )

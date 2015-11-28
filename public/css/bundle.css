@@ -2412,6 +2412,13 @@ a {
   color: #ffd13d;
   text-decoration: none; }
 
+.tt-btn {
+  font-size: 10px;
+  margin-left: 12px; }
+
+.tt-btn .fa {
+  margin-right: 6px; }
+
 .hidden {
   display: none; }
 
@@ -2436,12 +2443,6 @@ a {
 
 #tt-userbar * {
   box-sizing: inherit; }
-
-.tt-user-action {
-  margin-left: 12px; }
-
-.tt-user-action .fa {
-  margin-right: 6px; }
 
 .tt-alias {
   font-weight: 600; }
@@ -2485,6 +2486,8 @@ input.tt-user-alias-form {
 
 #tt-msg-c {
   position: absolute;
+  background-color: #111;
+  box-shadow: inset 10px -3px 7px -8px #2e2e2e;
   margin-top: 42px;
   margin-bottom: 30px;
   top: 0;
@@ -2496,9 +2499,7 @@ input.tt-user-alias-form {
   overflow-x: hidden; }
 
 #tt-msg {
-  height: 100%;
-  background-color: #111;
-  box-shadow: inset 10px -3px 7px -8px #2e2e2e;
+  height: 95%;
   list-style: none;
   padding: 5px;
   margin: 0; }
