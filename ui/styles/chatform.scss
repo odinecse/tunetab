@@ -1,10 +1,31 @@
 #tt-chatform {
   position: absolute;
   bottom: 0;
+  right: 0;
+  background-color: #34302d;
   width: 100%;
-  height: 40px;
+  height: 32px;
 }
 
-#tt-chatform input {
-  width: 100%;
+#tt-chatform-c {
+  padding: 5px;
+  position: relative;
+  height: 100%;
 }
+
+#tt-chatform-input {
+  float: left;
+  font-size: 12px;
+  width: 100%;
+  border: none;
+  height: 20px;
+  margin-right: 120px;
+}
+
+#tt-send-msg {
+  position: absolute;
+  right: -5px;
+  top: 8px;
+  width: 65px;
+}
+

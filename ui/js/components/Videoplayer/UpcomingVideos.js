@@ -13,7 +13,7 @@ export default class UpcomingVideos extends Component {
                         thumb={video.thumb}
                         user={video.user}
                         comment={video.comment}
-                        key={i} />
+                        key={video.id} />
         );
       });
     }

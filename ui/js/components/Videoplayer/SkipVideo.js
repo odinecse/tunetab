@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 
-import dataStore from '../dataStore';
+import dataStore from '../../dataStore';
 
 export default class SkipVideo extends Component {
 

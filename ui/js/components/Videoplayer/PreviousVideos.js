@@ -6,16 +6,17 @@ export default class PreviousVideos extends Component {
 
   render() {
     let previous = null;
-    if(this.props.previousVideos.length > 0) {
-      previous = this.props.previousVideos.map(function(video, i) {
+    let videos = this.props.previousVideos;
+    if(videos.length > 0) {
+      previous = videos.map(function(video) {
         return (
           <PlaylistItem title={video.title}
                         thumb={video.thumb}
                         user={video.user}
-                        comment={video.comment}
-                        key={i} />
+                        comment={video.comment} 
+                        key={video.id} />
         );
-      });
+      }).reverse();
     }
     return (
       <ul id="tt-previous-videos">

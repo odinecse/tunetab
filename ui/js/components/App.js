@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 import dataStore from '../dataStore';
 import {COOKIE_NAME, ROOM_ID} from '../constants';
-import Chat from './Chat';
-import Videoplayer from './Videoplayer';
+import Chat from './Chat/Chat';
+import Videoplayer from './Videoplayer/Videoplayer';
 
 var socket = window.io();
 var alias = Cookies.get(COOKIE_NAME) || false;
@@ -53,3 +53,9 @@ export default class App extends Component {
   }
 
 }
+
+
+/*
+
+add keyboard shortcuts A for submit video
+*/

@@ -1,43 +1,42 @@
 import React, { Component } from 'react';
 import YoutubePlayer from 'react-youtube-player';
 
-import dataStore from '../dataStore';
+import dataStore from '../../dataStore';
 
 var interval = {};
 
 export default class YoutubeContainer extends Component {
 
-  componentWillReceiveProps
-
   constructor(props) {
     super(props);
-    this.cleanup = this.cleanup.bind(this);
+    this.clearPing = this.clearPing.bind(this);
     this.setPing = this.setPing.bind(this);
   }
 
-  cleanup() {
-    console.log('cleanup interval');
+  clearPing() {
+    console.log('clearPing');
     window.clearInterval(interval)
   }
   
   setPing() {
     console.log('setPing');
     interval = window.setInterval(() => {
-      console.log('interval', this.player);
       let promise = this.player.getCurrentTime();
       promise.then(function(time) {
-        dataStore.pingTime({videoTime: time});
+        dataStore.pingTime({videoTime: time || 0});
       });
     }, 500);
   }
 
   render() {
     let player = null;
-    console.log('videoTime', this.props.videoTime)
     if(this.props.current) {
+      console.log('videoTime', this.props.videoTime);
       player = <YoutubePlayer ref={(player) => {
-                                this.player = player.player
-                                this.player.seekTo(this.props.videoTime);
+                                if(player !== null) {
+                                  this.player = player.player
+                                  this.player.seekTo(this.props.videoTime);
+                                }
                               }}
                               videoId={this.props.current.id}
                               width={640}
@@ -53,10 +52,10 @@ export default class YoutubeContainer extends Component {
                                   rel: 0,
                                   showinfo: 0
                                 }}
-                              onEnd={this.cleanup}
+                              onEnd={this.clearPing}
                               onPlay={this.setPing}
-                              onPause={this.cleanup}
-                              onError={this.cleanup}
+                              onPause={this.clearPing}
+                              onError={this.clearPing}
                               playbackState='playing' />
     }
     return (

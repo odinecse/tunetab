@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import {ERRORS} from '../constants';
-import dataStore from '../dataStore';
+import {ERRORS} from '../../constants';
+import dataStore from '../../dataStore';
 
 const youtubeRX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
 

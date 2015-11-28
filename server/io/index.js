@@ -30,7 +30,10 @@ module.exports = function(io) {
     var playNextVideo = require('./playNextVideo')(socketData);
     var skipVideo = require('./skipVideo')(socketData);
     var message = require('./message')(socketData);
+
+    // currently unused
     var getVideoTime = require('./getVideoTime')(socketData);
+
     var updateAlias = require('./updateAlias')(socketData);
     var disconnect = require('./disconnect')(globalData, socketData);
 

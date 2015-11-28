@@ -6,7 +6,7 @@ var socket = window.io();
 
 var _data = {
   editAlias: false,
-  settingsDropdown: false,
+  // ??? unsed for now
   submitVideoForm: false,
   alias: '',
   skipVotes: 0,
@@ -66,12 +66,12 @@ socket.on('notification', function(data){
 
 socket.on('videoSubmitted', function(data){
   console.log('videoSubmitted', data);
-  _data.videos = data.videos;
-  dataStore.emit('change');
+  dataStore.setVideos(data);
 });
 
 socket.on('skippingVideo', function(data){
-  console.log('skippingVideo', data);
+  _data.userVoted = false;
+  _data.videos.videoTime = 0; // ?
   _data.skipVotes = data.skipVotes;
   socket.emit('playNextVideo', {videoId: _data.videos.current.id});
   dataStore.emit('change');
@@ -80,27 +80,17 @@ socket.on('skippingVideo', function(data){
 socket.on('skipVoteChanged', function(data){
   console.log('skipVoteChanged', data);
   _data.skipVotes = data.skipVotes;
-});
-
-// ?
-socket.on('officialVideoTime', function(data){
-  console.log('officialVideoTime', data);
-  _data.videos.videoTime = data.videoTime;
   dataStore.emit('change');
 });
 
-// ?
 socket.on('firstVideo', function(data){
   console.log('firstVideo', data);
-  _data.videos = data.videos;
-  dataStore.emit('change');
+  dataStore.setVideos(data);
 });
 
-// ?
 socket.on('playVideo', function(data){
-  console.log('playVideo');
-  _data.videos = data.videos;
-  dataStore.emit('change');
+  console.log('playVideo', data);
+  dataStore.setVideos(data);
 });
 
 var dataStore = Object.assign({}, EventEmitter.prototype, {
@@ -110,12 +100,8 @@ var dataStore = Object.assign({}, EventEmitter.prototype, {
   removeChangeListener(callback) {
     this.off('change', callback);
   },
-  setEditAlias(data) {
-    _data.editAlias = data.editAlias;
-    dataStore.emit('change');
-  },
-  setSettingsDropdown(data) {
-    _data.settingsDropdown = data.settingsDropdown;
+  toggleEditAlias() {
+    _data.editAlias = !_data.editAlias;
     dataStore.emit('change');
   },
   setAlias(data) {

@@ -1,0 +1,39 @@
+#tt-msg {
+  list-style: none;
+  padding: 15px 20px;
+  margin: 0;
+}
+
+#tt-msg li {
+  list-style: none;
+}
+
+.tt-msg-item {
+
+}
+
+.tt-msg-user {
+
+}
+
+.tt-msg-alias {
+  margin-right: 6px;
+  font-weight: 600;
+} 
+
+.tt-msg-alias-self {
+  color: #ffeaa2;
+}
+
+.tt-msg-alias::after {
+  content: ":";
+}
+
+
+.tt-msg-item.tt-msg-announcement {
+  color: #ffd13d;
+}
+
+.tt-msg-item.tt-msg-announcement .tt-msg-alias{
+  
+}
