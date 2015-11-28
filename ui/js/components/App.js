@@ -34,7 +34,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <div className="main-container">
+      <div id="main-container">
         <Videoplayer  videos={this.state.videos}
                       skipVotes={this.state.skipVotes}
                       skipThreshold={this.state.skipThreshold}

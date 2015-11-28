@@ -1,12 +1,16 @@
 #tt-userbar {
-  height: 14px;
+  box-sizing: border-box;
+  height: 42px;
   padding: 15px 20px;
-  background-color: #222;
+  background-color: $backgroundColor2;
+}
+
+#tt-userbar * {
+  box-sizing: inherit;
 }
 
 .tt-user-action {
   margin-left: 12px;
-  font-size: 12px;
 }
 
 .tt-user-action .fa {
@@ -18,8 +22,9 @@
 }
 
 input.tt-user-alias-form {
+  width: 100px;
   height: 14px;
-  background-color: #111;
+  background-color: $backgroundColorInput;
   border: none;
 }
 

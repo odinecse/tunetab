@@ -24918,7 +24918,7 @@
 	    value: function render() {
 	      return _react2['default'].createElement(
 	        'div',
-	        { className: 'main-container' },
+	        { id: 'main-container' },
 	        _react2['default'].createElement(_VideoplayerVideoplayer2['default'], { videos: this.state.videos,
 	          skipVotes: this.state.skipVotes,
 	          skipThreshold: this.state.skipThreshold,
@@ -25854,20 +25854,35 @@
 	var Messages = (function (_Component) {
 	  _inherits(Messages, _Component);
 
-	  function Messages() {
+	  function Messages(props) {
 	    _classCallCheck(this, Messages);
 
-	    _get(Object.getPrototypeOf(Messages.prototype), 'constructor', this).apply(this, arguments);
+	    _get(Object.getPrototypeOf(Messages.prototype), 'constructor', this).call(this, props);
+	    this.componentDidMount = this.componentDidMount.bind(this);
 	  }
 
 	  _createClass(Messages, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      console.log('componentDidMount');
+	      // if(typeof this.messages !== "undefined") {
+	      //   this.messages.scrollTop(this.messages.scrollTop); 
+	      // }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var messages = null;
 	      var userAlias = this.props.alias;
 	      if (this.props.messages.length > 0) {
 	        messages = this.props.messages.map(function (msg, i) {
-	          return _react2['default'].createElement(_Message2['default'], { alias: msg.alias,
+	          return _react2['default'].createElement(_Message2['default'], { ref: function (messages) {
+	              console.log(messages);
+	              // if(messages !== null) {
+	              //   this.messages = messages
+	              // }
+	            },
+	            alias: msg.alias,
 	            msg: msg.msg,
 	            msgType: msg.type,
 	            userAlias: userAlias,
@@ -25876,9 +25891,13 @@
 	      }
 
 	      return _react2['default'].createElement(
-	        'ul',
-	        { id: 'tt-msg' },
-	        messages
+	        'div',
+	        { id: 'tt-msg-c' },
+	        _react2['default'].createElement(
+	          'ul',
+	          { id: 'tt-msg' },
+	          messages
+	        )
 	      );
 	    }
 	  }]);

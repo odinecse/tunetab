@@ -1,6 +1,9 @@
 #tt-chat {
   height: 100%;
-  position: relative;
+  position: fixed;
+  width: 33.33%;
+  top:0;
+  right: 0;
 }
 
 @import 'userinfo';

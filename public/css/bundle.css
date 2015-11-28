@@ -2379,11 +2379,11 @@ html {
   height: 100%; }
 
 body {
-  background-color: #1a1817;
+  background-color: #aaa;
   min-height: 100%;
   height: 100%;
   color: #fafafa;
-  font-family: Consolas,monaco,monospace;
+  font-family: Consolas, monaco, monospace;
   font-size: 12px; }
 
 .cf:before,
@@ -2399,18 +2399,11 @@ body {
 .cf {
   zoom: 1; }
 
-/* IE < 8 */
 .pull-left {
   float: left; }
 
 .pull-right {
   float: right; }
-
-/*trash*/
-input[type="text"] {
-  background-color: #222;
-  color: #fefefe;
-  border: 1px solid #444; }
 
 input:focus {
   outline: none; }
@@ -2422,38 +2415,30 @@ a {
 .hidden {
   display: none; }
 
-#tunetab {
+#tunetab,
+#main-container {
   height: 100%;
   width: 100%;
   clear: both; }
 
-.main-container {
-  display: -ms-flex;
-  display: -webkit-flex;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  height: 100%;
-  min-height: 100%; }
-
-.main-container .col-2-3 {
-  width: 66.6%; }
-
-.main-container .col-1-3 {
-  width: 33.3%; }
-
 #tt-chat {
   height: 100%;
-  position: relative; }
+  position: fixed;
+  width: 33.33%;
+  top: 0;
+  right: 0; }
 
 #tt-userbar {
-  height: 14px;
+  box-sizing: border-box;
+  height: 42px;
   padding: 15px 20px;
   background-color: #222; }
 
+#tt-userbar * {
+  box-sizing: inherit; }
+
 .tt-user-action {
-  margin-left: 12px;
-  font-size: 12px; }
+  margin-left: 12px; }
 
 .tt-user-action .fa {
   margin-right: 6px; }
@@ -2462,41 +2447,60 @@ a {
   font-weight: 600; }
 
 input.tt-user-alias-form {
+  width: 100px;
   height: 14px;
-  background-color: #111;
+  background-color: #34302d;
   border: none; }
 
 #tt-chatform {
   position: absolute;
   bottom: 0;
   right: 0;
-  background-color: #34302d;
+  background-color: #222;
   width: 100%;
-  height: 32px; }
+  height: 30px; }
 
 #tt-chatform-c {
+  box-sizing: border-box;
+  height: 100%;
   padding: 5px;
-  position: relative;
-  height: 100%; }
+  position: relative; }
+
+#tt-chatform-c * {
+  box-sizing: inherit; }
 
 #tt-chatform-input {
-  float: left;
-  font-size: 12px;
   width: 100%;
+  font-size: 12px;
   border: none;
-  height: 20px;
-  margin-right: 120px; }
+  background-color: #34302d;
+  height: 20px; }
 
 #tt-send-msg {
   position: absolute;
-  right: -5px;
+  right: 2px;
   top: 8px;
   padding: 0 8px;
   width: 25px; }
 
+#tt-msg-c {
+  position: absolute;
+  margin-top: 42px;
+  margin-bottom: 30px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 2px;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden; }
+
 #tt-msg {
+  height: 100%;
+  background-color: #111;
+  box-shadow: inset 10px -3px 7px -8px #2e2e2e;
   list-style: none;
-  padding: 15px 20px;
+  padding: 5px;
   margin: 0; }
 
 #tt-msg li {
@@ -2514,3 +2518,10 @@ input.tt-user-alias-form {
 
 .tt-msg-item.tt-msg-announcement {
   color: #ffd13d; }
+
+#tt-videoplayer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 66.66%;
+  height: 100%; }

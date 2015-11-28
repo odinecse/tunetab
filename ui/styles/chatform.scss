@@ -2,29 +2,33 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  background-color: #34302d;
+  background-color: $backgroundColor2;
   width: 100%;
-  height: 32px;
+  height: 30px;
 }
 
 #tt-chatform-c {
+  box-sizing: border-box;
+  height: 100%;
   padding: 5px;
   position: relative;
-  height: 100%;
+}
+
+#tt-chatform-c * {
+  box-sizing: inherit;
 }
 
 #tt-chatform-input {
-  float: left;
-  font-size: 12px;
   width: 100%;
+  font-size: 12px;
   border: none;
+  background-color: $backgroundColorInput;
   height: 20px;
-  margin-right: 120px;
 }
 
 #tt-send-msg {
   position: absolute;
-  right: -5px;
+  right: 2px;
   top: 8px;
   padding: 0 8px;
   width: 25px;
