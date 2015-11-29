@@ -8,10 +8,11 @@ export default class Message extends Component {
     return (
       <li className={'tt-msg-item tt-msg-' + this.props.msgType}>
         <span className={
-          classNames({
-            "tt-msg-alias": true,
-            "tt-msg-alias-self": currentUserTest
-          })} >
+                classNames({
+                  "tt-msg-alias": true,
+                  "tt-msg-alias-self": currentUserTest
+                })
+              } >
           {this.props.alias}
         </span>
         {this.props.msg}

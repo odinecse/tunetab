@@ -5,7 +5,7 @@
  * 2. Prevent iOS text size adjust after orientation change, without disabling
  *    user zoom.
  */
-html {
+html, html body {
   font-family: sans-serif;
   /* 1 */
   -ms-text-size-adjust: 100%;
@@ -2374,18 +2374,6 @@ th {
 .fa-fonticons:before {
   content: "\F280"; }
 
-html {
-  min-height: 100%;
-  height: 100%; }
-
-body {
-  background-color: #aaa;
-  min-height: 100%;
-  height: 100%;
-  color: #fafafa;
-  font-family: Consolas, monaco, monospace;
-  font-size: 12px; }
-
 .cf:before,
 .cf:after {
   content: ".";
@@ -2405,11 +2393,19 @@ body {
 .pull-right {
   float: right; }
 
-.tt-ofc {
-  overflow-y: scroll;
-  overflow-x: hidden; }
+.hidden {
+  display: none; }
 
-ul, ol, li {
+html, html body {
+  min-height: 100%;
+  height: 100%;
+  background-color: #aaa; }
+  html body {
+    color: #fafafa;
+    font-family: Consolas, monaco, monospace;
+    font-size: 12px; }
+
+ul, ol {
   list-style: none; }
 
 .tt-input {
@@ -2417,26 +2413,31 @@ ul, ol, li {
   font-size: 12px;
   background-color: #34302d;
   border: none; }
-
-/* dont forget to use nesting... */
-.tt-input:focus {
-  outline: none; }
+  .tt-input:focus {
+    outline: none; }
 
 a {
   color: #ffd13d;
   text-decoration: none; }
 
+a.disabled {
+  color: #ded2aa;
+  pointer-events: none;
+  cursor: default; }
+
 .tt-btn {
   font-size: 10px;
   margin-left: 12px; }
+  .tt-btn .fa {
+    margin-right: 3px; }
 
-.tt-btn .fa {
-  margin-right: 6px; }
+.tt-btn.tt-btn-big {
+  font-size: 20px;
+  margin-left: 12px; }
+  .tt-btn.tt-btn-big .fa {
+    margin-right: 6px; }
 
-.hidden {
-  display: none; }
-
-.small-txt {
+.tt-small-txt {
   font-size: 10px; }
 
 #tunetab,
@@ -2447,9 +2448,12 @@ a {
 
 #tunetab {
   box-sizing: border-box; }
+  #tunetab * {
+    box-sizing: inherit; }
 
-#tunetab * {
-  box-sizing: inherit; }
+.tt-overflow-container {
+  overflow-y: scroll;
+  overflow-x: hidden; }
 
 #tt-chat {
   height: 100%;
@@ -2457,6 +2461,39 @@ a {
   width: 33.33%;
   top: 0;
   right: 0; }
+
+#tt-videoplayer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 66.66%;
+  height: 100%;
+  background-color: #222; }
+
+#tt-ytplayer-container {
+  background-color: #000;
+  padding-bottom: 50px;
+  position: relative;
+  height: 55%;
+  width: 100%; }
+
+#tt-previous-videos-container {
+  height: 20%;
+  background-color: #111;
+  width: 100%; }
+
+#tt-videoplayer-funct {
+  height: 50px;
+  position: absolute;
+  padding: 10px;
+  bottom: 0;
+  left: 0;
+  width: 100%; }
+
+#tt-upcoming-videos-container {
+  height: 25%;
+  background-color: #111;
+  width: 100%; }
 
 #tt-userbar {
   height: 42px;
@@ -2480,7 +2517,7 @@ a {
   width: 100%;
   height: 30px; }
 
-#tt-chatform-c {
+#tt-chatform-container {
   height: 100%;
   padding: 5px;
   position: relative; }
@@ -2496,7 +2533,7 @@ a {
   padding: 0 8px;
   width: 25px; }
 
-#tt-msg-c {
+#tt-msg-container {
   position: absolute;
   background-color: #111;
   box-shadow: inset 10px -3px 7px -8px #2e2e2e;
@@ -2526,39 +2563,21 @@ a {
 .tt-msg-item.tt-msg-announcement {
   color: #ffd13d; }
 
-#tt-videoplayer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 66.66%;
-  height: 100%;
-  background-color: #222; }
+.tt-msg-item.tt-msg-notification {
+  color: #ff5c36; }
 
-#tt-ytplayer-c {
-  background-color: #000;
-  height: 50%;
-  width: 100%; }
+#tt-submitvideo .tt-input {
+  position: relative;
+  top: -1px;
+  font-size: 20px;
+  height: 28px;
+  padding: 2px; }
 
-#tt-videoplayer-funct {
-  height: 5%;
-  margin-top: 6px;
-  width: 100%; }
+#tt-skipvideo {
+  margin-left: 36px; }
 
-#tt-ytplayer {
-  margin: 0 auto; }
-
-#tt-skipvideo .small-txt {
-  margin-left: 3px; }
-
-#tt-previous-videos-c {
-  height: 20%;
-  background-color: #111;
-  width: 100%; }
-
-#tt-upcoming-videos-c {
-  height: 25%;
-  background-color: #111;
-  width: 100%; }
+#tt-skipvideo .tt-small-txt {
+  margin-left: 6px; }
 
 .tt-playlist {
   margin: 0;
@@ -2568,12 +2587,11 @@ a {
   position: relative;
   height: 50px;
   border-bottom: 1px solid #111; }
-
-.tt-playlistitem h4 {
-  position: absolute;
-  top: 5px;
-  left: 75px;
-  margin: 0; }
+  .tt-playlistitem h4 {
+    position: absolute;
+    top: 5px;
+    left: 75px;
+    margin: 0; }
 
 .tt-playlistitem-img {
   position: absolute;

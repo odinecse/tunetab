@@ -3,12 +3,12 @@ var resetUserVotes = require('../helpers/index').resetUserVotes;
 var skipStuff = {};
 
 module.exports = function skipVideo(room) {
-
+// fix this....
   return function(data){
 
     if(room.user.skip) {
       room.io.to(room.socket.id).emit('notification',
-        {msg: 'you\'ve already voted'});
+        {msg: 'you\'ve already voted!'});
     } else {
       room.user.skip = true;
       skipStuff = calcSkipThreshold(room.users);

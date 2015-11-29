@@ -40,7 +40,7 @@ export default class Messages extends Component {
     }
 
     return (
-      <div id="tt-msg-c" className="tt-ofc">  
+      <div id="tt-msg-container" className="tt-overflow-container">  
         <ul id="tt-msg">
           {messages}
         </ul>

@@ -44,7 +44,7 @@ export default class Chatform extends Component {
     let editAlias = !this.props.editAlias || false;
     return (
       <div id="tt-chatform" className="cf">
-        <div id="tt-chatform-c">
+        <div id="tt-chatform-container">
           <input  id="tt-chatform-input"
                   ref={function(input) {
                     if (input != null && editAlias) {

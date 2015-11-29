@@ -1,0 +1,16 @@
+critical:
+*handle data changes on on server or ui???? sketch this out
+*base vote off active users
+  base active users off currently pinging users
+*fix skipvideo.js on serverside?
+  *what happens when video ends? check if length greated than video, get video length on mount
+    -skip video
+  *issues with skip vote (wrong already voted message)
+  *issues with video time not getting reset?
+  *prevent skipping when out of upcoming videos (fixed?)
+*add video description
+*add next previous titles on side
+
+nice to have:
+*add live reloads
+*add redux and testing

@@ -1,15 +1,3 @@
-#tt-previous-videos-c {
-  height: 20%;
-  background-color: $backgroundPlaylist;
-  width: 100%;
-}
-
-#tt-upcoming-videos-c {
-  height: 25%;
-  background-color: $backgroundPlaylist;
-  width: 100%;
-}
-
 .tt-playlist {
   margin: 0;
   padding: 0;
@@ -19,13 +7,13 @@
   position: relative;
   height: 50px;
   border-bottom: 1px solid $borderColor;
-}
 
-.tt-playlistitem h4 {
-  position: absolute;
-  top: 5px;
-  left: 75px;
-  margin: 0;
+  h4 {
+    position: absolute;
+    top: 5px;
+    left: 75px;
+    margin: 0;
+  }
 }
 
 .tt-playlistitem-img {

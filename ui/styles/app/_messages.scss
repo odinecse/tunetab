@@ -1,4 +1,4 @@
-#tt-msg-c {
+#tt-msg-container {
   position: absolute;
   background-color: $backgroundColorChat;
   box-shadow: inset 10px -3px 7px -8px rgba(46,46,46,1);
@@ -23,7 +23,7 @@
 } 
 
 .tt-msg-alias-self {
-  color: #ffeaa2;
+  color: $colorMsgSelf;
 }
 
 .tt-msg-alias::after {
@@ -32,5 +32,10 @@
 
 
 .tt-msg-item.tt-msg-announcement {
-  color: #ffd13d;
+  color: $colorMsgAnnouncement
+}
+
+
+.tt-msg-item.tt-msg-notification {
+  color: $colorMsgNotificationWarning
 }

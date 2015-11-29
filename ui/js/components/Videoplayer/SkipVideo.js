@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 
 import dataStore from '../../dataStore';
 
@@ -14,15 +15,19 @@ export default class SkipVideo extends Component {
   }
 
   render() {
-    let disabled = this.props.userVoted ? 'disabled' : '';
     return (
       <div id="tt-skipvideo" className="pull-left">
-        <a href="#" className="tt-btn" 
-                    onClick={this.skipVideo} 
-                    disabled={disabled}>
+        <a href="#" className={
+                      classNames({
+                        "tt-btn": true,
+                        "tt-btn-big": true,
+                        "disabled": this.props.userVoted || !this.props.skipAllowed
+                      })
+                    } 
+                    onClick={this.skipVideo} >
           <i className="fa fa-fast-forward"></i> Skip Video
         </a>
-        <span className="small-txt">
+        <span className="tt-small-txt">
           (votes: {this.props.skipVotes}, required: {this.props.skipThreshold})
         </span>
       </div>

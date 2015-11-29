@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import Userinfo from './Userinfo';
-import Notifications from './Notifications';
 import Messages from './Messages';
 import Chatform from './Chatform';
 
@@ -16,7 +15,6 @@ export default class Chat extends Component {
         <div id="tt-userbar" className="cf">
           <Userinfo alias={this.props.alias} editAlias={this.props.editAlias} />
         </div>
-        <Notifications />
         <Messages messages={this.props.messages} alias={this.props.alias}/>
         <Chatform alias={this.props.alias} editAlias={this.props.editAlias} />
       </div>

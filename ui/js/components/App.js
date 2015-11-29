@@ -40,6 +40,8 @@ export default class App extends Component {
                       skipThreshold={this.state.skipThreshold}
                       submitVideoForm={this.state.submitVideoForm}
                       userVoted={this.state.userVoted}
+                      skipAllowed={this.state.skipAllowed}
+                      skipping={this.state.skipping}
         />
         <Chat alias={this.state.alias}
               editAlias={this.state.editAlias}

@@ -1,7 +1,13 @@
 @import 'libs/normalize';
 @import 'libs/font-awesome/font-awesome';
-@import 'vars';
-@import 'app';
-@import 'button';
-@import 'chat';
-@import 'videoplayer';
+@import 'libs/clearfix';
+
+@import 'app/vars';
+@import 'app/utils';
+@import 'app/app';
+@import 'app/userinfo';
+@import 'app/chatform';
+@import 'app/messages';
+@import 'app/submitvideo';
+@import 'app/skipvideo';
+@import 'app/playlist';

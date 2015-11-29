@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import YoutubePlayer from 'react-youtube-player';
 
+import {isEmpty} from '../../helpers';
+import SubmitVideo from './SubmitVideo';
+import SkipVideo from './SkipVideo';
 import dataStore from '../../dataStore';
 
 var interval = {};
@@ -9,8 +12,22 @@ export default class YoutubeContainer extends Component {
 
   constructor(props) {
     super(props);
+    this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
     this.clearPing = this.clearPing.bind(this);
     this.setPing = this.setPing.bind(this);
+    this.nextVideo = this.nextVideo.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if(nextProps.skipping) {
+      return true;
+    }
+    if(nextProps.current !== null && this.props.current !== null) {
+      if(this.props.current.id == nextProps.current.id) {
+        return false;
+      }  
+    }
+    return true;
   }
 
   clearPing() {
@@ -19,19 +36,24 @@ export default class YoutubeContainer extends Component {
   }
   
   setPing() {
-    console.log('setPing');
-    interval = window.setInterval(() => {
-      let promise = this.player.getCurrentTime();
-      promise.then(function(time) {
-        dataStore.pingTime({videoTime: time || 0});
-      });
-    }, 500);
+    if(isEmpty(interval)) {
+      console.log('setPing');
+      interval = window.setInterval(() => {
+        let promise = this.player.getCurrentTime();
+        promise.then(function(time) {
+          dataStore.pingTime({videoTime: time || 0});
+        });
+      }, 500);
+    }
+  }
+
+  nextVideo() {
+    dataStore.videoOver();
   }
 
   render() {
     let player = null;
     if(this.props.current) {
-      console.log('videoTime', this.props.videoTime);
       player = <YoutubePlayer ref={(player) => {
                                 if(player !== null) {
                                   this.player = player.player
@@ -50,16 +72,24 @@ export default class YoutubeContainer extends Component {
                                   rel: 0,
                                   showinfo: 0
                                 }}
-                              onEnd={this.clearPing}
+                              onEnd={this.nextVideo}
                               onPlay={this.setPing}
                               onPause={this.clearPing}
                               onError={this.clearPing}
                               playbackState='playing' />
     }
     return (
-      <div id="tt-ytplayer-c">
+      <div id="tt-ytplayer-container">
         {player}
+        <div id="tt-videoplayer-funct" className="cf">
+          <SubmitVideo submitVideoForm={this.props.submitVideoForm} />
+          <SkipVideo  skipVotes={this.props.skipVotes}
+                      skipThreshold={this.props.skipThreshold}
+                      skipAllowed={this.props.skipAllowed}
+                      userVoted={this.props.userVoted} />
+        </div>
       </div>
     );
   }
+
 }

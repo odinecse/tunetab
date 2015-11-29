@@ -9,6 +9,8 @@ function tickTest(roomVideos, time) {
 	return roomVideos.current !== null && roomVideos.videoTime < time;
 }
 
+// remove user or set inactive if not pinging enough? to effect skip vote...
+
 module.exports = function tick(room) {
   return function(data){
     var time = data.videoTime ? parseInt(data.videoTime, 10) : 0;
