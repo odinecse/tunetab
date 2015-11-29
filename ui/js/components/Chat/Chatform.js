@@ -30,12 +30,14 @@ export default class Chatform extends Component {
 
   send() {
     const msg = this.state.msg.trim();
-    dataStore.emitMsg({
-      alias: this.props.alias,
-      msg: msg,
-      type: 'user'
-    });
-    this.setState({msg: ''});
+    if(msg !== '') {
+      dataStore.emitMsg({
+        alias: this.props.alias,
+        msg: msg,
+        type: 'user'
+      });
+      this.setState({msg: ''});
+    }
   }
 
   render() {
@@ -50,6 +52,7 @@ export default class Chatform extends Component {
                     }
                   }}
                   value={this.state.msg}
+                  className="tt-input"
                   onKeyPress={this.handleOnKeyPress}
                   onChange={this.handleChange}
                   type='text'

@@ -4,7 +4,6 @@ html {
 }
 
 body {
-  // overflow: hidden;
   background-color: $backgroundColor;
   min-height: 100%;
   height: 100%;
@@ -35,7 +34,23 @@ body {
   float: right;
 }
 
-input:focus {
+.tt-ofc {
+  overflow-y: scroll;
+  overflow-x: hidden;  
+}
+
+ul, ol, li {
+  list-style: none;
+}
+
+.tt-input {
+  height: 18px;
+  font-size: 12px;
+  background-color: $backgroundInput;
+  border: none;
+}
+
+.tt-input:focus {
   outline: none;
 }
 
@@ -57,9 +72,21 @@ a {
   display: none;
 }
 
+.small-txt {
+  font-size: 10px;
+}
+
 #tunetab,
 #main-container {
   height: 100%;
   width: 100%;
   clear: both;
+}
+
+#tunetab {
+  box-sizing: border-box;
+}
+
+#tunetab * {
+  box-sizing: inherit;
 }

@@ -25228,6 +25228,7 @@
 	  },
 	  emitSkipVideo: function emitSkipVideo() {
 	    _data.userVoted = true;
+	    dataStore.emit('change');
 	    socket.emit('skipVideo');
 	  },
 	  emitMsg: function emitMsg(data) {
@@ -25749,7 +25750,7 @@
 	                input.focus();
 	              }
 	            },
-	            className: 'tt-user-alias-form',
+	            className: 'tt-user-alias-form tt-input',
 	            value: this.state.alias,
 	            onKeyDown: this.handleOnKeyPress,
 	            onChange: this.handleChange,
@@ -25898,7 +25899,7 @@
 
 	      return _react2['default'].createElement(
 	        'div',
-	        { id: 'tt-msg-c' },
+	        { id: 'tt-msg-c', className: 'tt-ofc' },
 	        _react2['default'].createElement(
 	          'ul',
 	          { id: 'tt-msg' },
@@ -26094,12 +26095,14 @@
 	    key: 'send',
 	    value: function send() {
 	      var msg = this.state.msg.trim();
-	      _dataStore2['default'].emitMsg({
-	        alias: this.props.alias,
-	        msg: msg,
-	        type: 'user'
-	      });
-	      this.setState({ msg: '' });
+	      if (msg !== '') {
+	        _dataStore2['default'].emitMsg({
+	          alias: this.props.alias,
+	          msg: msg,
+	          type: 'user'
+	        });
+	        this.setState({ msg: '' });
+	      }
 	    }
 	  }, {
 	    key: 'render',
@@ -26118,6 +26121,7 @@
 	              }
 	            },
 	            value: this.state.msg,
+	            className: 'tt-input',
 	            onKeyPress: this.handleOnKeyPress,
 	            onChange: this.handleChange,
 	            type: 'text',
@@ -26203,7 +26207,7 @@
 	          videoTime: this.props.videos.videoTime }),
 	        _react2['default'].createElement(
 	          'div',
-	          { id: 'tt-videoplayer-funct' },
+	          { id: 'tt-videoplayer-funct', className: 'cf' },
 	          _react2['default'].createElement(_SubmitVideo2['default'], { submitVideoForm: this.props.submitVideoForm }),
 	          _react2['default'].createElement(_SkipVideo2['default'], { skipVotes: this.props.skipVotes,
 	            skipThreshold: this.props.skipThreshold,
@@ -26244,6 +26248,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactDom = __webpack_require__(349);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
 	var _PlaylistItem = __webpack_require__(364);
 
 	var _PlaylistItem2 = _interopRequireDefault(_PlaylistItem);
@@ -26251,30 +26259,41 @@
 	var PreviousVideos = (function (_Component) {
 	  _inherits(PreviousVideos, _Component);
 
-	  function PreviousVideos() {
+	  function PreviousVideos(props) {
 	    _classCallCheck(this, PreviousVideos);
 
-	    _get(Object.getPrototypeOf(PreviousVideos.prototype), 'constructor', this).apply(this, arguments);
+	    _get(Object.getPrototypeOf(PreviousVideos.prototype), 'constructor', this).call(this, props);
+	    this.componentDidUpdate = this.componentDidUpdate.bind(this);
 	  }
 
 	  _createClass(PreviousVideos, [{
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      var node = _reactDom2['default'].findDOMNode(this);
+	      node.scrollTop = node.scrollHeight;
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var previous = null;
 	      var videos = this.props.previousVideos;
 	      if (videos.length > 0) {
-	        previous = videos.map(function (video) {
+	        previous = videos.map(function (video, i) {
 	          return _react2['default'].createElement(_PlaylistItem2['default'], { title: video.title,
 	            thumb: video.thumb,
 	            user: video.user,
 	            comment: video.comment,
-	            key: video.id });
+	            key: i + video.id });
 	        }).reverse();
 	      }
 	      return _react2['default'].createElement(
-	        'ul',
-	        { id: 'tt-previous-videos' },
-	        previous
+	        'div',
+	        { id: 'tt-previous-videos-c', className: 'tt-ofc' },
+	        _react2['default'].createElement(
+	          'ul',
+	          { id: 'tt-previous-videos', className: 'tt-playlist' },
+	          previous
+	        )
 	      );
 	    }
 	  }]);
@@ -26329,11 +26348,14 @@
 	          null,
 	          this.props.title
 	        ),
-	        _react2["default"].createElement("img", { height: this.props.thumb.height,
-	          width: this.props.thumb.width,
+	        _react2["default"].createElement("img", { className: "tt-playlistitem-img",
 	          src: this.props.thumb.url }),
-	        "submitted by: ",
-	        this.props.user
+	        _react2["default"].createElement(
+	          "div",
+	          { className: "tt-playlistitem-meta" },
+	          "submitted by: ",
+	          this.props.user
+	        )
 	      );
 	    }
 	  }]);
@@ -26423,8 +26445,6 @@
 	            }
 	          },
 	          videoId: this.props.current.id,
-	          width: 640,
-	          height: 360,
 	          configuration: {
 	            controls: 0,
 	            disablekb: 1,
@@ -26443,7 +26463,7 @@
 	      }
 	      return _react2['default'].createElement(
 	        'div',
-	        null,
+	        { id: 'tt-ytplayer-c' },
 	        player
 	      );
 	    }
@@ -33205,6 +33225,7 @@
 
 	    _get(Object.getPrototypeOf(SubmitVideo.prototype), 'constructor', this).call(this, props);
 	    this.handleChange = this.handleChange.bind(this);
+	    this.cancel = this.cancel.bind(this);
 	    this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
 	    this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
 	    this.submitVideo = this.submitVideo.bind(this);
@@ -33232,11 +33253,23 @@
 	      this.setState({ video: e.target.value });
 	    }
 	  }, {
+	    key: 'cancel',
+	    value: function cancel() {
+	      this.setState({
+	        video: '',
+	        submit: false
+	      });
+	    }
+	  }, {
 	    key: 'handleOnKeyPress',
 	    value: function handleOnKeyPress(e) {
-	      var key = e.charCode;
+
+	      var key = e.keyCode;
 	      var video = e.target.value.trim();
-	      if (key === 13) {
+	      console.log(key);
+	      if (key === 27) {
+	        this.cancel();
+	      } else if (key === 13) {
 	        if (video !== '') {
 	          video = video.match(youtubeRX);
 	          if (video) {
@@ -33245,10 +33278,7 @@
 	            _dataStore2['default'].addNotification({ msg: _constants.ERRORS.VIDEO_SUBMIT });
 	            console.log(_constants.ERRORS.VIDEO_SUBMIT);
 	          }
-	          this.setState({
-	            video: '',
-	            submit: false
-	          });
+	          this.cancel();
 	        }
 	      }
 	    }
@@ -33256,26 +33286,39 @@
 	    key: 'render',
 	    value: function render() {
 	      var submit = _react2['default'].createElement(
-	        'button',
-	        { onClick: this.submitVideo },
+	        'a',
+	        { href: '#', onClick: this.submitVideo,
+	          className: 'tt-btn' },
 	        _react2['default'].createElement('i', { className: 'fa fa-plus' }),
 	        ' Submit'
 	      );
 	      if (this.state.submit) {
-	        submit = _react2['default'].createElement('input', { ref: function (input) {
-	            if (input != null) {
-	              input.focus();
-	            }
-	          },
-	          value: this.state.video,
-	          onKeyPress: this.handleOnKeyPress,
-	          onChange: this.handleChange,
-	          type: 'text',
-	          autoComplete: 'off' });
+	        submit = _react2['default'].createElement(
+	          'div',
+	          null,
+	          _react2['default'].createElement('input', { ref: function (input) {
+	              if (input != null) {
+	                input.focus();
+	              }
+	            },
+	            className: 'tt-input',
+	            value: this.state.video,
+	            onKeyDown: this.handleOnKeyPress,
+	            onChange: this.handleChange,
+	            type: 'text',
+	            autoComplete: 'off' }),
+	          _react2['default'].createElement(
+	            'a',
+	            { href: '#', className: 'tt-btn',
+	              onClick: this.cancel },
+	            _react2['default'].createElement('i', { className: 'fa fa-times' }),
+	            'Cancel'
+	          )
+	        );
 	      }
 	      return _react2['default'].createElement(
 	        'div',
-	        { id: 'tt-submitvideo' },
+	        { id: 'tt-submitvideo', className: 'pull-left' },
 	        submit
 	      );
 	    }
@@ -33336,21 +33379,23 @@
 	      var disabled = this.props.userVoted ? 'disabled' : '';
 	      return _react2['default'].createElement(
 	        'div',
-	        { id: 'tt-skipvideo' },
+	        { id: 'tt-skipvideo', className: 'pull-left' },
 	        _react2['default'].createElement(
-	          'div',
-	          null,
+	          'a',
+	          { href: '#', className: 'tt-btn',
+	            onClick: this.skipVideo,
+	            disabled: disabled },
+	          _react2['default'].createElement('i', { className: 'fa fa-fast-forward' }),
+	          ' Skip Video'
+	        ),
+	        _react2['default'].createElement(
+	          'span',
+	          { className: 'small-txt' },
 	          '(votes: ',
 	          this.props.skipVotes,
 	          ', required: ',
 	          this.props.skipThreshold,
 	          ')'
-	        ),
-	        _react2['default'].createElement(
-	          'button',
-	          { onClick: this.skipVideo, disabled: disabled },
-	          _react2['default'].createElement('i', { className: 'fa fa-fast-forward' }),
-	          ' Skip Video'
 	        )
 	      );
 	    }
@@ -33409,13 +33454,17 @@
 	            thumb: video.thumb,
 	            user: video.user,
 	            comment: video.comment,
-	            key: video.id });
+	            key: video.id + i });
 	        });
 	      }
 	      return _react2['default'].createElement(
-	        'ul',
-	        { id: 'tt-upcoming-videos' },
-	        upcoming
+	        'div',
+	        { id: 'tt-upcoming-videos-c', className: 'tt-ofc' },
+	        _react2['default'].createElement(
+	          'ul',
+	          { id: 'tt-upcoming-videos', className: 'tt-playlist' },
+	          upcoming
+	        )
 	      );
 	    }
 	  }]);

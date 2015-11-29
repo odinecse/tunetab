@@ -13,7 +13,7 @@ export default class Videoplayer extends Component {
         <PreviousVideos previousVideos={this.props.videos.previous} />
         <YoutubeContainer current={this.props.videos.current}
                           videoTime={this.props.videos.videoTime} />
-        <div id="tt-videoplayer-funct">
+        <div id="tt-videoplayer-funct" className="cf">
           <SubmitVideo submitVideoForm={this.props.submitVideoForm} />
           <SkipVideo  skipVotes={this.props.skipVotes}
                       skipThreshold={this.props.skipThreshold}

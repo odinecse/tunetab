@@ -123,6 +123,7 @@ var dataStore = Object.assign({}, EventEmitter.prototype, {
   },
   emitSkipVideo() {
     _data.userVoted = true;
+    dataStore.emit('change');
     socket.emit('skipVideo');
   },
   emitMsg(data) {

@@ -5,10 +5,11 @@ export default class PlaylistItem extends Component {
     return (
       <li className="tt-playlistitem">
         <h4>{this.props.title}</h4>
-        <img  height={this.props.thumb.height}
-              width={this.props.thumb.width}
+        <img  className="tt-playlistitem-img"
               src={this.props.thumb.url} />
-        submitted by: {this.props.user}
+        <div className="tt-playlistitem-meta">
+          submitted by: {this.props.user}
+        </div>
       </li>
     );
   }

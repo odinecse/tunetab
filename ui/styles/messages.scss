@@ -9,28 +9,12 @@
   left:0;
   right:2px;
   width: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
 }
 
 #tt-msg {
-  height: 95%;
-  
-  list-style: none;
+  height: 100%;
   padding: 5px;
   margin: 0;
-}
-
-#tt-msg li {
-  list-style: none;
-}
-
-.tt-msg-item {
-
-}
-
-.tt-msg-user {
-
 }
 
 .tt-msg-alias {
@@ -49,8 +33,4 @@
 
 .tt-msg-item.tt-msg-announcement {
   color: #ffd13d;
-}
-
-.tt-msg-item.tt-msg-announcement .tt-msg-alias{
-  
 }

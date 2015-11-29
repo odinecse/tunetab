@@ -39,8 +39,6 @@ export default class YoutubeContainer extends Component {
                                 }
                               }}
                               videoId={this.props.current.id}
-                              width={640}
-                              height={360}
                               configuration={
                                 {
                                   controls: 0,
@@ -59,7 +57,7 @@ export default class YoutubeContainer extends Component {
                               playbackState='playing' />
     }
     return (
-      <div>
+      <div id="tt-ytplayer-c">
         {player}
       </div>
     );

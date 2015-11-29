@@ -64,7 +64,7 @@ export default class Userinfo extends Component {
                       input.focus();
                     }
                   }}
-                  className="tt-user-alias-form"
+                  className="tt-user-alias-form tt-input"
                   value={this.state.alias}
                   onKeyDown={this.handleOnKeyPress}
                   onChange={this.handleChange}

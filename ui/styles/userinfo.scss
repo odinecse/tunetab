@@ -1,5 +1,4 @@
 #tt-userbar {
-  box-sizing: border-box;
   height: 42px;
   padding: 15px 20px;
   background-color: $backgroundColor2;
@@ -13,10 +12,6 @@
   font-weight: 600;
 }
 
-input.tt-user-alias-form {
+.tt-user-alias-form {
   width: 100px;
-  height: 14px;
-  background-color: $backgroundColorInput;
-  border: none;
 }
-

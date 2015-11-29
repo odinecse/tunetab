@@ -2405,7 +2405,20 @@ body {
 .pull-right {
   float: right; }
 
-input:focus {
+.tt-ofc {
+  overflow-y: scroll;
+  overflow-x: hidden; }
+
+ul, ol, li {
+  list-style: none; }
+
+.tt-input {
+  height: 18px;
+  font-size: 12px;
+  background-color: #34302d;
+  border: none; }
+
+.tt-input:focus {
   outline: none; }
 
 a {
@@ -2422,11 +2435,20 @@ a {
 .hidden {
   display: none; }
 
+.small-txt {
+  font-size: 10px; }
+
 #tunetab,
 #main-container {
   height: 100%;
   width: 100%;
   clear: both; }
+
+#tunetab {
+  box-sizing: border-box; }
+
+#tunetab * {
+  box-sizing: inherit; }
 
 #tt-chat {
   height: 100%;
@@ -2436,7 +2458,6 @@ a {
   right: 0; }
 
 #tt-userbar {
-  box-sizing: border-box;
   height: 42px;
   padding: 15px 20px;
   background-color: #222; }
@@ -2447,11 +2468,8 @@ a {
 .tt-alias {
   font-weight: 600; }
 
-input.tt-user-alias-form {
-  width: 100px;
-  height: 14px;
-  background-color: #34302d;
-  border: none; }
+.tt-user-alias-form {
+  width: 100px; }
 
 #tt-chatform {
   position: absolute;
@@ -2462,19 +2480,12 @@ input.tt-user-alias-form {
   height: 30px; }
 
 #tt-chatform-c {
-  box-sizing: border-box;
   height: 100%;
   padding: 5px;
   position: relative; }
 
-#tt-chatform-c * {
-  box-sizing: inherit; }
-
 #tt-chatform-input {
   width: 100%;
-  font-size: 12px;
-  border: none;
-  background-color: #34302d;
   height: 20px; }
 
 #tt-send-msg {
@@ -2494,18 +2505,12 @@ input.tt-user-alias-form {
   bottom: 0;
   left: 0;
   right: 2px;
-  width: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden; }
+  width: 100%; }
 
 #tt-msg {
-  height: 95%;
-  list-style: none;
+  height: 100%;
   padding: 5px;
   margin: 0; }
-
-#tt-msg li {
-  list-style: none; }
 
 .tt-msg-alias {
   margin-right: 6px;
@@ -2525,4 +2530,58 @@ input.tt-user-alias-form {
   top: 0;
   left: 0;
   width: 66.66%;
-  height: 100%; }
+  height: 100%;
+  background-color: #222; }
+
+#tt-ytplayer-c {
+  background-color: #000;
+  height: 50%;
+  width: 100%; }
+
+#tt-videoplayer-funct {
+  height: 5%;
+  margin-top: 6px;
+  width: 100%; }
+
+#tt-ytplayer {
+  margin: 0 auto; }
+
+#tt-skipvideo .small-txt {
+  margin-left: 3px; }
+
+#tt-previous-videos-c {
+  height: 20%;
+  background-color: #111;
+  width: 100%; }
+
+#tt-upcoming-videos-c {
+  height: 25%;
+  background-color: #111;
+  width: 100%; }
+
+.tt-playlist {
+  margin: 0;
+  padding: 0; }
+
+.tt-playlistitem {
+  position: relative;
+  height: 50px;
+  border-bottom: 1px solid #111; }
+
+.tt-playlistitem h4 {
+  position: absolute;
+  top: 5px;
+  left: 75px;
+  margin: 0; }
+
+.tt-playlistitem-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50px; }
+
+.tt-playlistitem-meta {
+  font-size: 10px;
+  position: absolute;
+  bottom: 5px;
+  left: 75px; }

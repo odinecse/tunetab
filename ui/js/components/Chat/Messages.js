@@ -40,7 +40,7 @@ export default class Messages extends Component {
     }
 
     return (
-      <div id="tt-msg-c">  
+      <div id="tt-msg-c" className="tt-ofc">  
         <ul id="tt-msg">
           {messages}
         </ul>

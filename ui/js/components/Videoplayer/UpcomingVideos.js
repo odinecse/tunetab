@@ -13,14 +13,16 @@ export default class UpcomingVideos extends Component {
                         thumb={video.thumb}
                         user={video.user}
                         comment={video.comment}
-                        key={video.id} />
+                        key={video.id + i} />
         );
       });
     }
     return (
-      <ul id="tt-upcoming-videos">
-        {upcoming}
-      </ul>
+      <div id="tt-upcoming-videos-c" className="tt-ofc">
+        <ul id="tt-upcoming-videos" className="tt-playlist">
+          {upcoming}
+        </ul>
+      </div>
     );
   }
 }

@@ -16,13 +16,15 @@ export default class SkipVideo extends Component {
   render() {
     let disabled = this.props.userVoted ? 'disabled' : '';
     return (
-      <div id="tt-skipvideo">
-        <div>
-          (votes: {this.props.skipVotes}, required: {this.props.skipThreshold})
-        </div>
-        <button onClick={this.skipVideo} disabled={disabled}>
+      <div id="tt-skipvideo" className="pull-left">
+        <a href="#" className="tt-btn" 
+                    onClick={this.skipVideo} 
+                    disabled={disabled}>
           <i className="fa fa-fast-forward"></i> Skip Video
-        </button>
+        </a>
+        <span className="small-txt">
+          (votes: {this.props.skipVotes}, required: {this.props.skipThreshold})
+        </span>
       </div>
     );
   }
