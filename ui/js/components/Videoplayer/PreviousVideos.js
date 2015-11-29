@@ -10,6 +10,7 @@ export default class PreviousVideos extends Component {
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
   }
 
+  // fix this
   componentDidUpdate() {
     let node = ReactDOM.findDOMNode(this);
     node.scrollTop = node.scrollHeight;

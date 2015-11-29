@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 import PlaylistItem from './PlaylistItem';
 
 export default class UpcomingVideos extends Component {
+
+  constructor(props) {
+    super(props);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
+  }
+
+  // fix this
+  componentDidUpdate() {
+    let node = ReactDOM.findDOMNode(this);
+    node.scrollTop = 0;
+  }
 
   render() {
     let upcoming = null;

@@ -2418,6 +2418,7 @@ ul, ol, li {
   background-color: #34302d;
   border: none; }
 
+/* dont forget to use nesting... */
 .tt-input:focus {
   outline: none; }
 

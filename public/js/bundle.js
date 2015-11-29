@@ -26266,6 +26266,8 @@
 	    this.componentDidUpdate = this.componentDidUpdate.bind(this);
 	  }
 
+	  // fix this
+
 	  _createClass(PreviousVideos, [{
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
@@ -33431,6 +33433,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactDom = __webpack_require__(349);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
 	var _PlaylistItem = __webpack_require__(364);
 
 	var _PlaylistItem2 = _interopRequireDefault(_PlaylistItem);
@@ -33438,13 +33444,22 @@
 	var UpcomingVideos = (function (_Component) {
 	  _inherits(UpcomingVideos, _Component);
 
-	  function UpcomingVideos() {
+	  function UpcomingVideos(props) {
 	    _classCallCheck(this, UpcomingVideos);
 
-	    _get(Object.getPrototypeOf(UpcomingVideos.prototype), 'constructor', this).apply(this, arguments);
+	    _get(Object.getPrototypeOf(UpcomingVideos.prototype), 'constructor', this).call(this, props);
+	    this.componentDidUpdate = this.componentDidUpdate.bind(this);
 	  }
 
+	  // fix this
+
 	  _createClass(UpcomingVideos, [{
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      var node = _reactDom2['default'].findDOMNode(this);
+	      node.scrollTop = 0;
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var upcoming = null;
