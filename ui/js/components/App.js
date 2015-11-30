@@ -6,8 +6,8 @@ import Chat from './Chat/Chat';
 import Videoplayer from './Videoplayer/Videoplayer';
 
 var socket = window.io();
+// use this to show welcome message too...
 var alias = Cookies.get(COOKIE_NAME) || false;
-
 // kicks off handshake, socket events processed in datastore
 socket.emit('login', {room: ROOM_ID, alias: alias});
 
@@ -34,30 +34,15 @@ export default class App extends Component {
 
   render() {
     return (
-      <div id="main-container">
+      <div id="tt-container">
         <Videoplayer  videos={this.state.videos}
-                      skipVotes={this.state.skipVotes}
-                      skipThreshold={this.state.skipThreshold}
-                      submitVideoForm={this.state.submitVideoForm}
-                      userVoted={this.state.userVoted}
-                      skipAllowed={this.state.skipAllowed}
-                      skipping={this.state.skipping}
-        />
+                      skipping={this.state.skipping} />
         <Chat alias={this.state.alias}
-              editAlias={this.state.editAlias}
-              settingsDropdown={this.state.settingsDropdown}
               messages={this.state.messages}
               users={this.state.users}
-              userCount={this.state.userCount}
-              notifications={this.state.notifications} />
+              userCount={this.state.userCount} />
       </div>
     );
   }
 
 }
-
-
-/*
-
-add keyboard shortcuts A for submit video
-*/

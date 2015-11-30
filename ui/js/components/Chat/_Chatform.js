@@ -19,17 +19,14 @@ export default class Chatform extends Component {
   }
 
   handleOnKeyPress(e) {
-    const key = e.charCode;
+    const key = e.keyCode;
     const msg = e.target.value.trim();
     if(key === 13) {
-      if(msg !== '') {
-        this.send();
-      }
+      this.send(msg);
     }
   }
 
-  send() {
-    const msg = this.state.msg.trim();
+  send(msg) {
     if(msg !== '') {
       dataStore.emitMsg({
         alias: this.props.alias,
@@ -41,13 +38,15 @@ export default class Chatform extends Component {
   }
 
   render() {
-    let editAlias = !this.props.editAlias || false;
     return (
       <div id="tt-chatform" className="cf">
-        <div id="tt-chatform-container">
+          <span id="tt-chatform-alias">
+            <span className="tt-alias">{this.props.alias}</span>
+            <i className="fa fa-chevron-right"></i>
+          </span>
           <input  id="tt-chatform-input"
                   ref={function(input) {
-                    if (input != null && editAlias) {
+                    if (input != null) {
                       input.focus();
                     }
                   }}
@@ -57,11 +56,6 @@ export default class Chatform extends Component {
                   onChange={this.handleChange}
                   type='text'
                   autoComplete="off" />
-          <a href="#" id="tt-send-msg" className="tt-btn" 
-                      onClick={this.send}>
-            <i className="fa fa-chevron-right"></i>
-          </a>
-        </div>
       </div>
     );
   }

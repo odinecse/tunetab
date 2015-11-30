@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import YoutubePlayer from 'react-youtube-player';
 
 import {isEmpty} from '../../helpers';
-import SubmitVideo from './SubmitVideo';
-import SkipVideo from './SkipVideo';
 import dataStore from '../../dataStore';
 
 var interval = {};
@@ -80,14 +78,8 @@ export default class YoutubeContainer extends Component {
     }
     return (
       <div id="tt-ytplayer-container">
+        <h1 className="tt-sideways">{this.props.current.title}<h1>
         {player}
-        <div id="tt-videoplayer-funct" className="cf">
-          <SubmitVideo submitVideoForm={this.props.submitVideoForm} />
-          <SkipVideo  skipVotes={this.props.skipVotes}
-                      skipThreshold={this.props.skipThreshold}
-                      skipAllowed={this.props.skipAllowed}
-                      userVoted={this.props.userVoted} />
-        </div>
       </div>
     );
   }

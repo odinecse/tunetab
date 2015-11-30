@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import PlaylistItem from './PlaylistItem';
+import PlaylistItem from './_PlaylistItem';
 
 export default class UpcomingVideos extends Component {
 
@@ -11,30 +11,34 @@ export default class UpcomingVideos extends Component {
   }
 
   componentDidUpdate() {
+    let node = {};
     if(this.props.skipping) {
-      let node = ReactDOM.findDOMNode(this);
+      node = ReactDOM.findDOMNode(this);
       node.scrollTop = 0; 
     }
   }
 
   render() {
     let upcoming = null;
-    if(this.props.upcomingVideos.length > 0) {
-      upcoming = this.props.upcomingVideos.map(function(video, i) {
+    let videos = this.props.upcomingVideos;
+    if(videos.length > 0) {
+      upcoming = videos.map(function(video, i) {
         return (
           <PlaylistItem title={video.title}
                         thumb={video.thumb}
                         user={video.user}
-                        comment={video.comment}
                         key={video.id + i} />
         );
       });
     }
     return (
-      <div id="tt-upcoming-videos-container" className="tt-overflow-container">
-        <ul id="tt-upcoming-videos" className="tt-playlist">
-          {upcoming}
-        </ul>
+      <div id="tt-upcoming-videos-container" className="tt-playlist-container">
+        <h2 className="tt-sideways">previous</h2>
+        <div className="tt-overflow-container">
+          <ul id="tt-upcoming-videos" className="tt-playlist">
+            {upcoming}
+          </ul>
+        </div>
       </div>
     );
   }

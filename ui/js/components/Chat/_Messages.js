@@ -12,28 +12,25 @@ export default class Messages extends Component {
   }
 
   componentWillUpdate() {
-    let node = ReactDOM.findDOMNode(this);
-    this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
+    this.domNode = ReactDOM.findDOMNode(this);
+    this.shouldScroll = this.domNode.scrollTop + this.domNode.offsetHeight === this.domNode.scrollHeight;
   }
 
   componentDidUpdate() {
-    let node = {};
-    if (this.shouldScrollBottom) {
-      node = ReactDOM.findDOMNode(this);
-      node.scrollTop = node.scrollHeight;
+    if(this.shouldScroll) {
+      this.domNode.scrollTop = this.domNode.scrollHeight;
     }
   }
 
   render() {
     let messages = null;
-    let userAlias = this.props.alias;
     if(this.props.messages.length > 0) {
       messages = this.props.messages.map(function(msg, i) {
         return (
           <Message  alias={msg.alias}
                     msg={msg.msg}
                     msgType={msg.type}
-                    userAlias={userAlias}
+                    userAlias={this.props.alias}
                     key={i} />
         );
       });

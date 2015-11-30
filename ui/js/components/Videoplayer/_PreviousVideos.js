@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import PlaylistItem from './PlaylistItem';
+import PlaylistItem from './_PlaylistItem';
 
 var init = true;
 
@@ -10,23 +10,15 @@ export default class PreviousVideos extends Component {
   constructor(props) {
     super(props);
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
-    this.doTheScroll = this.doTheScroll.bind(this);
   }
 
   componentDidUpdate() {
+    let node = {}
     if(this.props.skipping || init) {
-      this.doTheScroll();
-      if(init) {
-        init = false;  
-      }
-    }
-  }
-
-  doTheScroll() {
-    window.requestAnimationFrame(() => {
-      let node = ReactDOM.findDOMNode(this);
+      node = ReactDOM.findDOMNode(this);
       node.scrollTop = node.scrollHeight;
-    });
+      init = false;
+    }
   }
 
   render() {
@@ -38,16 +30,18 @@ export default class PreviousVideos extends Component {
           <PlaylistItem title={video.title}
                         thumb={video.thumb}
                         user={video.user}
-                        comment={video.comment} 
                         key={i + video.id} />
         );
       }).reverse();
     }
     return (
-      <div id="tt-previous-videos-container" className="tt-overflow-container">
-        <ul id="tt-previous-videos" className="tt-playlist">
-          {previous}
-        </ul>
+      <div id="tt-previous-videos-container" className="tt-playlist-container">
+        <h2 className="tt-sideways">previous</h2>
+        <div className="tt-overflow-container">
+          <ul id="tt-previous-videos" className="tt-playlist">
+            {previous}
+          </ul>
+        </div>
       </div>
     );
   }
