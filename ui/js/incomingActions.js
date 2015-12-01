@@ -53,28 +53,6 @@ socket.on('videoSubmitted', function(data){
   dataStore.setVideos(data);
 });
 
-/// what is this? fix this along with io side 
-socket.on('skippingVideo', function(data){
-  _data.userVoted = false;
-  _data.videos.videoTime = 0; // ?
-  _data.skipVotes = data.skipVotes;
-  _data.skipping = true;
-  socket.emit('playNextVideo', {videoId: _data.videos.current.id});
-  dataStore.emit('change');
-});
-//ditto
-
-socket.on('skipVoteChanged', function(data){
-  console.log('SOCKET:SKIPVIDEOCHANGED', data);
-  _data.skipVotes = data.skipVotes;
-  dataStore.emit('change');
-});
-
-socket.on('firstVideo', function(data){
-  console.log('SOCKET:FIRSTVIDEO', data);
-  dataStore.setVideos(data);
-});
-
 socket.on('playVideo', function(data){
   console.log('SOCKET:PLAYVIDEO', data);
   dataStore.setVideos(data);

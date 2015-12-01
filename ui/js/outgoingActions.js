@@ -7,12 +7,8 @@ var actions = {
     socket.emit('updateAlias', {alias: data.alias});
   }
   tick(data) {
-    // check syntax
-    // add alaias here
     socket.emit('tick', {
       videoTime: data.videoTime.toFixed(0),
-      socketId: socket.id
-      alias: data.alias
     });
   },
   submitVideo(data) {

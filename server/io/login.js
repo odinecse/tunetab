@@ -16,11 +16,9 @@ module.exports = function login(globalData, room) {
       globalData.videos[room.id].upcoming = [];
       globalData.videos[room.id].previous = [];
     }
-
     room.userCount = countUsers(room.users);
     room.videos = globalData.videos[room.id];
     room.socket.join(room.id);
-
     room.io.to(room.socket.id).emit('welcome',
       {
         alias: room.user.alias,

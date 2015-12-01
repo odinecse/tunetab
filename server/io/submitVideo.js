@@ -18,7 +18,7 @@ function processVideoSubmit(room, videoId, body) {
     };
     if(room.videos.current === null) {
       room.videos.current = submittedVideo;
-      room.io.to(room.id).emit('firstVideo', 
+      room.io.to(room.id).emit('playVideo', 
         {videos: room.videos});
     } else {
       room.videos.upcoming.push(submittedVideo);
