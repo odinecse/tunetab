@@ -9,13 +9,24 @@ function tickTest(roomVideos, time) {
 	return roomVideos.current !== null && roomVideos.videoTime < time;
 }
 
-// remove user or set inactive if not pinging enough? to effect skip vote...
+// ??
+function cleanUpMultipleIds(globalData, alias) {
+  var users = room.users;
+  for(user in users) {
+    if(user !== room.socket.id) {
+      if(users[user].alias === room.user.alias) {
+        delete users[user];
+      }
+    }
+  }
+}
 
 module.exports = function tick(room) {
   return function(data){
     var time = data.videoTime ? parseInt(data.videoTime, 10) : 0;
     if(checkDataIntegrity(room.videos)) {
       if(tickTest(room.videos, time)) {
+        cleanUpMultipleIds(room);
         room.videos.videoTime = time;
         console.log('videotime: ', room.videos.videoTime);
       }

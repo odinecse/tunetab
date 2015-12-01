@@ -7,13 +7,19 @@ var actions = {
     socket.emit('updateAlias', {alias: data.alias});
   }
   tick(data) {
-    socket.emit('tick', {videoTime: data.videoTime.toFixed(0)});
+    // check syntax
+    // add alaias here
+    socket.emit('tick', {
+      videoTime: data.videoTime.toFixed(0),
+      socketId: socket.id
+      alias: data.alias
+    });
   },
   submitVideo(data) {
     socket.emit('submitVideo', {video: data.video});
   },
   playNextVideo(data) {
-    socket.emit('playNextVideo', {videoId: _data.videos.current.id});  
+    socket.emit('playNextVideo', {videoId: data.currentVideosId});  
   }
   skipVideo() {
     socket.emit('skipVideo');  

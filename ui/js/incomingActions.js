@@ -38,6 +38,16 @@ socket.on('notification', function(data){
   dataStore.pushMessage(d);
 });
 
+socket.on('error', function(data){
+  console.log('SOCKET:NOTIFICATION', data);
+  let d = {
+    msg: data.msg,
+    alias: 'error',
+    type: 'error'
+  };
+  dataStore.pushMessage(d);
+});
+
 socket.on('videoSubmitted', function(data){
   console.log('SOCKET:VIDEOSUBMITTED', data);
   dataStore.setVideos(data);

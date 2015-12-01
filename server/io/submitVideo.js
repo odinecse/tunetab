@@ -1,21 +1,20 @@
 var request = require('request');
-var isUndefined = require('../helpers/index').isUndefined;
-var YOUTUBE_API_KEY = 'AIzaSyBlK4TcgxsU4KRFsvSCrBaxerOF6fya0Eo';
-var YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/';
+var MESSAGES = require('../constants').MESSAGES;
+var isUndefined = require('../helpers').isUndefined;
+var YOUTUBE_API_KEY = require('../constants').YOUTUBE_API_KEY;
+var YOUTUBE_API_URL = require('../constants').YOUTUBE_API_URL;
 
 function responseTest(items) {
   return !isUndefined(items) && !isUndefined(items[0]);
 }
 
 function processVideoSubmit(room, videoId, body) {
-  console.log('processVideoSubmit');
   if(responseTest(body.items)) {
     var submittedVideo = {
       id: videoId,
       title: body.items[0].snippet.title,
       thumb: body.items[0].snippet.thumbnails.default,
       user: room.user.alias,
-      comment: ''
     };
     if(room.videos.current === null) {
       room.videos.current = submittedVideo;
@@ -27,9 +26,8 @@ function processVideoSubmit(room, videoId, body) {
         {videos: room.videos});
     }
   } else {
-    console.log('api error');
     room.io.to(room.socket.id).emit('error', 
-      {msg: 'invalid video url'});
+      {msg: MESSAGES.SUBMIT_GENERAL_ERROR});
   }
 }
 
@@ -46,7 +44,7 @@ module.exports = function submitVideo(room) {
             processVideoSubmit(room, videoID, body);
           } else {
             room.io.to(room.socket.id).emit('error', 
-              {msg: 'invalid video url'});
+              {msg: MESSAGES.SUBMIT_GENERAL_ERROR});
           }
     });
   }

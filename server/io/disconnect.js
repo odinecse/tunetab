@@ -1,28 +1,23 @@
-var helpers = require('../helpers/index');
-var skipStuff = {};
+var helpers = require('../helpers');
+var MESSAGES = require('../constants').MESSAGES;
 
-module.exports = function disconnect(global, room) {
+module.exports = function disconnect(globalData, room) {
   return function(){
     // disconnect occasionally misfires of fires before login...
     if(!helpers.isUndefined(room.users)) {
       room.io.to(room.id).emit('announcement',
-        {msg: room.user.alias + ' disconnected!'});
+        {msg: MESSAGES.DISCONNECTED(room.user.alias)});
       delete room.user;
       delete room.users[room.socket.id];
-      skipStuff = helpers.calcSkipThreshold(room.users, true);
-      room.userCount = skipStuff.userCount;
-      room.skipVotes = skipStuff.skipVotes;
-      room.skipThreshold = skipStuff.skipThreshold;
-      if(skipStuff.userCount === 0) {
-        delete global.users[room.id];
-        delete global.videos[room.id];
+      room.userCount = helpers.countUsers(room.users);
+      if(room.userCount === 0) {
+        delete globalData.users[room.id];
+        delete globalData.videos[room.id];
       } else {
         room.io.to(room.id).emit('usersInfo',
           {
             users: room.users,
             userCount: room.userCount,
-            skipVotes: room.skipVotes,
-            skipThreshold: room.skipThreshold
           }
         );
       }

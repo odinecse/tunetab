@@ -25,26 +25,21 @@ module.exports = function(io) {
       videos: {}
     }
     var login = require('./login')(globalData, socketData);
+    var updateAlias = require('./updateAlias')(socketData);
+    var message = require('./message')(socketData);
     var submitVideo = require('./submitVideo')(socketData);
-    var tick = require('./tick')(socketData);
     var playNextVideo = require('./playNextVideo')(socketData);
     var skipVideo = require('./skipVideo')(socketData);
-    var message = require('./message')(socketData);
-
-    // currently unused
-    var getVideoTime = require('./getVideoTime')(socketData);
-
-    var updateAlias = require('./updateAlias')(socketData);
+    var tick = require('./tick')(socketData);
     var disconnect = require('./disconnect')(globalData, socketData);
 
     socket.on('login', login);
+    socket.on('updateAlias', updateAlias);
+    socket.on('message', message);
     socket.on('submitVideo', submitVideo);
-    socket.on('tick', tick);
     socket.on('playNextVideo', playNextVideo);
     socket.on('skipVideo', skipVideo);
-    socket.on('message', message);
-    socket.on('getVideoTime', getVideoTime);
-    socket.on('updateAlias', updateAlias);
+    socket.on('tick', tick);
     socket.on('disconnect', disconnect);
 
   }
