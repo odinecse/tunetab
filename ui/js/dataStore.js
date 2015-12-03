@@ -30,7 +30,6 @@ var dataStore = Object.assign({}, EventEmitter.prototype, {
   setAlias(data) {
     _data.alias = data.alias;
     Cookies.set(COOKIE_NAME, data.alias, { expires: 666});
-    actions.updateAlias(data);
     dataStore.emit('change');
   },
   setVideos(data) {

@@ -8,10 +8,16 @@ socket.on('welcome', function(data){
   dataStore.setVideos({videos: data.videos});
 });
 
+socket.on('aliasChanged', function(data){
+  console.log('SOCKET:ALIASCHANGED', data);
+  dataStore.setAlias({alias: data.alias});
+});
+
 socket.on('usersInfo', function(data){
   console.log('SOCKET:USERSINFO', data);
   dataStore.setUsers(data);
 });
+
 
 socket.on('message', function(data){
   console.log('SOCKET:MESSAGE', data);

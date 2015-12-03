@@ -33,7 +33,7 @@ export default class UpcomingVideos extends Component {
     }
     return (
       <div id="tt-upcoming-videos-container" className="tt-playlist-container">
-        <h2 className="tt-sideways">previous</h2>
+        <h2 className="tt-sideways">upcoming</h2>
         <div className="tt-overflow-container">
           <ul id="tt-upcoming-videos" className="tt-playlist">
             {upcoming}

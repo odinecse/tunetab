@@ -69,7 +69,7 @@
 
 	var _componentsApp2 = _interopRequireDefault(_componentsApp);
 
-	__webpack_require__(408);
+	__webpack_require__(407);
 
 	_reactDom2['default'].render(_react2['default'].createElement(_componentsApp2['default'], null), document.getElementById('tunetab'));
 
@@ -24864,19 +24864,23 @@
 
 	var _dataStore2 = _interopRequireDefault(_dataStore);
 
+	var _incomingActions = __webpack_require__(355);
+
+	var _incomingActions2 = _interopRequireDefault(_incomingActions);
+
 	var _constants = __webpack_require__(354);
 
-	var _ChatChat = __webpack_require__(355);
+	var _ChatChat = __webpack_require__(356);
 
 	var _ChatChat2 = _interopRequireDefault(_ChatChat);
 
-	var _VideoplayerVideoplayer = __webpack_require__(361);
+	var _VideoplayerVideoplayer = __webpack_require__(362);
 
 	var _VideoplayerVideoplayer2 = _interopRequireDefault(_VideoplayerVideoplayer);
 
 	var socket = window.io();
+	// use this to show welcome message too...
 	var alias = _jsCookie2['default'].get(_constants.COOKIE_NAME) || false;
-
 	// kicks off handshake, socket events processed in datastore
 	socket.emit('login', { room: _constants.ROOM_ID, alias: alias });
 
@@ -24892,11 +24896,6 @@
 	    this.onStoreChange = this.onStoreChange.bind(this);
 	    this.state = _dataStore2['default'].getData();
 	  }
-
-	  /*
-	  
-	  add keyboard shortcuts A for submit video
-	  */
 
 	  _createClass(App, [{
 	    key: 'onStoreChange',
@@ -24918,22 +24917,13 @@
 	    value: function render() {
 	      return _react2['default'].createElement(
 	        'div',
-	        { id: 'main-container' },
+	        { id: 'tt-container' },
 	        _react2['default'].createElement(_VideoplayerVideoplayer2['default'], { videos: this.state.videos,
-	          skipVotes: this.state.skipVotes,
-	          skipThreshold: this.state.skipThreshold,
-	          submitVideoForm: this.state.submitVideoForm,
-	          userVoted: this.state.userVoted,
-	          skipAllowed: this.state.skipAllowed,
-	          skipping: this.state.skipping
-	        }),
+	          skipping: this.state.skipping }),
 	        _react2['default'].createElement(_ChatChat2['default'], { alias: this.state.alias,
-	          editAlias: this.state.editAlias,
-	          settingsDropdown: this.state.settingsDropdown,
 	          messages: this.state.messages,
 	          users: this.state.users,
-	          userCount: this.state.userCount,
-	          notifications: this.state.notifications })
+	          userCount: this.state.userCount })
 	      );
 	    }
 	  }]);
@@ -25109,18 +25099,10 @@
 
 	var _constants = __webpack_require__(354);
 
-	var socket = window.io();
-
 	var _data = {
-	  editAlias: false,
 	  alias: '',
-	  skipVotes: 0,
-	  skipThreshold: 1,
-	  skipAllowed: false,
-	  skipping: false,
 	  users: {},
 	  userCount: 0,
-	  userVoted: false,
 	  videos: {
 	    current: null,
 	    videoTime: 0,
@@ -25130,82 +25112,6 @@
 	  messages: []
 	};
 
-	function checkIfCanSkip(data) {
-	  if (data.videos.upcoming.length > 0) {
-	    data.skipAllowed = true;
-	  }
-	}
-
-	socket.on('welcome', function (data) {
-	  console.log('SOCKET:WELCOME', data);
-	  dataStore.setAlias({ alias: data.alias });
-	  dataStore.setVideos({ videos: data.videos });
-	});
-
-	socket.on('usersInfo', function (data) {
-	  console.log('SOCKET:USERSINFO', data);
-	  _data.users = data.users;
-	  _data.userCount = data.userCount;
-	  _data.skipVotes = data.skipVotes;
-	  _data.skipThreshold = data.skipThreshold;
-	  dataStore.emit('change');
-	});
-
-	socket.on('message', function (data) {
-	  console.log('SOCKET:MESSAGE', data);
-	  _data.messages.push({
-	    msg: data.msg,
-	    alias: data.alias,
-	    type: data.type
-	  });
-	  dataStore.emit('change');
-	});
-
-	socket.on('announcement', function (data) {
-	  console.log('SOCKET:ANNOUNCEMENT', data);
-	  _data.messages.push({
-	    msg: data.msg,
-	    alias: 'room',
-	    type: 'announcement'
-	  });
-	  dataStore.emit('change');
-	});
-
-	socket.on('notification', function (data) {
-	  console.log('SOCKET:NOTIFICATION', data);
-	  dataStore.addNotification(data);
-	});
-
-	socket.on('videoSubmitted', function (data) {
-	  console.log('SOCKET:VIDEOSUBMITTED', data);
-	  dataStore.setVideos(data);
-	});
-
-	socket.on('skippingVideo', function (data) {
-	  _data.userVoted = false;
-	  _data.videos.videoTime = 0; // ?
-	  _data.skipVotes = data.skipVotes;
-	  _data.skipping = true;
-	  socket.emit('playNextVideo', { videoId: _data.videos.current.id });
-	  dataStore.emit('change');
-	});
-
-	socket.on('skipVoteChanged', function (data) {
-	  console.log('SOCKET:SKIPVIDEOCHANGED', data);
-	  _data.skipVotes = data.skipVotes;
-	  dataStore.emit('change');
-	});
-
-	socket.on('firstVideo', function (data) {
-	  console.log('SOCKET:FIRSTVIDEO', data);
-	  dataStore.setVideos(data);
-	});
-
-	socket.on('playVideo', function (data) {
-	  console.log('SOCKET:PLAYVIDEO', data);
-	  dataStore.setVideos(data);
-	});
-
 	var dataStore = Object.assign({}, _events.EventEmitter.prototype, {
 	  addChangeListener: function addChangeListener(callback) {
 	    this.on('change', callback);
@@ -25213,53 +25119,27 @@
 	  removeChangeListener: function removeChangeListener(callback) {
 	    this.off('change', callback);
 	  },
-	  toggleEditAlias: function toggleEditAlias() {
-	    _data.editAlias = !_data.editAlias;
+	  setUsers: function setUsers(data) {
+	    _data.users = data.users;
+	    _data.userCount = data.userCount;
 	    dataStore.emit('change');
 	  },
 	  setAlias: function setAlias(data) {
 	    _data.alias = data.alias;
 	    _jsCookie2['default'].set(_constants.COOKIE_NAME, data.alias, { expires: 666 });
-	    socket.emit('updateAlias', { alias: data.alias });
-	    _data.editAlias = false;
 	    dataStore.emit('change');
 	  },
 	  setVideos: function setVideos(data) {
 	    _data.videos = data.videos;
 	    _data.skipping = false;
-	    checkIfCanSkip(_data);
 	    dataStore.emit('change');
 	  },
-	  pingTime: function pingTime(data) {
-	    socket.emit('tick', { videoTime: data.videoTime.toFixed(0) });
-	  },
-	  emitSubmitVideo: function emitSubmitVideo(data) {
-	    socket.emit('submitVideo', { video: data.video });
-	  },
-	  videoOver: function videoOver() {
-	    _data.userVoted = false;
-	    _data.videos.videoTime = 0;
-	    _data.skipVotes = 0;
-	    _data.skipping = true;
-	    socket.emit('playNextVideo', { videoId: _data.videos.current.id });
-	    dataStore.emit('change');
-	  },
-	  emitSkipVideo: function emitSkipVideo() {
-	    _data.userVoted = true;
-	    dataStore.emit('change');
-	    socket.emit('skipVideo');
-	  },
-	  emitMsg: function emitMsg(data) {
-	    var msg = { alias: data.alias, msg: data.msg, type: data.type };
-	    socket.emit('message', msg);
-	  },
-	  addNotification: function addNotification(data) {
+	  pushMessage: function pushMessage(data) {
 	    _data.messages.push({
 	      msg: data.msg,
-	      alias: 'notification',
-	      type: 'notification'
+	      alias: data.alias,
+	      type: data.type
 	    });
-
 	    dataStore.emit('change');
 	  },
 	  getData: function getData() {
@@ -25591,6 +25471,8 @@
 	  VIDEO_SUBMIT: 'error submitting video...'
 	};
 	exports.ERRORS = ERRORS;
+	var YOUTUBE_RX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+	exports.YOUTUBE_RX = YOUTUBE_RX;
 
 /***/ },
 /* 355 */
@@ -25598,67 +25480,74 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	var _dataStore = __webpack_require__(352);
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	var _dataStore2 = _interopRequireDefault(_dataStore);
 
-	var _react = __webpack_require__(193);
+	var socket = window.io();
 
-	var _react2 = _interopRequireDefault(_react);
+	socket.on('welcome', function (data) {
+	  console.log('SOCKET:WELCOME', data);
+	  _dataStore2['default'].setAlias({ alias: data.alias });
+	  _dataStore2['default'].setVideos({ videos: data.videos });
+	});
 
-	var _Userinfo = __webpack_require__(356);
+	socket.on('aliasChanged', function (data) {
+	  console.log('SOCKET:ALIASCHANGED', data);
+	  _dataStore2['default'].setAlias({ alias: data.alias });
+	});
 
-	var _Userinfo2 = _interopRequireDefault(_Userinfo);
+	socket.on('usersInfo', function (data) {
+	  console.log('SOCKET:USERSINFO', data);
+	  _dataStore2['default'].setUsers(data);
+	});
 
-	var _Messages = __webpack_require__(357);
+	socket.on('message', function (data) {
+	  console.log('SOCKET:MESSAGE', data);
+	  _dataStore2['default'].pushMessage(data);
+	});
 
-	var _Messages2 = _interopRequireDefault(_Messages);
+	socket.on('announcement', function (data) {
+	  console.log('SOCKET:ANNOUNCEMENT', data);
+	  var d = {
+	    msg: data.msg,
+	    alias: 'room',
+	    type: 'announcement'
+	  };
+	  _dataStore2['default'].pushMessage(d);
+	});
 
-	var _Chatform = __webpack_require__(360);
+	socket.on('notification', function (data) {
+	  console.log('SOCKET:NOTIFICATION', data);
+	  var d = {
+	    msg: data.msg,
+	    alias: 'notification',
+	    type: 'notification'
+	  };
+	  _dataStore2['default'].pushMessage(d);
+	});
 
-	var _Chatform2 = _interopRequireDefault(_Chatform);
+	socket.on('error', function (data) {
+	  console.log('SOCKET:NOTIFICATION', data);
+	  var d = {
+	    msg: data.msg,
+	    alias: 'error',
+	    type: 'error'
+	  };
+	  _dataStore2['default'].pushMessage(d);
+	});
 
-	var Chat = (function (_Component) {
-	  _inherits(Chat, _Component);
+	socket.on('videoSubmitted', function (data) {
+	  console.log('SOCKET:VIDEOSUBMITTED', data);
+	  _dataStore2['default'].setVideos(data);
+	});
 
-	  function Chat(props) {
-	    _classCallCheck(this, Chat);
-
-	    _get(Object.getPrototypeOf(Chat.prototype), 'constructor', this).call(this, props);
-	  }
-
-	  _createClass(Chat, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement(
-	        'div',
-	        { id: 'tt-chat', className: 'tt-grid col-1-3' },
-	        _react2['default'].createElement(
-	          'div',
-	          { id: 'tt-userbar', className: 'cf' },
-	          _react2['default'].createElement(_Userinfo2['default'], { alias: this.props.alias, editAlias: this.props.editAlias })
-	        ),
-	        _react2['default'].createElement(_Messages2['default'], { messages: this.props.messages, alias: this.props.alias }),
-	        _react2['default'].createElement(_Chatform2['default'], { alias: this.props.alias, editAlias: this.props.editAlias })
-	      );
-	    }
-	  }]);
-
-	  return Chat;
-	})(_react.Component);
-
-	exports['default'] = Chat;
-	module.exports = exports['default'];
+	socket.on('playVideo', function (data) {
+	  console.log('SOCKET:PLAYVIDEO', data);
+	  _dataStore2['default'].setVideos(data);
+	});
 
 /***/ },
 /* 356 */
@@ -25684,114 +25573,39 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _dataStore = __webpack_require__(352);
+	var _Messages = __webpack_require__(357);
 
-	var _dataStore2 = _interopRequireDefault(_dataStore);
+	var _Messages2 = _interopRequireDefault(_Messages);
 
-	var Userinfo = (function (_Component) {
-	  _inherits(Userinfo, _Component);
+	var _Chatform = __webpack_require__(360);
 
-	  function Userinfo(props) {
-	    _classCallCheck(this, Userinfo);
+	var _Chatform2 = _interopRequireDefault(_Chatform);
 
-	    _get(Object.getPrototypeOf(Userinfo.prototype), 'constructor', this).call(this, props);
-	    this.handleChange = this.handleChange.bind(this);
-	    this.editAlias = this.editAlias.bind(this);
-	    this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
-	    this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
-	    this.state = {
-	      alias: '',
-	      editable: false
-	    };
+	var Chat = (function (_Component) {
+	  _inherits(Chat, _Component);
+
+	  function Chat(props) {
+	    _classCallCheck(this, Chat);
+
+	    _get(Object.getPrototypeOf(Chat.prototype), 'constructor', this).call(this, props);
 	  }
 
-	  _createClass(Userinfo, [{
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(props) {
-	      this.setState({
-	        alias: props.alias,
-	        editable: props.editAlias
-	      });
-	    }
-	  }, {
-	    key: 'handleChange',
-	    value: function handleChange(e) {
-	      this.setState({ alias: e.target.value });
-	    }
-	  }, {
-	    key: 'handleOnKeyPress',
-	    value: function handleOnKeyPress(e) {
-	      var key = e.keyCode;
-	      var alias = e.target.value.trim();
-	      if (key === 27) {
-	        _dataStore2['default'].toggleEditAlias();
-	      } else if (key === 13) {
-	        if (alias !== '') {
-	          _dataStore2['default'].setAlias({ alias: alias });
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'editAlias',
-	    value: function editAlias(e) {
-	      _dataStore2['default'].toggleEditAlias();
-	    }
-	  }, {
+	  _createClass(Chat, [{
 	    key: 'render',
 	    value: function render() {
-	      var user = _react2['default'].createElement(
-	        'div',
-	        { className: 'pull-right' },
-	        _react2['default'].createElement(
-	          'span',
-	          { className: 'tt-alias' },
-	          _react2['default'].createElement('i', { className: 'fa fa-user' }),
-	          ' ',
-	          this.state.alias
-	        ),
-	        _react2['default'].createElement(
-	          'a',
-	          { href: '#', className: 'tt-btn',
-	            onClick: this.editAlias },
-	          _react2['default'].createElement('i', { className: 'fa fa-pencil' }),
-	          'Edit Alias'
-	        )
-	      );
-	      if (this.state.editable) {
-	        user = _react2['default'].createElement(
-	          'div',
-	          { className: 'pull-right' },
-	          _react2['default'].createElement('input', { ref: function (input) {
-	              if (input != null) {
-	                input.focus();
-	              }
-	            },
-	            className: 'tt-user-alias-form tt-input',
-	            value: this.state.alias,
-	            onKeyDown: this.handleOnKeyPress,
-	            onChange: this.handleChange,
-	            type: 'text' }),
-	          _react2['default'].createElement(
-	            'a',
-	            { href: '#', className: 'tt-btn',
-	              onClick: this.editAlias },
-	            _react2['default'].createElement('i', { className: 'fa fa-times' }),
-	            'Cancel'
-	          )
-	        );
-	      }
 	      return _react2['default'].createElement(
 	        'div',
-	        null,
-	        user
+	        { id: 'tt-chat' },
+	        _react2['default'].createElement(_Messages2['default'], { messages: this.props.messages, alias: this.props.alias }),
+	        _react2['default'].createElement(_Chatform2['default'], { alias: this.props.alias })
 	      );
 	    }
 	  }]);
 
-	  return Userinfo;
+	  return Chat;
 	})(_react.Component);
 
-	exports['default'] = Userinfo;
+	exports['default'] = Chat;
 	module.exports = exports['default'];
 
 /***/ },
@@ -25840,29 +25654,27 @@
 	  _createClass(Messages, [{
 	    key: 'componentWillUpdate',
 	    value: function componentWillUpdate() {
-	      var node = _reactDom2['default'].findDOMNode(this);
-	      this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
+	      this.domNode = _reactDom2['default'].findDOMNode(this);
+	      this.shouldScroll = this.domNode.scrollTop + this.domNode.offsetHeight === this.domNode.scrollHeight;
 	    }
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
-	      var node = {};
-	      if (this.shouldScrollBottom) {
-	        node = _reactDom2['default'].findDOMNode(this);
-	        node.scrollTop = node.scrollHeight;
+	      if (this.shouldScroll) {
+	        this.domNode.scrollTop = this.domNode.scrollHeight;
 	      }
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var messages = null;
-	      var userAlias = this.props.alias;
+	      var alias = this.props.alias;
 	      if (this.props.messages.length > 0) {
 	        messages = this.props.messages.map(function (msg, i) {
 	          return _react2['default'].createElement(_Message2['default'], { alias: msg.alias,
 	            msg: msg.msg,
 	            msgType: msg.type,
-	            userAlias: userAlias,
+	            userAlias: alias,
 	            key: i });
 	        });
 	      }
@@ -25932,8 +25744,8 @@
 	        _react2['default'].createElement(
 	          'span',
 	          { className: (0, _classnames2['default'])({
-	              "tt-msg-alias": true,
-	              "tt-msg-alias-self": currentUserTest
+	              'tt-msg-alias': true,
+	              'tt-msg-alias-self': currentUserTest
 	            }) },
 	          this.props.alias
 	        ),
@@ -26026,9 +25838,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _dataStore = __webpack_require__(352);
+	var _outgoingActions = __webpack_require__(361);
 
-	var _dataStore2 = _interopRequireDefault(_dataStore);
+	var _outgoingActions2 = _interopRequireDefault(_outgoingActions);
 
 	var Chatform = (function (_Component) {
 	  _inherits(Chatform, _Component);
@@ -26053,20 +25865,17 @@
 	  }, {
 	    key: 'handleOnKeyPress',
 	    value: function handleOnKeyPress(e) {
-	      var key = e.charCode;
+	      var key = e.keyCode;
 	      var msg = e.target.value.trim();
 	      if (key === 13) {
-	        if (msg !== '') {
-	          this.send();
-	        }
+	        this.send(msg);
 	      }
 	    }
 	  }, {
 	    key: 'send',
-	    value: function send() {
-	      var msg = this.state.msg.trim();
+	    value: function send(msg) {
 	      if (msg !== '') {
-	        _dataStore2['default'].emitMsg({
+	        _outgoingActions2['default'].message({
 	          alias: this.props.alias,
 	          msg: msg,
 	          type: 'user'
@@ -26077,32 +25886,31 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var editAlias = !this.props.editAlias || false;
 	      return _react2['default'].createElement(
 	        'div',
 	        { id: 'tt-chatform', className: 'cf' },
 	        _react2['default'].createElement(
-	          'div',
-	          { id: 'tt-chatform-container' },
-	          _react2['default'].createElement('input', { id: 'tt-chatform-input',
-	            ref: function (input) {
-	              if (input != null && editAlias) {
-	                input.focus();
-	              }
-	            },
-	            value: this.state.msg,
-	            className: 'tt-input',
-	            onKeyPress: this.handleOnKeyPress,
-	            onChange: this.handleChange,
-	            type: 'text',
-	            autoComplete: 'off' }),
+	          'span',
+	          { id: 'tt-chatform-alias' },
 	          _react2['default'].createElement(
-	            'a',
-	            { href: '#', id: 'tt-send-msg', className: 'tt-btn',
-	              onClick: this.send },
-	            _react2['default'].createElement('i', { className: 'fa fa-chevron-right' })
-	          )
-	        )
+	            'span',
+	            { className: 'tt-alias' },
+	            this.props.alias
+	          ),
+	          _react2['default'].createElement('i', { className: 'fa fa-chevron-right tt-blink' })
+	        ),
+	        _react2['default'].createElement('input', { id: 'tt-chatform-input',
+	          ref: function (input) {
+	            if (input != null) {
+	              input.focus();
+	            }
+	          },
+	          value: this.state.msg,
+	          className: 'tt-input',
+	          onKeyDown: this.handleOnKeyPress,
+	          onChange: this.handleChange,
+	          type: 'text',
+	          autoComplete: 'off' })
 	      );
 	    }
 	  }]);
@@ -26123,67 +25931,73 @@
 	  value: true
 	});
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	var _dataStore = __webpack_require__(352);
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	var _dataStore2 = _interopRequireDefault(_dataStore);
 
-	var _react = __webpack_require__(193);
+	var socket = window.io();
 
-	var _react2 = _interopRequireDefault(_react);
+	function messageActionParser(data) {
+	  var skipRX = /^\/skip/i;
 
-	var _PreviousVideos = __webpack_require__(362);
+	  var aliasRX = /^\/submit\s([^(\s|\b)]*)/i;
 
-	var _PreviousVideos2 = _interopRequireDefault(_PreviousVideos);
+	  var match = data.msg.match(aliasRX);
+	  console.log(match);
 
-	var _YoutubeContainer = __webpack_require__(364);
-
-	var _YoutubeContainer2 = _interopRequireDefault(_YoutubeContainer);
-
-	var _UpcomingVideos = __webpack_require__(407);
-
-	var _UpcomingVideos2 = _interopRequireDefault(_UpcomingVideos);
-
-	var Videoplayer = (function (_Component) {
-	  _inherits(Videoplayer, _Component);
-
-	  function Videoplayer() {
-	    _classCallCheck(this, Videoplayer);
-
-	    _get(Object.getPrototypeOf(Videoplayer.prototype), 'constructor', this).apply(this, arguments);
+	  if (skipRX.test(data.msg)) {
+	    console.log('skip');
 	  }
+	  return true;
+	}
 
-	  _createClass(Videoplayer, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement(
-	        'div',
-	        { id: 'tt-videoplayer', className: 'tt-grid col-2-3' },
-	        _react2['default'].createElement(_PreviousVideos2['default'], { previousVideos: this.props.videos.previous,
-	          skipping: this.props.skipping }),
-	        _react2['default'].createElement(_YoutubeContainer2['default'], { submitVideoForm: this.props.submitVideoForm,
-	          skipVotes: this.props.skipVotes,
-	          skipThreshold: this.props.skipThreshold,
-	          skipAllowed: this.props.skipAllowed,
-	          skipping: this.props.skipping,
-	          userVoted: this.props.userVoted,
-	          current: this.props.videos.current,
-	          videoTime: this.props.videos.videoTime }),
-	        _react2['default'].createElement(_UpcomingVideos2['default'], { upcomingVideos: this.props.videos.upcoming,
-	          skipping: this.props.skipping })
-	      );
+	var actions = {
+	  updateAlias: function updateAlias(data) {
+	    socket.emit('updateAlias', { alias: data.alias });
+	  },
+	  tick: function tick(data) {
+	    socket.emit('tick', {
+	      videoTime: data.videoTime.toFixed(0)
+	    });
+	  },
+	  submitVideo: function submitVideo(data) {
+	    socket.emit('submitVideo', { video: data.video });
+	  },
+	  playNextVideo: function playNextVideo(data) {
+	    socket.emit('playNextVideo', { videoId: data.currentVideosId });
+	  },
+	  skipVideo: function skipVideo() {
+	    socket.emit('skipVideo');
+	  },
+	  message: function message(data) {
+	    var msg = {};
+	    if (messageActionParser(data)) {
+	      msg = {
+	        alias: data.alias,
+	        msg: data.msg,
+	        type: data.type
+	      };
+	      socket.emit('message', msg);
 	    }
-	  }]);
+	  }
+	};
 
-	  return Videoplayer;
-	})(_react.Component);
+	exports['default'] = actions;
 
-	exports['default'] = Videoplayer;
+	/*
+	if(video !== '') {
+	      video = video.match(youtubeRX);
+	      if(video) {
+	        dataStore.emitSubmitVideo({video: video[1]});
+	      } else {
+	        dataStore.addNotification({msg: ERRORS.VIDEO_SUBMIT});
+	      }
+	      this.setState({video: ''});
+	    } 
+
+	    */
 	module.exports = exports['default'];
 
 /***/ },
@@ -26210,11 +26024,78 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _PreviousVideos = __webpack_require__(363);
+
+	var _PreviousVideos2 = _interopRequireDefault(_PreviousVideos);
+
+	var _YoutubeContainer = __webpack_require__(365);
+
+	var _YoutubeContainer2 = _interopRequireDefault(_YoutubeContainer);
+
+	var _UpcomingVideos = __webpack_require__(406);
+
+	var _UpcomingVideos2 = _interopRequireDefault(_UpcomingVideos);
+
+	var Videoplayer = (function (_Component) {
+	  _inherits(Videoplayer, _Component);
+
+	  function Videoplayer() {
+	    _classCallCheck(this, Videoplayer);
+
+	    _get(Object.getPrototypeOf(Videoplayer.prototype), 'constructor', this).apply(this, arguments);
+	  }
+
+	  _createClass(Videoplayer, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement(
+	        'div',
+	        { id: 'tt-videoplayer' },
+	        _react2['default'].createElement(_PreviousVideos2['default'], { previousVideos: this.props.videos.previous,
+	          skipping: this.props.skipping }),
+	        _react2['default'].createElement(_YoutubeContainer2['default'], { current: this.props.videos.current,
+	          videoTime: this.props.videos.videoTime }),
+	        _react2['default'].createElement(_UpcomingVideos2['default'], { upcomingVideos: this.props.videos.upcoming,
+	          skipping: this.props.skipping })
+	      );
+	    }
+	  }]);
+
+	  return Videoplayer;
+	})(_react.Component);
+
+	exports['default'] = Videoplayer;
+	module.exports = exports['default'];
+
+/***/ },
+/* 363 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(193);
+
+	var _react2 = _interopRequireDefault(_react);
+
 	var _reactDom = __webpack_require__(349);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _PlaylistItem = __webpack_require__(363);
+	var _PlaylistItem = __webpack_require__(364);
 
 	var _PlaylistItem2 = _interopRequireDefault(_PlaylistItem);
 
@@ -26228,28 +26109,17 @@
 
 	    _get(Object.getPrototypeOf(PreviousVideos.prototype), 'constructor', this).call(this, props);
 	    this.componentDidUpdate = this.componentDidUpdate.bind(this);
-	    this.doTheScroll = this.doTheScroll.bind(this);
 	  }
 
 	  _createClass(PreviousVideos, [{
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
+	      var node = {};
 	      if (this.props.skipping || init) {
-	        this.doTheScroll();
-	        if (init) {
-	          init = false;
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'doTheScroll',
-	    value: function doTheScroll() {
-	      var _this = this;
-
-	      window.requestAnimationFrame(function () {
-	        var node = _reactDom2['default'].findDOMNode(_this);
+	        node = _reactDom2['default'].findDOMNode(this);
 	        node.scrollTop = node.scrollHeight;
-	      });
+	        init = false;
+	      }
 	    }
 	  }, {
 	    key: 'render',
@@ -26261,17 +26131,25 @@
 	          return _react2['default'].createElement(_PlaylistItem2['default'], { title: video.title,
 	            thumb: video.thumb,
 	            user: video.user,
-	            comment: video.comment,
 	            key: i + video.id });
 	        }).reverse();
 	      }
 	      return _react2['default'].createElement(
 	        'div',
-	        { id: 'tt-previous-videos-container', className: 'tt-overflow-container' },
+	        { id: 'tt-previous-videos-container', className: 'tt-playlist-container' },
 	        _react2['default'].createElement(
-	          'ul',
-	          { id: 'tt-previous-videos', className: 'tt-playlist' },
-	          previous
+	          'h2',
+	          { className: 'tt-sideways' },
+	          'previous'
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'tt-overflow-container' },
+	          _react2['default'].createElement(
+	            'ul',
+	            { id: 'tt-previous-videos', className: 'tt-playlist' },
+	            previous
+	          )
 	        )
 	      );
 	    }
@@ -26284,7 +26162,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 363 */
+/* 364 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26346,7 +26224,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 364 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26369,25 +26247,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactYoutubePlayer = __webpack_require__(365);
+	var _reactYoutubePlayer = __webpack_require__(366);
 
 	var _reactYoutubePlayer2 = _interopRequireDefault(_reactYoutubePlayer);
 
-	var _helpers = __webpack_require__(404);
+	var _helpers = __webpack_require__(405);
 
-	var _SubmitVideo = __webpack_require__(405);
+	var _outgoingActions = __webpack_require__(361);
 
-	var _SubmitVideo2 = _interopRequireDefault(_SubmitVideo);
-
-	var _SkipVideo = __webpack_require__(406);
-
-	var _SkipVideo2 = _interopRequireDefault(_SkipVideo);
-
-	var _dataStore = __webpack_require__(352);
-
-	var _dataStore2 = _interopRequireDefault(_dataStore);
+	var _outgoingActions2 = _interopRequireDefault(_outgoingActions);
 
 	var interval = {};
+
+	// socket will return current = null if last video in playlist, handle it...
 
 	var YoutubeContainer = (function (_Component) {
 	  _inherits(YoutubeContainer, _Component);
@@ -26431,7 +26303,7 @@
 	        interval = window.setInterval(function () {
 	          var promise = _this.player.getCurrentTime();
 	          promise.then(function (time) {
-	            _dataStore2['default'].pingTime({ videoTime: time || 0 });
+	            _outgoingActions2['default'].tick({ videoTime: time || 0 });
 	          });
 	        }, 500);
 	      }
@@ -26439,7 +26311,7 @@
 	  }, {
 	    key: 'nextVideo',
 	    value: function nextVideo() {
-	      _dataStore2['default'].videoOver();
+	      _outgoingActions2['default'].playNextVideo();
 	    }
 	  }, {
 	    key: 'render',
@@ -26447,7 +26319,9 @@
 	      var _this2 = this;
 
 	      var player = null;
+	      var title = '_';
 	      if (this.props.current) {
+	        title = this.props.current.title;
 	        player = _react2['default'].createElement(_reactYoutubePlayer2['default'], { ref: function (player) {
 	            if (player !== null) {
 	              _this2.player = player.player;
@@ -26474,16 +26348,12 @@
 	      return _react2['default'].createElement(
 	        'div',
 	        { id: 'tt-ytplayer-container' },
-	        player,
 	        _react2['default'].createElement(
-	          'div',
-	          { id: 'tt-videoplayer-funct', className: 'cf' },
-	          _react2['default'].createElement(_SubmitVideo2['default'], { submitVideoForm: this.props.submitVideoForm }),
-	          _react2['default'].createElement(_SkipVideo2['default'], { skipVotes: this.props.skipVotes,
-	            skipThreshold: this.props.skipThreshold,
-	            skipAllowed: this.props.skipAllowed,
-	            userVoted: this.props.userVoted })
-	        )
+	          'h1',
+	          { className: 'tt-sideways' },
+	          title
+	        ),
+	        player
 	      );
 	    }
 	  }]);
@@ -26495,12 +26365,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 365 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _lodashLangIsString2 = __webpack_require__(366);
+	var _lodashLangIsString2 = __webpack_require__(367);
 
 	var _lodashLangIsString3 = _interopRequireDefault(_lodashLangIsString2);
 
@@ -26520,11 +26390,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _youtubePlayer = __webpack_require__(368);
+	var _youtubePlayer = __webpack_require__(369);
 
 	var _youtubePlayer2 = _interopRequireDefault(_youtubePlayer);
 
-	var _isNumeric = __webpack_require__(403);
+	var _isNumeric = __webpack_require__(404);
 
 	var _isNumeric2 = _interopRequireDefault(_isNumeric);
 
@@ -26855,10 +26725,10 @@
 
 
 /***/ },
-/* 366 */
+/* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObjectLike = __webpack_require__(367);
+	var isObjectLike = __webpack_require__(368);
 
 	/** `Object#toString` result references. */
 	var stringTag = '[object String]';
@@ -26896,7 +26766,7 @@
 
 
 /***/ },
-/* 367 */
+/* 368 */
 /***/ function(module, exports) {
 
 	/**
@@ -26914,16 +26784,16 @@
 
 
 /***/ },
-/* 368 */
+/* 369 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _lodashCollectionForEach2 = __webpack_require__(369);
+	var _lodashCollectionForEach2 = __webpack_require__(370);
 
 	var _lodashCollectionForEach3 = _interopRequireDefault(_lodashCollectionForEach2);
 
-	var _lodashStringCapitalize2 = __webpack_require__(394);
+	var _lodashStringCapitalize2 = __webpack_require__(395);
 
 	var _lodashStringCapitalize3 = _interopRequireDefault(_lodashStringCapitalize2);
 
@@ -26931,23 +26801,23 @@
 	    value: true
 	});
 
-	var _sister = __webpack_require__(396);
+	var _sister = __webpack_require__(397);
 
 	var _sister2 = _interopRequireDefault(_sister);
 
-	var _bluebird = __webpack_require__(397);
+	var _bluebird = __webpack_require__(398);
 
 	var _bluebird2 = _interopRequireDefault(_bluebird);
 
-	var _functionNames = __webpack_require__(399);
+	var _functionNames = __webpack_require__(400);
 
 	var _functionNames2 = _interopRequireDefault(_functionNames);
 
-	var _eventNames = __webpack_require__(400);
+	var _eventNames = __webpack_require__(401);
 
 	var _eventNames2 = _interopRequireDefault(_eventNames);
 
-	var _loadYouTubeIframeAPI = __webpack_require__(401);
+	var _loadYouTubeIframeAPI = __webpack_require__(402);
 
 	var _loadYouTubeIframeAPI2 = _interopRequireDefault(_loadYouTubeIframeAPI);
 
@@ -27079,12 +26949,12 @@
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 369 */
+/* 370 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrayEach = __webpack_require__(370),
-	    baseEach = __webpack_require__(371),
-	    createForEach = __webpack_require__(391);
+	var arrayEach = __webpack_require__(371),
+	    baseEach = __webpack_require__(372),
+	    createForEach = __webpack_require__(392);
 
 	/**
 	 * Iterates over elements of `collection` invoking `iteratee` for each element.
@@ -27122,7 +26992,7 @@
 
 
 /***/ },
-/* 370 */
+/* 371 */
 /***/ function(module, exports) {
 
 	/**
@@ -27150,11 +27020,11 @@
 
 
 /***/ },
-/* 371 */
+/* 372 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseForOwn = __webpack_require__(372),
-	    createBaseEach = __webpack_require__(390);
+	var baseForOwn = __webpack_require__(373),
+	    createBaseEach = __webpack_require__(391);
 
 	/**
 	 * The base implementation of `_.forEach` without support for callback
@@ -27171,11 +27041,11 @@
 
 
 /***/ },
-/* 372 */
+/* 373 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseFor = __webpack_require__(373),
-	    keys = __webpack_require__(377);
+	var baseFor = __webpack_require__(374),
+	    keys = __webpack_require__(378);
 
 	/**
 	 * The base implementation of `_.forOwn` without support for callback
@@ -27194,10 +27064,10 @@
 
 
 /***/ },
-/* 373 */
+/* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var createBaseFor = __webpack_require__(374);
+	var createBaseFor = __webpack_require__(375);
 
 	/**
 	 * The base implementation of `baseForIn` and `baseForOwn` which iterates
@@ -27217,10 +27087,10 @@
 
 
 /***/ },
-/* 374 */
+/* 375 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toObject = __webpack_require__(375);
+	var toObject = __webpack_require__(376);
 
 	/**
 	 * Creates a base function for `_.forIn` or `_.forInRight`.
@@ -27250,10 +27120,10 @@
 
 
 /***/ },
-/* 375 */
+/* 376 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(376);
+	var isObject = __webpack_require__(377);
 
 	/**
 	 * Converts `value` to an object if it's not one.
@@ -27270,7 +27140,7 @@
 
 
 /***/ },
-/* 376 */
+/* 377 */
 /***/ function(module, exports) {
 
 	/**
@@ -27304,13 +27174,13 @@
 
 
 /***/ },
-/* 377 */
+/* 378 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(378),
-	    isArrayLike = __webpack_require__(381),
-	    isObject = __webpack_require__(376),
-	    shimKeys = __webpack_require__(385);
+	var getNative = __webpack_require__(379),
+	    isArrayLike = __webpack_require__(382),
+	    isObject = __webpack_require__(377),
+	    shimKeys = __webpack_require__(386);
 
 	/* Native method references for those with the same name as other `lodash` methods. */
 	var nativeKeys = getNative(Object, 'keys');
@@ -27355,10 +27225,10 @@
 
 
 /***/ },
-/* 378 */
+/* 379 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isNative = __webpack_require__(379);
+	var isNative = __webpack_require__(380);
 
 	/**
 	 * Gets the native function at `key` of `object`.
@@ -27377,11 +27247,11 @@
 
 
 /***/ },
-/* 379 */
+/* 380 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isFunction = __webpack_require__(380),
-	    isObjectLike = __webpack_require__(367);
+	var isFunction = __webpack_require__(381),
+	    isObjectLike = __webpack_require__(368);
 
 	/** Used to detect host constructors (Safari > 5). */
 	var reIsHostCtor = /^\[object .+?Constructor\]$/;
@@ -27431,10 +27301,10 @@
 
 
 /***/ },
-/* 380 */
+/* 381 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(376);
+	var isObject = __webpack_require__(377);
 
 	/** `Object#toString` result references. */
 	var funcTag = '[object Function]';
@@ -27475,11 +27345,11 @@
 
 
 /***/ },
-/* 381 */
+/* 382 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getLength = __webpack_require__(382),
-	    isLength = __webpack_require__(384);
+	var getLength = __webpack_require__(383),
+	    isLength = __webpack_require__(385);
 
 	/**
 	 * Checks if `value` is array-like.
@@ -27496,10 +27366,10 @@
 
 
 /***/ },
-/* 382 */
+/* 383 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseProperty = __webpack_require__(383);
+	var baseProperty = __webpack_require__(384);
 
 	/**
 	 * Gets the "length" property value of `object`.
@@ -27517,7 +27387,7 @@
 
 
 /***/ },
-/* 383 */
+/* 384 */
 /***/ function(module, exports) {
 
 	/**
@@ -27537,7 +27407,7 @@
 
 
 /***/ },
-/* 384 */
+/* 385 */
 /***/ function(module, exports) {
 
 	/**
@@ -27563,14 +27433,14 @@
 
 
 /***/ },
-/* 385 */
+/* 386 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArguments = __webpack_require__(386),
-	    isArray = __webpack_require__(387),
-	    isIndex = __webpack_require__(388),
-	    isLength = __webpack_require__(384),
-	    keysIn = __webpack_require__(389);
+	var isArguments = __webpack_require__(387),
+	    isArray = __webpack_require__(388),
+	    isIndex = __webpack_require__(389),
+	    isLength = __webpack_require__(385),
+	    keysIn = __webpack_require__(390);
 
 	/** Used for native method references. */
 	var objectProto = Object.prototype;
@@ -27610,11 +27480,11 @@
 
 
 /***/ },
-/* 386 */
+/* 387 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArrayLike = __webpack_require__(381),
-	    isObjectLike = __webpack_require__(367);
+	var isArrayLike = __webpack_require__(382),
+	    isObjectLike = __webpack_require__(368);
 
 	/** Used for native method references. */
 	var objectProto = Object.prototype;
@@ -27650,12 +27520,12 @@
 
 
 /***/ },
-/* 387 */
+/* 388 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(378),
-	    isLength = __webpack_require__(384),
-	    isObjectLike = __webpack_require__(367);
+	var getNative = __webpack_require__(379),
+	    isLength = __webpack_require__(385),
+	    isObjectLike = __webpack_require__(368);
 
 	/** `Object#toString` result references. */
 	var arrayTag = '[object Array]';
@@ -27696,7 +27566,7 @@
 
 
 /***/ },
-/* 388 */
+/* 389 */
 /***/ function(module, exports) {
 
 	/** Used to detect unsigned integer values. */
@@ -27726,14 +27596,14 @@
 
 
 /***/ },
-/* 389 */
+/* 390 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArguments = __webpack_require__(386),
-	    isArray = __webpack_require__(387),
-	    isIndex = __webpack_require__(388),
-	    isLength = __webpack_require__(384),
-	    isObject = __webpack_require__(376);
+	var isArguments = __webpack_require__(387),
+	    isArray = __webpack_require__(388),
+	    isIndex = __webpack_require__(389),
+	    isLength = __webpack_require__(385),
+	    isObject = __webpack_require__(377);
 
 	/** Used for native method references. */
 	var objectProto = Object.prototype;
@@ -27796,12 +27666,12 @@
 
 
 /***/ },
-/* 390 */
+/* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getLength = __webpack_require__(382),
-	    isLength = __webpack_require__(384),
-	    toObject = __webpack_require__(375);
+	var getLength = __webpack_require__(383),
+	    isLength = __webpack_require__(385),
+	    toObject = __webpack_require__(376);
 
 	/**
 	 * Creates a `baseEach` or `baseEachRight` function.
@@ -27833,11 +27703,11 @@
 
 
 /***/ },
-/* 391 */
+/* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var bindCallback = __webpack_require__(392),
-	    isArray = __webpack_require__(387);
+	var bindCallback = __webpack_require__(393),
+	    isArray = __webpack_require__(388);
 
 	/**
 	 * Creates a function for `_.forEach` or `_.forEachRight`.
@@ -27859,10 +27729,10 @@
 
 
 /***/ },
-/* 392 */
+/* 393 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var identity = __webpack_require__(393);
+	var identity = __webpack_require__(394);
 
 	/**
 	 * A specialized version of `baseCallback` which only supports `this` binding
@@ -27904,7 +27774,7 @@
 
 
 /***/ },
-/* 393 */
+/* 394 */
 /***/ function(module, exports) {
 
 	/**
@@ -27930,10 +27800,10 @@
 
 
 /***/ },
-/* 394 */
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseToString = __webpack_require__(395);
+	var baseToString = __webpack_require__(396);
 
 	/**
 	 * Capitalizes the first character of `string`.
@@ -27957,7 +27827,7 @@
 
 
 /***/ },
-/* 395 */
+/* 396 */
 /***/ function(module, exports) {
 
 	/**
@@ -27976,7 +27846,7 @@
 
 
 /***/ },
-/* 396 */
+/* 397 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -28042,7 +27912,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 397 */
+/* 398 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process, global, setImmediate) {/* @preserve
@@ -32932,10 +32802,10 @@
 
 	},{"./es5.js":14}]},{},[4])(4)
 	});                    ;if (typeof window !== 'undefined' && window !== null) {                               window.P = window.Promise;                                                     } else if (typeof self !== 'undefined' && self !== null) {                             self.P = self.Promise;                                                         }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(192), (function() { return this; }()), __webpack_require__(398).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(192), (function() { return this; }()), __webpack_require__(399).setImmediate))
 
 /***/ },
-/* 398 */
+/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(192).nextTick;
@@ -33014,10 +32884,10 @@
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(398).setImmediate, __webpack_require__(398).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(399).setImmediate, __webpack_require__(399).clearImmediate))
 
 /***/ },
-/* 399 */
+/* 400 */
 /***/ function(module, exports) {
 
 	/**
@@ -33033,7 +32903,7 @@
 	//# sourceMappingURL=functionNames.js.map
 
 /***/ },
-/* 400 */
+/* 401 */
 /***/ function(module, exports) {
 
 	/**
@@ -33049,7 +32919,7 @@
 	//# sourceMappingURL=eventNames.js.map
 
 /***/ },
-/* 401 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -33060,11 +32930,11 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _bluebird = __webpack_require__(397);
+	var _bluebird = __webpack_require__(398);
 
 	var _bluebird2 = _interopRequireDefault(_bluebird);
 
-	var _loadScript = __webpack_require__(402);
+	var _loadScript = __webpack_require__(403);
 
 	var _loadScript2 = _interopRequireDefault(_loadScript);
 
@@ -33104,7 +32974,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 402 */
+/* 403 */
 /***/ function(module, exports) {
 
 	
@@ -33175,7 +33045,7 @@
 
 
 /***/ },
-/* 403 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function(root) {
@@ -33205,7 +33075,7 @@
 
 
 /***/ },
-/* 404 */
+/* 405 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33225,205 +33095,7 @@
 	}
 
 /***/ },
-/* 405 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(193);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _constants = __webpack_require__(354);
-
-	var _dataStore = __webpack_require__(352);
-
-	var _dataStore2 = _interopRequireDefault(_dataStore);
-
-	var youtubeRX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
-
-	var SubmitVideo = (function (_Component) {
-	  _inherits(SubmitVideo, _Component);
-
-	  function SubmitVideo(props) {
-	    _classCallCheck(this, SubmitVideo);
-
-	    _get(Object.getPrototypeOf(SubmitVideo.prototype), 'constructor', this).call(this, props);
-	    this.handleChange = this.handleChange.bind(this);
-	    this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
-	    this.submit = this.submit.bind(this);
-	    this.submitVideo = this.submitVideo.bind(this);
-	    this.state = {
-	      video: ''
-	    };
-	  }
-
-	  _createClass(SubmitVideo, [{
-	    key: 'submitVideo',
-	    value: function submitVideo(e) {
-	      var video = this.state.video;
-	      this.submit(video);
-	    }
-	  }, {
-	    key: 'submit',
-	    value: function submit(video) {
-	      if (video !== '') {
-	        video = video.match(youtubeRX);
-	        if (video) {
-	          _dataStore2['default'].emitSubmitVideo({ video: video[1] });
-	        } else {
-	          _dataStore2['default'].addNotification({ msg: _constants.ERRORS.VIDEO_SUBMIT });
-	        }
-	        this.setState({ video: '' });
-	      }
-	    }
-	  }, {
-	    key: 'handleChange',
-	    value: function handleChange(e) {
-	      this.setState({ video: e.target.value });
-	    }
-	  }, {
-	    key: 'handleOnKeyPress',
-	    value: function handleOnKeyPress(e) {
-	      var key = e.keyCode;
-	      var video = e.target.value.trim();
-	      if (key === 13) {
-	        this.submit(video);
-	      }
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement(
-	        'div',
-	        { id: 'tt-submitvideo', className: 'pull-left' },
-	        _react2['default'].createElement('input', { ref: function (input) {
-	            if (input != null) {
-	              input.focus();
-	            }
-	          },
-	          className: 'tt-input',
-	          value: this.state.video,
-	          onKeyDown: this.handleOnKeyPress,
-	          onChange: this.handleChange,
-	          type: 'text',
-	          autoComplete: 'off' }),
-	        _react2['default'].createElement(
-	          'a',
-	          { href: '#', onClick: this.submitVideo,
-	            className: 'tt-btn tt-btn-big' },
-	          _react2['default'].createElement('i', { className: 'fa fa-plus' }),
-	          ' Submit'
-	        )
-	      );
-	    }
-	  }]);
-
-	  return SubmitVideo;
-	})(_react.Component);
-
-	exports['default'] = SubmitVideo;
-	module.exports = exports['default'];
-
-/***/ },
 /* 406 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(193);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _classnames = __webpack_require__(359);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _dataStore = __webpack_require__(352);
-
-	var _dataStore2 = _interopRequireDefault(_dataStore);
-
-	var SkipVideo = (function (_Component) {
-	  _inherits(SkipVideo, _Component);
-
-	  function SkipVideo(props) {
-	    _classCallCheck(this, SkipVideo);
-
-	    _get(Object.getPrototypeOf(SkipVideo.prototype), 'constructor', this).call(this, props);
-	    this.skipVideo = this.skipVideo.bind(this);
-	  }
-
-	  _createClass(SkipVideo, [{
-	    key: 'skipVideo',
-	    value: function skipVideo(e) {
-	      _dataStore2['default'].emitSkipVideo();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement(
-	        'div',
-	        { id: 'tt-skipvideo', className: 'pull-left' },
-	        _react2['default'].createElement(
-	          'a',
-	          { href: '#', className: (0, _classnames2['default'])({
-	              "tt-btn": true,
-	              "tt-btn-big": true,
-	              "disabled": this.props.userVoted || !this.props.skipAllowed
-	            }),
-	            onClick: this.skipVideo },
-	          _react2['default'].createElement('i', { className: 'fa fa-fast-forward' }),
-	          ' Skip Video'
-	        ),
-	        _react2['default'].createElement(
-	          'span',
-	          { className: 'tt-small-txt' },
-	          '(votes: ',
-	          this.props.skipVotes,
-	          ', required: ',
-	          this.props.skipThreshold,
-	          ')'
-	        )
-	      );
-	    }
-	  }]);
-
-	  return SkipVideo;
-	})(_react.Component);
-
-	exports['default'] = SkipVideo;
-	module.exports = exports['default'];
-
-/***/ },
-/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33450,7 +33122,7 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _PlaylistItem = __webpack_require__(363);
+	var _PlaylistItem = __webpack_require__(364);
 
 	var _PlaylistItem2 = _interopRequireDefault(_PlaylistItem);
 
@@ -33467,8 +33139,9 @@
 	  _createClass(UpcomingVideos, [{
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
+	      var node = {};
 	      if (this.props.skipping) {
-	        var node = _reactDom2['default'].findDOMNode(this);
+	        node = _reactDom2['default'].findDOMNode(this);
 	        node.scrollTop = 0;
 	      }
 	    }
@@ -33476,22 +33149,31 @@
 	    key: 'render',
 	    value: function render() {
 	      var upcoming = null;
-	      if (this.props.upcomingVideos.length > 0) {
-	        upcoming = this.props.upcomingVideos.map(function (video, i) {
+	      var videos = this.props.upcomingVideos;
+	      if (videos.length > 0) {
+	        upcoming = videos.map(function (video, i) {
 	          return _react2['default'].createElement(_PlaylistItem2['default'], { title: video.title,
 	            thumb: video.thumb,
 	            user: video.user,
-	            comment: video.comment,
 	            key: video.id + i });
 	        });
 	      }
 	      return _react2['default'].createElement(
 	        'div',
-	        { id: 'tt-upcoming-videos-container', className: 'tt-overflow-container' },
+	        { id: 'tt-upcoming-videos-container', className: 'tt-playlist-container' },
 	        _react2['default'].createElement(
-	          'ul',
-	          { id: 'tt-upcoming-videos', className: 'tt-playlist' },
-	          upcoming
+	          'h2',
+	          { className: 'tt-sideways' },
+	          'upcoming'
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'tt-overflow-container' },
+	          _react2['default'].createElement(
+	            'ul',
+	            { id: 'tt-upcoming-videos', className: 'tt-playlist' },
+	            upcoming
+	          )
 	        )
 	      );
 	    }
@@ -33504,7 +33186,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 408 */
+/* 407 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

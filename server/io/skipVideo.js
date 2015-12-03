@@ -1,5 +1,5 @@
 var MESSAGES = require('../constants').MESSAGES;
-var calcSkipThreshold = require('../helpers/index').calcSkipThreshold;
+var calcSkipThreshold = require('../helpers').calcSkipThreshold;
 var skipStuff = {};
 
 module.exports = function skipVideo(room) {

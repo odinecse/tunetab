@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import YoutubePlayer from 'react-youtube-player';
 
 import {isEmpty} from '../../helpers';
-import dataStore from '../../dataStore';
+import outgoingActions from '../../outgoingActions';
 
 var interval = {};
 
@@ -41,19 +41,21 @@ export default class YoutubeContainer extends Component {
       interval = window.setInterval(() => {
         let promise = this.player.getCurrentTime();
         promise.then(function(time) {
-          dataStore.pingTime({videoTime: time || 0});
+          outgoingActions.tick({videoTime: time || 0});
         });
       }, 500);
     }
   }
 
   nextVideo() {
-    dataStore.videoOver();
+    outgoingActions.playNextVideo();
   }
 
   render() {
     let player = null;
+    let title = '_';
     if(this.props.current) {
+      title = this.props.current.title;
       player = <YoutubePlayer ref={(player) => {
                                 if(player !== null) {
                                   this.player = player.player
@@ -80,7 +82,7 @@ export default class YoutubeContainer extends Component {
     }
     return (
       <div id="tt-ytplayer-container">
-        <h1 className="tt-sideways">{this.props.current.title}<h1>
+        <h1 className="tt-sideways">{title}</h1>
         {player}
       </div>
     );

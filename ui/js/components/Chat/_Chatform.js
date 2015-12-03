@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import dataStore from '../../dataStore';
+import outgoingActions from '../../outgoingActions';
 
 export default class Chatform extends Component {
 
@@ -28,7 +28,7 @@ export default class Chatform extends Component {
 
   send(msg) {
     if(msg !== '') {
-      dataStore.emitMsg({
+      outgoingActions.message({
         alias: this.props.alias,
         msg: msg,
         type: 'user'
@@ -42,7 +42,7 @@ export default class Chatform extends Component {
       <div id="tt-chatform" className="cf">
           <span id="tt-chatform-alias">
             <span className="tt-alias">{this.props.alias}</span>
-            <i className="fa fa-chevron-right"></i>
+            <i className="fa fa-chevron-right tt-blink"></i>
           </span>
           <input  id="tt-chatform-input"
                   ref={function(input) {
@@ -52,7 +52,7 @@ export default class Chatform extends Component {
                   }}
                   value={this.state.msg}
                   className="tt-input"
-                  onKeyPress={this.handleOnKeyPress}
+                  onKeyDown={this.handleOnKeyPress}
                   onChange={this.handleChange}
                   type='text'
                   autoComplete="off" />

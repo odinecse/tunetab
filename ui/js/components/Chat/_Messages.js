@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import Message from './Message';
+import Message from './_Message';
 
 export default class Messages extends Component {
 
@@ -24,13 +24,14 @@ export default class Messages extends Component {
 
   render() {
     let messages = null;
+    let alias = this.props.alias;
     if(this.props.messages.length > 0) {
       messages = this.props.messages.map(function(msg, i) {
         return (
           <Message  alias={msg.alias}
                     msg={msg.msg}
                     msgType={msg.type}
-                    userAlias={this.props.alias}
+                    userAlias={alias}
                     key={i} />
         );
       });

@@ -1,4 +1,4 @@
-var isUndefined = require('../helpers/index').isUndefined;
+var isUndefined = require('../helpers').isUndefined;
 
 // this occasionally gets called from old connections, so need to do this test
 function checkDataIntegrity(roomVideos) {
