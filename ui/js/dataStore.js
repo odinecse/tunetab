@@ -6,6 +6,7 @@ var _data = {
   alias: '',
   users: {},
   userCount: 0,
+  skipping: false,
   videos: {
     current: null,
     videoTime: 0,
@@ -30,6 +31,10 @@ var dataStore = Object.assign({}, EventEmitter.prototype, {
   setAlias(data) {
     _data.alias = data.alias;
     Cookies.set(COOKIE_NAME, data.alias, { expires: 666});
+    dataStore.emit('change');
+  },
+  setSkipping(data) {
+    _data.skipping = data.skipping;
     dataStore.emit('change');
   },
   setVideos(data) {

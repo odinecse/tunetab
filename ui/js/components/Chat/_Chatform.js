@@ -12,10 +12,8 @@ export default class Chatform extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.send = this.send.bind(this);
     this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
-    
     this.state = {
-      msg: '',
-      width: 130,
+      msg: ''
     }
   }
 
@@ -43,7 +41,6 @@ export default class Chatform extends Component {
   }
 
   render() {
-    let styles = {paddingLeft: this.state.width};
     return (
       <div id="tt-chatform-container" className="cf">
         <div id="tt-chatform">
@@ -52,7 +49,6 @@ export default class Chatform extends Component {
             <i className="fa fa-chevron-right tt-blink"></i>
           </span>
           <input  id="tt-chatform-input"
-                  style={styles}
                   ref={function(input) {
                     if (input != null) {
                       input.focus();

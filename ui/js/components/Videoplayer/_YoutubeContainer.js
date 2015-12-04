@@ -27,7 +27,7 @@ export default class YoutubeContainer extends Component {
     if(nextProps.current !== null && this.props.current !== null) {
       if(this.props.current.id == nextProps.current.id) {
         return false;
-      }  
+      }
     }
     return true;
   }
@@ -36,7 +36,7 @@ export default class YoutubeContainer extends Component {
     console.log('clearPing');
     window.clearInterval(interval)
   }
-  
+
   setPing() {
     if(isEmpty(interval)) {
       console.log('setPing');
@@ -50,7 +50,7 @@ export default class YoutubeContainer extends Component {
   }
 
   nextVideo() {
-    outgoingActions.playNextVideo();
+    outgoingActions.playNextVideo({videoId: this.props.current.id});
   }
 
   render() {

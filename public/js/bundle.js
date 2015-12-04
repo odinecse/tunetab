@@ -69,7 +69,7 @@
 
 	var _componentsApp2 = _interopRequireDefault(_componentsApp);
 
-	__webpack_require__(407);
+	__webpack_require__(408);
 
 	_reactDom2['default'].render(_react2['default'].createElement(_componentsApp2['default'], null), document.getElementById('tunetab'));
 
@@ -25103,6 +25103,7 @@
 	  alias: '',
 	  users: {},
 	  userCount: 0,
+	  skipping: false,
 	  videos: {
 	    current: null,
 	    videoTime: 0,
@@ -25127,6 +25128,10 @@
 	  setAlias: function setAlias(data) {
 	    _data.alias = data.alias;
 	    _jsCookie2['default'].set(_constants.COOKIE_NAME, data.alias, { expires: 666 });
+	    dataStore.emit('change');
+	  },
+	  setSkipping: function setSkipping(data) {
+	    _data.skipping = data.skipping;
 	    dataStore.emit('change');
 	  },
 	  setVideos: function setVideos(data) {
@@ -25768,7 +25773,7 @@
 /* 359 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	  Copyright (c) 2015 Jed Watson.
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
@@ -25809,9 +25814,9 @@
 			module.exports = classNames;
 		} else if (true) {
 			// register as 'classnames', consistent with npm package name
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
 				return classNames;
-			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		} else {
 			window.classNames = classNames;
 		}
@@ -25862,10 +25867,8 @@
 	    this.handleChange = this.handleChange.bind(this);
 	    this.send = this.send.bind(this);
 	    this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
-
 	    this.state = {
-	      msg: '',
-	      width: 130
+	      msg: ''
 	    };
 	  }
 
@@ -25898,7 +25901,6 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var styles = { paddingLeft: this.state.width };
 	      return _react2['default'].createElement(
 	        'div',
 	        { id: 'tt-chatform-container', className: 'cf' },
@@ -25916,7 +25918,6 @@
 	            _react2['default'].createElement('i', { className: 'fa fa-chevron-right tt-blink' })
 	          ),
 	          _react2['default'].createElement('input', { id: 'tt-chatform-input',
-	            style: styles,
 	            ref: function (input) {
 	              if (input != null) {
 	                input.focus();
@@ -25959,24 +25960,40 @@
 
 	function messageActionParser(data) {
 	  var skipRX = /^\/skip/i;
+	  var helpRX = /^\/help/i;
 	  var aliasRX = /^\/alias\s([^(\s|\b)]*)/i;
 	  var submitRX = /^\/submit\s([^(\s|\b)]*)/i;
 	  var youtubeRX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
 
 	  var aliasMatch = data.msg.match(aliasRX);
 	  var submitMatch = data.msg.match(submitRX);
-	  console.log(aliasMatch, submitMatch);
 
 	  if (submitMatch) {
 	    var videoURL = submitMatch[1];
 	    var videoTest = videoURL.match(youtubeRX);
+	    var _data = _dataStore2['default'].getData();
 	    if (videoTest) {
-	      console.log('/submit', videoTest[1]);
-	      actions.submitVideo({ video: videoTest[1] });
+	      if (_data.videos.current !== null && videoTest[1] === _data.videos.current.id) {
+	        console.log('/submit error: can\'t submit save video twice');
+	        var d = {
+	          msg: 'can\'t submit same video twice',
+	          alias: 'notification',
+	          type: 'notification'
+	        };
+	        _dataStore2['default'].pushMessage(d);
+	      } else {
+	        console.log('/submit', videoTest[1]);
+	        actions.submitVideo({ video: videoTest[1] });
+	      }
 	    } else {
-	      console.log('error submitting');
+	      console.log('/submit error');
+	      var d = {
+	        msg: 'error submitting',
+	        alias: 'notification',
+	        type: 'notification'
+	      };
+	      _dataStore2['default'].pushMessage(d);
 	    }
-
 	    return false;
 	  }
 	  if (aliasMatch) {
@@ -25987,6 +26004,19 @@
 	  if (skipRX.test(data.msg)) {
 	    console.log('/skip');
 	    actions.skipVideo();
+	    return false;
+	  }
+	  if (helpRX.test(data.msg)) {
+	    console.log('/help');
+	    var msgs = ['submit video: /submit https://youtu.be/RH1ekuvSYzE', 'change alias: /alias plumbus', 'skip video: /skip'];
+	    msgs.forEach(function (msg) {
+	      var d = {
+	        msg: msg,
+	        alias: 'notification',
+	        type: 'notification'
+	      };
+	      _dataStore2['default'].pushMessage(d);
+	    });
 	    return false;
 	  }
 	  return true;
@@ -26005,9 +26035,11 @@
 	    socket.emit('submitVideo', { video: data.video });
 	  },
 	  playNextVideo: function playNextVideo(data) {
-	    socket.emit('playNextVideo', { videoId: data.currentVideosId });
+	    _dataStore2['default'].setSkipping({ skipping: true });
+	    socket.emit('playNextVideo', { videoId: data.videoId });
 	  },
 	  skipVideo: function skipVideo() {
+	    _dataStore2['default'].setSkipping({ skipping: true });
 	    socket.emit('skipVideo');
 	  },
 	  message: function message(data) {
@@ -26024,19 +26056,6 @@
 	};
 
 	exports['default'] = actions;
-
-	/*
-	if(video !== '') {
-	      video = video.match(youtubeRX);
-	      if(video) {
-	        dataStore.emitSubmitVideo({video: video[1]});
-	      } else {
-	        dataStore.addNotification({msg: ERRORS.VIDEO_SUBMIT});
-	      }
-	      this.setState({video: ''});
-	    } 
-
-	    */
 	module.exports = exports['default'];
 
 /***/ },
@@ -26071,7 +26090,7 @@
 
 	var _YoutubeContainer2 = _interopRequireDefault(_YoutubeContainer);
 
-	var _UpcomingVideos = __webpack_require__(406);
+	var _UpcomingVideos = __webpack_require__(407);
 
 	var _UpcomingVideos2 = _interopRequireDefault(_UpcomingVideos);
 
@@ -26157,10 +26176,9 @@
 	  _createClass(PreviousVideos, [{
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
-	      var node = {};
 	      if (this.props.skipping || init) {
-	        node = _reactDom2['default'].findDOMNode(this);
-	        node.scrollTop = node.scrollHeight;
+	        console.log('PreviousVideos:componentDidUpdate:Scroll');
+	        this.refs.overflow.scrollTop = this.refs.overflow.scrollHeight;
 	        init = false;
 	      }
 	    }
@@ -26187,7 +26205,7 @@
 	        ),
 	        _react2['default'].createElement(
 	          'div',
-	          { className: 'tt-overflow-container' },
+	          { className: 'tt-overflow-container', ref: 'overflow' },
 	          _react2['default'].createElement(
 	            'ul',
 	            { id: 'tt-previous-videos', className: 'tt-playlist' },
@@ -26302,7 +26320,7 @@
 
 	var _outgoingActions2 = _interopRequireDefault(_outgoingActions);
 
-	var _WelcomeMessage = __webpack_require__(408);
+	var _WelcomeMessage = __webpack_require__(406);
 
 	var _WelcomeMessage2 = _interopRequireDefault(_WelcomeMessage);
 
@@ -26360,7 +26378,7 @@
 	  }, {
 	    key: 'nextVideo',
 	    value: function nextVideo() {
-	      _outgoingActions2['default'].playNextVideo();
+	      _outgoingActions2['default'].playNextVideo({ videoId: this.props.current.id });
 	    }
 	  }, {
 	    key: 'render',
@@ -33147,103 +33165,6 @@
 /* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(193);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(349);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _PlaylistItem = __webpack_require__(364);
-
-	var _PlaylistItem2 = _interopRequireDefault(_PlaylistItem);
-
-	var UpcomingVideos = (function (_Component) {
-	  _inherits(UpcomingVideos, _Component);
-
-	  function UpcomingVideos(props) {
-	    _classCallCheck(this, UpcomingVideos);
-
-	    _get(Object.getPrototypeOf(UpcomingVideos.prototype), 'constructor', this).call(this, props);
-	    this.componentDidUpdate = this.componentDidUpdate.bind(this);
-	  }
-
-	  _createClass(UpcomingVideos, [{
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      var node = {};
-	      if (this.props.skipping) {
-	        node = _reactDom2['default'].findDOMNode(this);
-	        node.scrollTop = 0;
-	      }
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var upcoming = null;
-	      var videos = this.props.upcomingVideos;
-	      if (videos.length > 0) {
-	        upcoming = videos.map(function (video, i) {
-	          return _react2['default'].createElement(_PlaylistItem2['default'], { title: video.title,
-	            thumb: video.thumb,
-	            user: video.user,
-	            key: video.id + i });
-	        });
-	      }
-	      return _react2['default'].createElement(
-	        'div',
-	        { id: 'tt-upcoming-videos-container', className: 'tt-playlist-container tt-sideways-container' },
-	        _react2['default'].createElement(
-	          'h2',
-	          { className: 'tt-sideways' },
-	          'upcoming'
-	        ),
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'tt-overflow-container' },
-	          _react2['default'].createElement(
-	            'ul',
-	            { id: 'tt-upcoming-videos', className: 'tt-playlist' },
-	            upcoming
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return UpcomingVideos;
-	})(_react.Component);
-
-	exports['default'] = UpcomingVideos;
-	module.exports = exports['default'];
-
-/***/ },
-/* 407 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 408 */
-/***/ function(module, exports, __webpack_require__) {
-
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
@@ -33329,6 +33250,20 @@
 	        _react2["default"].createElement(
 	          "p",
 	          null,
+	          "help (see these commands)"
+	        ),
+	        _react2["default"].createElement(
+	          "p",
+	          { className: "tt-indent" },
+	          _react2["default"].createElement(
+	            "span",
+	            { className: "tt-code" },
+	            "/help"
+	          )
+	        ),
+	        _react2["default"].createElement(
+	          "p",
+	          null,
 	          "have fun!"
 	        )
 	      );
@@ -33340,6 +33275,102 @@
 
 	exports["default"] = PreviousVideos;
 	module.exports = exports["default"];
+
+/***/ },
+/* 407 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(193);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(349);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _PlaylistItem = __webpack_require__(364);
+
+	var _PlaylistItem2 = _interopRequireDefault(_PlaylistItem);
+
+	var UpcomingVideos = (function (_Component) {
+	  _inherits(UpcomingVideos, _Component);
+
+	  function UpcomingVideos(props) {
+	    _classCallCheck(this, UpcomingVideos);
+
+	    _get(Object.getPrototypeOf(UpcomingVideos.prototype), 'constructor', this).call(this, props);
+	    this.componentDidUpdate = this.componentDidUpdate.bind(this);
+	  }
+
+	  _createClass(UpcomingVideos, [{
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      if (this.props.skipping) {
+	        console.log('UpcomingVideos:componentDidUpdate:Scroll');
+	        this.refs.overflow.scrollTop = 0;
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var upcoming = null;
+	      var videos = this.props.upcomingVideos;
+	      if (videos.length > 0) {
+	        upcoming = videos.map(function (video, i) {
+	          return _react2['default'].createElement(_PlaylistItem2['default'], { title: video.title,
+	            thumb: video.thumb,
+	            user: video.user,
+	            key: video.id + i });
+	        });
+	      }
+	      return _react2['default'].createElement(
+	        'div',
+	        { id: 'tt-upcoming-videos-container', className: 'tt-playlist-container tt-sideways-container' },
+	        _react2['default'].createElement(
+	          'h2',
+	          { className: 'tt-sideways' },
+	          'upcoming'
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'tt-overflow-container', ref: 'overflow' },
+	          _react2['default'].createElement(
+	            'ul',
+	            { id: 'tt-upcoming-videos', className: 'tt-playlist' },
+	            upcoming
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return UpcomingVideos;
+	})(_react.Component);
+
+	exports['default'] = UpcomingVideos;
+	module.exports = exports['default'];
+
+/***/ },
+/* 408 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);

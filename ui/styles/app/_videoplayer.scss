@@ -11,18 +11,16 @@
 }
 
 #tt-welcome-message {
-  
-  
   position: absolute;
   top: 30%;
   left: 15%;
 
   p {
     margin: 0;
-  }  
+  }
 
   .tt-indent {
-    margin-left: 40px;    
+    margin-left: 40px;
   }
 
   .tt-code {
@@ -47,7 +45,6 @@
 
 .tt-playlist-container {
   height: 100%;
-  padding-left: 40px;
 }
 
 .tt-playlist {
@@ -62,6 +59,7 @@
   h4 {
     position: absolute;
     top: 5px;
+    font-size: $mainFontSize;
     left: 75px;
     margin: 0;
   }
@@ -75,7 +73,7 @@
 }
 
 .tt-playlistitem-meta {
-
+  font-size: $smallFontSize;
   position: absolute;
   bottom: 5px;
   left: 75px;

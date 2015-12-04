@@ -11,10 +11,9 @@ export default class UpcomingVideos extends Component {
   }
 
   componentDidUpdate() {
-    let node = {};
     if(this.props.skipping) {
-      node = ReactDOM.findDOMNode(this);
-      node.scrollTop = 0; 
+      console.log('UpcomingVideos:componentDidUpdate:Scroll');
+      this.refs.overflow.scrollTop = 0;
     }
   }
 
@@ -34,7 +33,7 @@ export default class UpcomingVideos extends Component {
     return (
       <div id="tt-upcoming-videos-container" className="tt-playlist-container tt-sideways-container">
         <h2 className="tt-sideways">upcoming</h2>
-        <div className="tt-overflow-container">
+        <div className="tt-overflow-container" ref="overflow">
           <ul id="tt-upcoming-videos" className="tt-playlist">
             {upcoming}
           </ul>

@@ -18,6 +18,10 @@ export default class PreviousVideos extends Component {
         <p className="tt-indent">
            <span className="tt-code">/skip</span>
         </p>
+        <p>help (see these commands)</p>
+        <p className="tt-indent">
+           <span className="tt-code">/help</span>
+        </p>
         <p>have fun!</p>
       </div>
     );

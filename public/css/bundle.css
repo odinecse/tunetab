@@ -2477,23 +2477,32 @@ input {
 
 .tt-overflow-container {
   overflow-y: scroll;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  height: 100%; }
 
 .tt-sideways-container {
-  position: relative; }
+  position: relative;
+  padding-left: 40px;
+  overflow: hidden; }
 
 .tt-sideways {
+  height: 40px;
   position: absolute;
-  bottom: -6px;
-  left: 22px;
-  padding: 0;
+  bottom: 0;
+  line-height: 2;
+  left: 0;
+  font-size: 18px;
+  padding: 0 0 0 10px;
   margin: 0;
-  -webkit-transform: rotate(270deg);
-      -ms-transform: rotate(270deg);
-          transform: rotate(270deg);
-  -webkit-transform-origin: left;
-      -ms-transform-origin: left;
-          transform-origin: left; }
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -webkit-transform: translate(0, 100%) rotate(270deg);
+      -ms-transform: translate(0, 100%) rotate(270deg);
+          transform: translate(0, 100%) rotate(270deg);
+  -webkit-transform-origin: 0 0;
+      -ms-transform-origin: 0 0;
+          transform-origin: 0 0; }
 
 #tt-msg-container {
   position: absolute;
@@ -2524,22 +2533,33 @@ input {
   bottom: 0; }
 
 #tt-chatform {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
   height: 100%;
   position: relative; }
 
 #tt-chatform-alias {
-  position: absolute;
-  bottom: 5px;
-  left: 5px; }
+  height: 100%;
+  margin-right: 6px;
+  margin-left: 5px; }
 
 #tt-chatform-alias .tt-alias {
   margin-right: 3px; }
 
 #tt-chatform-input {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
   height: 100%;
-  width: 100%;
-  padding-left: 120px;
-  padding-bottom: 6px; }
+  padding-bottom: 11px; }
 
 #tt-previous-videos-container {
   color: #6ad7d3; }
@@ -2580,8 +2600,7 @@ input {
     text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 8px #fff, 0 0 11px #B6FF00, 0 0 14px #B6FF00, 0 0 19px #B6FF00, 0 0 25px #B6FF00, 0 0 33px #B6FF00; } }
 
 .tt-playlist-container {
-  height: 100%;
-  padding-left: 40px; }
+  height: 100%; }
 
 .tt-playlist {
   margin: 0;
@@ -2593,6 +2612,7 @@ input {
   .tt-playlistitem h4 {
     position: absolute;
     top: 5px;
+    font-size: 14px;
     left: 75px;
     margin: 0; }
 
@@ -2603,6 +2623,7 @@ input {
   height: 50px; }
 
 .tt-playlistitem-meta {
+  font-size: 10px;
   position: absolute;
   bottom: 5px;
   left: 75px; }

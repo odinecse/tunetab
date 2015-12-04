@@ -5,22 +5,22 @@
   bottom: 0;
   left: 0;
   right: 2px;
-  width: 100%; 
+  width: 100%;
 }
 
 #tt-msg {
   height: 100%;
   padding: 5px;
-  margin: 0; 
+  margin: 0;
 }
 
 .tt-msg-alias {
   margin-right: 6px;
-  font-weight: 600; 
+  font-weight: 600;
 }
 
 .tt-msg-alias::after {
-  content: ":"; 
+  content: ":";
 }
 
 #tt-chatform-container {
@@ -32,14 +32,16 @@
 }
 
 #tt-chatform {
+  display: flex;
+  flex-direction: row;
   height: 100%;
   position: relative;
 }
 
 #tt-chatform-alias {
-  position: absolute;
-  bottom: 5px;
-  left: 5px;
+  height: 100%;
+  margin-right: 6px;
+  margin-left: 5px;
 }
 
 #tt-chatform-alias .tt-alias {
@@ -47,8 +49,7 @@
 }
 
 #tt-chatform-input {
+  flex: 1;
   height: 100%;
-  width: 100%;
-  padding-left: 120px;
-  padding-bottom: 6px;
+  padding-bottom: 11px;
 }

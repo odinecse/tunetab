@@ -87,19 +87,28 @@ input {
 
 .tt-overflow-container {
   overflow-y: scroll;
-  overflow-x: hidden;  
+  overflow-x: hidden;
+  height: 100%;
 }
 
 .tt-sideways-container {
   position: relative;
+  padding-left: 40px;
+  overflow: hidden;
 }
 
 .tt-sideways {
+  height: 40px;
   position: absolute;
-  bottom: -6px;
-  left: 22px;
-  padding: 0;
+  bottom: 0;
+  line-height: 2;
+  left: 0;
+  font-size: $headingFontSize;
+  padding: 0 0 0 10px;
   margin: 0;
-  transform: rotate(270deg);
-  transform-origin: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transform: translate(0,100%) rotate(270deg);
+  transform-origin: 0 0;
 }

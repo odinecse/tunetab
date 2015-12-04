@@ -13,10 +13,9 @@ export default class PreviousVideos extends Component {
   }
 
   componentDidUpdate() {
-    let node = {}
     if(this.props.skipping || init) {
-      node = ReactDOM.findDOMNode(this);
-      node.scrollTop = node.scrollHeight;
+      console.log('PreviousVideos:componentDidUpdate:Scroll')
+      this.refs.overflow.scrollTop = this.refs.overflow.scrollHeight;
       init = false;
     }
   }
@@ -37,7 +36,7 @@ export default class PreviousVideos extends Component {
     return (
       <div id="tt-previous-videos-container" className="tt-playlist-container tt-sideways-container">
         <h2 className="tt-sideways">previous</h2>
-        <div className="tt-overflow-container">
+        <div className="tt-overflow-container" ref="overflow">
           <ul id="tt-previous-videos" className="tt-playlist">
             {previous}
           </ul>
