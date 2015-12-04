@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import YoutubePlayer from 'react-youtube-player';
 
 import {isEmpty} from '../../helpers';
+import {THE_FACE} from '../../constants';
 import outgoingActions from '../../outgoingActions';
+import WelcomeMessage from './_WelcomeMessage';
 
 var interval = {};
 
@@ -52,8 +54,8 @@ export default class YoutubeContainer extends Component {
   }
 
   render() {
-    let player = null;
-    let title = '( ͡° ͜ʖ ͡°)';
+    let player = <WelcomeMessage />;
+    let title = THE_FACE;
     if(this.props.current) {
       title = this.props.current.title;
       player = <YoutubePlayer ref={(player) => {

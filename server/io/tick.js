@@ -9,7 +9,7 @@ function tickTest(roomVideos, time) {
 	return roomVideos.current !== null && roomVideos.videoTime < time;
 }
 
-function cleanUpMultipleIds(globalData, alias) {
+function cleanUpMultipleIds(room, alias) {
   var users = room.users;
   for(user in users) {
     if(user !== room.socket.id) {

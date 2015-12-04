@@ -8,8 +8,8 @@ socket.on('welcome', function(data){
   dataStore.setVideos({videos: data.videos});
 });
 
-socket.on('aliasChanged', function(data){
-  console.log('SOCKET:ALIASCHANGED', data);
+socket.on('aliasUpdated', function(data){
+  console.log('SOCKET:ALIASUPDATED', data);
   dataStore.setAlias({alias: data.alias});
 });
 

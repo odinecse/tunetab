@@ -25467,12 +25467,12 @@
 	exports.ROOM_ID = ROOM_ID;
 	var COOKIE_NAME = 'tunetab_alias';
 	exports.COOKIE_NAME = COOKIE_NAME;
-	var ERRORS = {
-	  VIDEO_SUBMIT: 'error submitting video...'
-	};
-	exports.ERRORS = ERRORS;
-	var YOUTUBE_RX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
-	exports.YOUTUBE_RX = YOUTUBE_RX;
+	var THE_FACE = '( ͡° ͜ʖ ͡°)';
+	exports.THE_FACE = THE_FACE;
+	var THE_FACE2 = 'ʕ⁰̈●̫⁰̈ʔ';
+	exports.THE_FACE2 = THE_FACE2;
+	var THE_FACE3 = 'ʕ•ᴥ•ʔ';
+	exports.THE_FACE3 = THE_FACE3;
 
 /***/ },
 /* 355 */
@@ -25494,8 +25494,8 @@
 	  _dataStore2['default'].setVideos({ videos: data.videos });
 	});
 
-	socket.on('aliasChanged', function (data) {
-	  console.log('SOCKET:ALIASCHANGED', data);
+	socket.on('aliasUpdated', function (data) {
+	  console.log('SOCKET:ALIASUPDATED', data);
 	  _dataStore2['default'].setAlias({ alias: data.alias });
 	});
 
@@ -25959,14 +25959,35 @@
 
 	function messageActionParser(data) {
 	  var skipRX = /^\/skip/i;
+	  var aliasRX = /^\/alias\s([^(\s|\b)]*)/i;
+	  var submitRX = /^\/submit\s([^(\s|\b)]*)/i;
+	  var youtubeRX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
 
-	  var aliasRX = /^\/submit\s([^(\s|\b)]*)/i;
+	  var aliasMatch = data.msg.match(aliasRX);
+	  var submitMatch = data.msg.match(submitRX);
+	  console.log(aliasMatch, submitMatch);
 
-	  var match = data.msg.match(aliasRX);
-	  console.log(match);
+	  if (submitMatch) {
+	    var videoURL = submitMatch[1];
+	    var videoTest = videoURL.match(youtubeRX);
+	    if (videoTest) {
+	      console.log('/submit', videoTest[1]);
+	      actions.submitVideo({ video: videoTest[1] });
+	    } else {
+	      console.log('error submitting');
+	    }
 
+	    return false;
+	  }
+	  if (aliasMatch) {
+	    console.log('/alias', aliasMatch[1]);
+	    actions.updateAlias({ alias: aliasMatch[1] });
+	    return false;
+	  }
 	  if (skipRX.test(data.msg)) {
-	    console.log('skip');
+	    console.log('/skip');
+	    actions.skipVideo();
+	    return false;
 	  }
 	  return true;
 	}
@@ -26275,9 +26296,15 @@
 
 	var _helpers = __webpack_require__(405);
 
+	var _constants = __webpack_require__(354);
+
 	var _outgoingActions = __webpack_require__(361);
 
 	var _outgoingActions2 = _interopRequireDefault(_outgoingActions);
+
+	var _WelcomeMessage = __webpack_require__(408);
+
+	var _WelcomeMessage2 = _interopRequireDefault(_WelcomeMessage);
 
 	var interval = {};
 
@@ -26340,8 +26367,8 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      var player = null;
-	      var title = '( ͡° ͜ʖ ͡°)';
+	      var player = _react2['default'].createElement(_WelcomeMessage2['default'], null);
+	      var title = _constants.THE_FACE;
 	      if (this.props.current) {
 	        title = this.props.current.title;
 	        player = _react2['default'].createElement(_reactYoutubePlayer2['default'], { ref: function (player) {
@@ -33212,6 +33239,107 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 408 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(193);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var PreviousVideos = (function (_Component) {
+	  _inherits(PreviousVideos, _Component);
+
+	  function PreviousVideos() {
+	    _classCallCheck(this, PreviousVideos);
+
+	    _get(Object.getPrototypeOf(PreviousVideos.prototype), "constructor", this).apply(this, arguments);
+	  }
+
+	  _createClass(PreviousVideos, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2["default"].createElement(
+	        "div",
+	        { id: "tt-welcome-message" },
+	        _react2["default"].createElement(
+	          "p",
+	          null,
+	          "Hi, type these commands in the chat."
+	        ),
+	        _react2["default"].createElement(
+	          "p",
+	          null,
+	          "submit a video"
+	        ),
+	        _react2["default"].createElement(
+	          "p",
+	          { className: "tt-indent" },
+	          _react2["default"].createElement(
+	            "span",
+	            { className: "tt-code" },
+	            "/submit https://youtu.be/RH1ekuvSYzE"
+	          )
+	        ),
+	        _react2["default"].createElement(
+	          "p",
+	          null,
+	          "change your alias"
+	        ),
+	        _react2["default"].createElement(
+	          "p",
+	          { className: "tt-indent" },
+	          _react2["default"].createElement(
+	            "span",
+	            { className: "tt-code" },
+	            "/alias plumbus"
+	          )
+	        ),
+	        _react2["default"].createElement(
+	          "p",
+	          null,
+	          "skip the current video"
+	        ),
+	        _react2["default"].createElement(
+	          "p",
+	          { className: "tt-indent" },
+	          _react2["default"].createElement(
+	            "span",
+	            { className: "tt-code" },
+	            "/skip"
+	          )
+	        ),
+	        _react2["default"].createElement(
+	          "p",
+	          null,
+	          "have fun!"
+	        )
+	      );
+	    }
+	  }]);
+
+	  return PreviousVideos;
+	})(_react.Component);
+
+	exports["default"] = PreviousVideos;
+	module.exports = exports["default"];
 
 /***/ }
 /******/ ]);
