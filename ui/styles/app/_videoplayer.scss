@@ -1,3 +1,22 @@
+#tt-previous-videos-container {
+  color: $previousVideoColor;
+}
+
+#tt-ytplayer-container {
+  color: $currentVideoColor;
+}
+
+#tt-upcoming-videos-container {
+  color: $upcomingVideoColor;
+}
+
+
+
+.tt-playlist-container {
+  height: 100%;
+  padding-left: 40px;
+}
+
 .tt-playlist {
   margin: 0;
   padding: 0;
@@ -6,7 +25,6 @@
 .tt-playlistitem {
   position: relative;
   height: 50px;
-  border-bottom: 1px solid $borderColor;
 
   h4 {
     position: absolute;
@@ -24,8 +42,10 @@
 }
 
 .tt-playlistitem-meta {
-  font-size: $fontsizeSmaller;
+
   position: absolute;
   bottom: 5px;
   left: 75px;
 }
+
+

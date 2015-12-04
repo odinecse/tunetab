@@ -1,0 +1,54 @@
+#tt-msg-container {
+  position: absolute;
+  margin-bottom: 30px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 2px;
+  width: 100%; 
+}
+
+#tt-msg {
+  height: 100%;
+  padding: 5px;
+  margin: 0; 
+}
+
+.tt-msg-alias {
+  margin-right: 6px;
+  font-weight: 600; 
+}
+
+.tt-msg-alias::after {
+  content: ":"; 
+}
+
+#tt-chatform-container {
+  background-color: $chatBG;
+  height: 25px;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
+#tt-chatform {
+  height: 100%;
+  position: relative;
+}
+
+#tt-chatform-alias {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+}
+
+#tt-chatform-alias .tt-alias {
+  margin-right: 3px;
+}
+
+#tt-chatform-input {
+  height: 100%;
+  width: 100%;
+  padding-left: 120px;
+  padding-bottom: 6px;
+}

@@ -1,62 +1,27 @@
 html {
   min-height: 100%;
   height: 100%;
-  background-color: $backgroundColor;
+  background-color: $mainBG;
 
   body {
     @extend html;
-    color: #fafafa;
+    color: $chatColor;
     font-family: $fontStack;
-    font-size: $fontsizeMain;
+    font-size: $mainFontSize;
   }
 }
 
 ul, ol {
   list-style: none;
+
 }
 
-.tt-input {
-  height: 18px;
-  font-size: 12px;
-  background-color: $backgroundInput;
+input {
+  background-color: $chatBG;
   border: none;
-
   &:focus {
     outline: none;
   }
-}
-
-a {
-  color: $aColor;
-  text-decoration: none;
-}
-
-a.disabled {
-  color: $aColorDisabled;
-  pointer-events: none;
-  cursor: default;
-}
-
-.tt-btn {
-  font-size: $fontsizeSmaller;
-  margin-left: 12px;
-
-  .fa {
-    margin-right: 3px;
-  }
-}
-
-.tt-btn.tt-btn-big {
-  font-size: $fontsizeBig;
-  margin-left: 12px;
-
-  .fa {
-    margin-right: 6px;
-  }
-}
-
-.tt-small-txt {
-  font-size: 10px;
 }
 
 #tunetab,
@@ -64,6 +29,7 @@ a.disabled {
   height: 100%;
   width: 100%;
   clear: both;
+  position: relative;
 }
 
 #tunetab {
@@ -75,53 +41,65 @@ a.disabled {
 
 }
 
-.tt-overflow-container {
-  overflow-y: scroll;
-  overflow-x: hidden;  
+#tt-chat-container {
+  background-color: $chatBG;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 33.33%;
 }
 
 #tt-chat {
+  position: relative;
   height: 100%;
-  position: fixed;
-  width: 33.33%;
-  top:0;
-  right: 0;
+  width: 100%;
 }
 
-#tt-videoplayer {
+#tt-videoplayer-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 66.66%;
   height: 100%;
-  background-color: $backgroundColor2;
+}
+
+#tt-videoplayer {
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 #tt-ytplayer-container {
-  background-color: $backgroundVideoPlayer;
-  padding-bottom: 50px;
-  position: relative;
   height: 55%;
   width: 100%;
 }
 
 #tt-previous-videos-container {
   height: 20%;
-  background-color: $backgroundPlaylist;
   width: 100%;
-}
-
-#tt-videoplayer-funct {
-  height: 50px;
-  position: absolute;
-  padding: 10px;
-  bottom: 0;
-  left: 0;
-  width: 100%; 
 }
 
 #tt-upcoming-videos-container {
   height: 25%;
-  background-color: $backgroundPlaylist;
   width: 100%;
+}
+
+.tt-overflow-container {
+  overflow-y: scroll;
+  overflow-x: hidden;  
+}
+
+.tt-sideways-container {
+  position: relative;
+}
+
+.tt-sideways {
+  position: absolute;
+  bottom: -6px;
+  left: 22px;
+  padding: 0;
+  margin: 0;
+  transform: rotate(270deg);
+  transform-origin: left;
 }

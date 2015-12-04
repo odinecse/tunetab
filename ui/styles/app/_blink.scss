@@ -1,8 +1,0 @@
-.tt-blink {
-  animation: blink 500ms steps(5, start) 2;
-}
-@keyframes blink {
-  to {
-    visibility: hidden;
-  }
-}

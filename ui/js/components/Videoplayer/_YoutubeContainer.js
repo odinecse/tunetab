@@ -53,7 +53,7 @@ export default class YoutubeContainer extends Component {
 
   render() {
     let player = null;
-    let title = '_';
+    let title = '( ͡° ͜ʖ ͡°)';
     if(this.props.current) {
       title = this.props.current.title;
       player = <YoutubePlayer ref={(player) => {
@@ -81,7 +81,7 @@ export default class YoutubeContainer extends Component {
                               playbackState='playing' />
     }
     return (
-      <div id="tt-ytplayer-container">
+      <div id="tt-ytplayer-container" className="tt-sideways-container">
         <h1 className="tt-sideways">{title}</h1>
         {player}
       </div>

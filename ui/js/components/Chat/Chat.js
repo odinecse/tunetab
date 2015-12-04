@@ -10,9 +10,11 @@ export default class Chat extends Component {
 
   render() {
     return (
-      <div id="tt-chat">  
-        <Messages messages={this.props.messages} alias={this.props.alias} />
-        <Chatform alias={this.props.alias} />
+      <div id="tt-chat-container">
+        <div id="tt-chat">
+          <Messages messages={this.props.messages} alias={this.props.alias} />
+          <Chatform alias={this.props.alias} />
+        </div>
       </div>
     );
   }

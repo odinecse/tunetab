@@ -25595,9 +25595,13 @@
 	    value: function render() {
 	      return _react2['default'].createElement(
 	        'div',
-	        { id: 'tt-chat' },
-	        _react2['default'].createElement(_Messages2['default'], { messages: this.props.messages, alias: this.props.alias }),
-	        _react2['default'].createElement(_Chatform2['default'], { alias: this.props.alias })
+	        { id: 'tt-chat-container' },
+	        _react2['default'].createElement(
+	          'div',
+	          { id: 'tt-chat' },
+	          _react2['default'].createElement(_Messages2['default'], { messages: this.props.messages, alias: this.props.alias }),
+	          _react2['default'].createElement(_Chatform2['default'], { alias: this.props.alias })
+	        )
 	      );
 	    }
 	  }]);
@@ -25838,9 +25842,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactDom = __webpack_require__(349);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
 	var _outgoingActions = __webpack_require__(361);
 
 	var _outgoingActions2 = _interopRequireDefault(_outgoingActions);
+
+	var init = true;
 
 	var Chatform = (function (_Component) {
 	  _inherits(Chatform, _Component);
@@ -25852,8 +25862,10 @@
 	    this.handleChange = this.handleChange.bind(this);
 	    this.send = this.send.bind(this);
 	    this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
+
 	    this.state = {
-	      msg: ''
+	      msg: '',
+	      width: 130
 	    };
 	  }
 
@@ -25886,31 +25898,37 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var styles = { paddingLeft: this.state.width };
 	      return _react2['default'].createElement(
 	        'div',
-	        { id: 'tt-chatform', className: 'cf' },
+	        { id: 'tt-chatform-container', className: 'cf' },
 	        _react2['default'].createElement(
-	          'span',
-	          { id: 'tt-chatform-alias' },
+	          'div',
+	          { id: 'tt-chatform' },
 	          _react2['default'].createElement(
 	            'span',
-	            { className: 'tt-alias' },
-	            this.props.alias
+	            { id: 'tt-chatform-alias' },
+	            _react2['default'].createElement(
+	              'span',
+	              { className: 'tt-alias', ref: 'alias' },
+	              this.props.alias
+	            ),
+	            _react2['default'].createElement('i', { className: 'fa fa-chevron-right tt-blink' })
 	          ),
-	          _react2['default'].createElement('i', { className: 'fa fa-chevron-right tt-blink' })
-	        ),
-	        _react2['default'].createElement('input', { id: 'tt-chatform-input',
-	          ref: function (input) {
-	            if (input != null) {
-	              input.focus();
-	            }
-	          },
-	          value: this.state.msg,
-	          className: 'tt-input',
-	          onKeyDown: this.handleOnKeyPress,
-	          onChange: this.handleChange,
-	          type: 'text',
-	          autoComplete: 'off' })
+	          _react2['default'].createElement('input', { id: 'tt-chatform-input',
+	            style: styles,
+	            ref: function (input) {
+	              if (input != null) {
+	                input.focus();
+	              }
+	            },
+	            value: this.state.msg,
+	            className: 'tt-input',
+	            onKeyDown: this.handleOnKeyPress,
+	            onChange: this.handleChange,
+	            type: 'text',
+	            autoComplete: 'off' })
+	        )
 	      );
 	    }
 	  }]);
@@ -26050,13 +26068,17 @@
 	    value: function render() {
 	      return _react2['default'].createElement(
 	        'div',
-	        { id: 'tt-videoplayer' },
-	        _react2['default'].createElement(_PreviousVideos2['default'], { previousVideos: this.props.videos.previous,
-	          skipping: this.props.skipping }),
-	        _react2['default'].createElement(_YoutubeContainer2['default'], { current: this.props.videos.current,
-	          videoTime: this.props.videos.videoTime }),
-	        _react2['default'].createElement(_UpcomingVideos2['default'], { upcomingVideos: this.props.videos.upcoming,
-	          skipping: this.props.skipping })
+	        { id: 'tt-videoplayer-container' },
+	        _react2['default'].createElement(
+	          'div',
+	          { id: 'tt-videoplayer' },
+	          _react2['default'].createElement(_PreviousVideos2['default'], { previousVideos: this.props.videos.previous,
+	            skipping: this.props.skipping }),
+	          _react2['default'].createElement(_YoutubeContainer2['default'], { current: this.props.videos.current,
+	            videoTime: this.props.videos.videoTime }),
+	          _react2['default'].createElement(_UpcomingVideos2['default'], { upcomingVideos: this.props.videos.upcoming,
+	            skipping: this.props.skipping })
+	        )
 	      );
 	    }
 	  }]);
@@ -26136,7 +26158,7 @@
 	      }
 	      return _react2['default'].createElement(
 	        'div',
-	        { id: 'tt-previous-videos-container', className: 'tt-playlist-container' },
+	        { id: 'tt-previous-videos-container', className: 'tt-playlist-container tt-sideways-container' },
 	        _react2['default'].createElement(
 	          'h2',
 	          { className: 'tt-sideways' },
@@ -26319,7 +26341,7 @@
 	      var _this2 = this;
 
 	      var player = null;
-	      var title = '_';
+	      var title = '( ͡° ͜ʖ ͡°)';
 	      if (this.props.current) {
 	        title = this.props.current.title;
 	        player = _react2['default'].createElement(_reactYoutubePlayer2['default'], { ref: function (player) {
@@ -26347,7 +26369,7 @@
 	      }
 	      return _react2['default'].createElement(
 	        'div',
-	        { id: 'tt-ytplayer-container' },
+	        { id: 'tt-ytplayer-container', className: 'tt-sideways-container' },
 	        _react2['default'].createElement(
 	          'h1',
 	          { className: 'tt-sideways' },
@@ -33160,7 +33182,7 @@
 	      }
 	      return _react2['default'].createElement(
 	        'div',
-	        { id: 'tt-upcoming-videos-container', className: 'tt-playlist-container' },
+	        { id: 'tt-upcoming-videos-container', className: 'tt-playlist-container tt-sideways-container' },
 	        _react2['default'].createElement(
 	          'h2',
 	          { className: 'tt-sideways' },

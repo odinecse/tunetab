@@ -5,7 +5,7 @@
  * 2. Prevent iOS text size adjust after orientation change, without disabling
  *    user zoom.
  */
-html {
+html, html body {
   font-family: sans-serif;
   /* 1 */
   -ms-text-size-adjust: 100%;
@@ -2407,3 +2407,173 @@ th {
 @keyframes blink {
   to {
     visibility: hidden; } }
+
+html, html body {
+  min-height: 100%;
+  height: 100%;
+  background-color: #100f12; }
+  html body {
+    color: #faf7c2;
+    font-family: Consolas, monaco, monospace;
+    font-size: 14px; }
+
+ul, ol {
+  list-style: none; }
+
+input {
+  background-color: #19171c;
+  border: none; }
+  input:focus {
+    outline: none; }
+
+#tunetab,
+#tt-container {
+  height: 100%;
+  width: 100%;
+  clear: both;
+  position: relative; }
+
+#tunetab {
+  box-sizing: border-box; }
+  #tunetab * {
+    box-sizing: inherit; }
+
+#tt-chat-container {
+  background-color: #19171c;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 33.33%; }
+
+#tt-chat {
+  position: relative;
+  height: 100%;
+  width: 100%; }
+
+#tt-videoplayer-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 66.66%;
+  height: 100%; }
+
+#tt-videoplayer {
+  position: relative;
+  height: 100%;
+  width: 100%; }
+
+#tt-ytplayer-container {
+  height: 55%;
+  width: 100%; }
+
+#tt-previous-videos-container {
+  height: 20%;
+  width: 100%; }
+
+#tt-upcoming-videos-container {
+  height: 25%;
+  width: 100%; }
+
+.tt-overflow-container {
+  overflow-y: scroll;
+  overflow-x: hidden; }
+
+.tt-sideways-container {
+  position: relative; }
+
+.tt-sideways {
+  position: absolute;
+  bottom: -6px;
+  left: 22px;
+  padding: 0;
+  margin: 0;
+  -webkit-transform: rotate(270deg);
+      -ms-transform: rotate(270deg);
+          transform: rotate(270deg);
+  -webkit-transform-origin: left;
+      -ms-transform-origin: left;
+          transform-origin: left; }
+
+#tt-msg-container {
+  position: absolute;
+  margin-bottom: 30px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 2px;
+  width: 100%; }
+
+#tt-msg {
+  height: 100%;
+  padding: 5px;
+  margin: 0; }
+
+.tt-msg-alias {
+  margin-right: 6px;
+  font-weight: 600; }
+
+.tt-msg-alias::after {
+  content: ":"; }
+
+#tt-chatform-container {
+  background-color: #19171c;
+  height: 25px;
+  position: absolute;
+  width: 100%;
+  bottom: 0; }
+
+#tt-chatform {
+  height: 100%;
+  position: relative; }
+
+#tt-chatform-alias {
+  position: absolute;
+  bottom: 5px;
+  left: 5px; }
+
+#tt-chatform-alias .tt-alias {
+  margin-right: 3px; }
+
+#tt-chatform-input {
+  height: 100%;
+  width: 100%;
+  padding-left: 120px;
+  padding-bottom: 6px; }
+
+#tt-previous-videos-container {
+  color: #6ad7d3; }
+
+#tt-ytplayer-container {
+  color: #5cfc82; }
+
+#tt-upcoming-videos-container {
+  color: #deff86; }
+
+.tt-playlist-container {
+  height: 100%;
+  padding-left: 40px; }
+
+.tt-playlist {
+  margin: 0;
+  padding: 0; }
+
+.tt-playlistitem {
+  position: relative;
+  height: 50px; }
+  .tt-playlistitem h4 {
+    position: absolute;
+    top: 5px;
+    left: 75px;
+    margin: 0; }
+
+.tt-playlistitem-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50px; }
+
+.tt-playlistitem-meta {
+  position: absolute;
+  bottom: 5px;
+  left: 75px; }

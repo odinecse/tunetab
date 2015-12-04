@@ -35,7 +35,7 @@ export default class PreviousVideos extends Component {
       }).reverse();
     }
     return (
-      <div id="tt-previous-videos-container" className="tt-playlist-container">
+      <div id="tt-previous-videos-container" className="tt-playlist-container tt-sideways-container">
         <h2 className="tt-sideways">previous</h2>
         <div className="tt-overflow-container">
           <ul id="tt-previous-videos" className="tt-playlist">

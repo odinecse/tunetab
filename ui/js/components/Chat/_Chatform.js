@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 import outgoingActions from '../../outgoingActions';
+
+var init = true;
 
 export default class Chatform extends Component {
 
@@ -9,8 +12,10 @@ export default class Chatform extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.send = this.send.bind(this);
     this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
+    
     this.state = {
       msg: '',
+      width: 130,
     }
   }
 
@@ -38,13 +43,16 @@ export default class Chatform extends Component {
   }
 
   render() {
+    let styles = {paddingLeft: this.state.width};
     return (
-      <div id="tt-chatform" className="cf">
+      <div id="tt-chatform-container" className="cf">
+        <div id="tt-chatform">
           <span id="tt-chatform-alias">
-            <span className="tt-alias">{this.props.alias}</span>
+            <span className="tt-alias" ref="alias">{this.props.alias}</span>
             <i className="fa fa-chevron-right tt-blink"></i>
           </span>
           <input  id="tt-chatform-input"
+                  style={styles}
                   ref={function(input) {
                     if (input != null) {
                       input.focus();
@@ -56,6 +64,7 @@ export default class Chatform extends Component {
                   onChange={this.handleChange}
                   type='text'
                   autoComplete="off" />
+        </div>
       </div>
     );
   }
