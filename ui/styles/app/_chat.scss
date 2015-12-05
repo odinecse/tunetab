@@ -23,6 +23,26 @@
   content: ":";
 }
 
+.tt-msg,
+.tt-msg-user {
+  color: $msgColor;
+}
+.tt-msg-alias-self {
+  color: $msgSelfColor;
+}
+.tt-msg-error {
+  color: $msgErrorColor;
+}
+.tt-msg-notification {
+  color: $msgNotificationColor;
+}
+.tt-msg-help {
+  color: $msgHelpColor;
+}
+.tt-msg-announcement {
+  color: $msgAnnouncementColor;
+}
+
 #tt-chatform-container {
   background-color: $chatBG;
   height: 25px;

@@ -39,7 +39,7 @@ socket.on('notification', function(data){
   console.log('SOCKET:NOTIFICATION', data);
   let d = {
     msg: data.msg,
-    alias: 'notification',
+    alias: 'room',
     type: 'notification'
   };
   dataStore.pushMessage(d);

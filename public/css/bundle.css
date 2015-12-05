@@ -2413,7 +2413,7 @@ html, html body {
   height: 100%;
   background-color: #100f12; }
   html body {
-    color: #faf7c2;
+    color: #deff86;
     font-family: Consolas, monaco, monospace;
     font-size: 14px; }
 
@@ -2524,6 +2524,25 @@ input {
 
 .tt-msg-alias::after {
   content: ":"; }
+
+.tt-msg,
+.tt-msg-user {
+  color: #deff86; }
+
+.tt-msg-alias-self {
+  color: #6ad7d3; }
+
+.tt-msg-error {
+  color: #f86f3f; }
+
+.tt-msg-notification {
+  color: #f7b923; }
+
+.tt-msg-help {
+  color: #5cfc82; }
+
+.tt-msg-announcement {
+  color: #fff664; }
 
 #tt-chatform-container {
   background-color: #19171c;

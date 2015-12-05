@@ -25534,7 +25534,7 @@
 	  console.log('SOCKET:NOTIFICATION', data);
 	  var d = {
 	    msg: data.msg,
-	    alias: 'notification',
+	    alias: 'room',
 	    type: 'notification'
 	  };
 	  _dataStore2['default'].pushMessage(d);
@@ -25579,6 +25579,8 @@
 
 	var _dataStore2 = _interopRequireDefault(_dataStore);
 
+	var _constants = __webpack_require__(354);
+
 	function isUndefined(value) {
 	  return typeof value === "undefined";
 	}
@@ -25593,7 +25595,7 @@
 	}
 
 	function helpMessage() {
-	  var msgs = ['submit video: /submit [youtube]', 'change alias: /alias [alias]', 'skip video: /skip', 'clear chat: /clear'];
+	  var msgs = ['submit video: /submit [youtube]', 'change alias: /alias [alias]', 'skip video: /skip', 'clear chat: /clear', 'share url to invite your frens!', _constants.THE_FACE2];
 	  msgs.forEach(function (msg) {
 	    var d = {
 	      msg: msg,
@@ -25799,13 +25801,12 @@
 	      var currentUserTest = this.props.alias === this.props.userAlias ? true : false;
 	      return _react2['default'].createElement(
 	        'li',
-	        { className: 'tt-msg-item tt-msg-' + this.props.msgType },
+	        { className: (0, _classnames2['default'])('tt-msg-item', 'tt-msg-' + this.props.msgType, {
+	            'tt-msg-alias-self': currentUserTest
+	          }) },
 	        _react2['default'].createElement(
 	          'span',
-	          { className: (0, _classnames2['default'])({
-	              'tt-msg-alias': true,
-	              'tt-msg-alias-self': currentUserTest
-	            }) },
+	          { className: 'tt-msg-alias' },
 	          this.props.alias
 	        ),
 	        this.props.msg
@@ -26075,8 +26076,8 @@
 	    if (validSubmitTest(data.videos.current, video[1])) {
 	      var d = {
 	        msg: _constants.ERRORS.SUBMIT_DUPE,
-	        alias: 'notification',
-	        type: 'notification'
+	        alias: 'error',
+	        type: 'error'
 	      };
 	      _dataStore2['default'].pushMessage(d);
 	    } else {
@@ -26085,8 +26086,8 @@
 	  } else {
 	    var d = {
 	      msg: _constants.ERRORS.SUBMIT_ERROR,
-	      alias: 'notification',
-	      type: 'notification'
+	      alias: 'error',
+	      type: 'error'
 	    };
 	    _dataStore2['default'].pushMessage(d);
 	  }
@@ -26248,8 +26249,11 @@
 	  _createClass(PreviousVideos, [{
 	    key: 'shouldComponentUpdate',
 	    value: function shouldComponentUpdate(nextProps) {
-	      var oneVideo = this.props.previousVideos.slice(-1)[0];
-	      var oneNextVideo = nextProps.previousVideos.slice(-1)[0];
+	      var oneVideo = this.props.previousVideos.slice(0, 1)[0];
+	      var oneNextVideo = nextProps.previousVideos.slice(0, 1)[0];
+	      if (this.props.previousVideos.length !== nextProps.previousVideos.length) {
+	        return true;
+	      }
 	      if ((0, _helpers.isUndefined)(oneVideo)) {
 	        return true;
 	      }
@@ -33270,8 +33274,11 @@
 	  _createClass(UpcomingVideos, [{
 	    key: 'shouldComponentUpdate',
 	    value: function shouldComponentUpdate(nextProps) {
-	      var oneVideo = this.props.upcomingVideos.slice(-1)[0];
-	      var oneNextVideo = nextProps.upcomingVideos.slice(-1)[0];
+	      var oneVideo = this.props.upcomingVideos.slice(0, 1)[0];
+	      var oneNextVideo = nextProps.upcomingVideos.slice(0, 1)[0];
+	      if (this.props.upcomingVideos.length !== nextProps.upcomingVideos.length) {
+	        return true;
+	      }
 	      if ((0, _helpers.isUndefined)(oneVideo)) {
 	        return true;
 	      }

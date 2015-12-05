@@ -13,8 +13,11 @@ export default class UpcomingVideos extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    let oneVideo = this.props.upcomingVideos.slice(-1)[0];
-    let oneNextVideo = nextProps.upcomingVideos.slice(-1)[0];
+    let oneVideo = this.props.upcomingVideos.slice(0, 1)[0];
+    let oneNextVideo = nextProps.upcomingVideos.slice(0, 1)[0];
+    if(this.props.upcomingVideos.length !== nextProps.upcomingVideos.length) {
+      return true
+    }
     if(isUndefined(oneVideo)) {
       return true;
     }

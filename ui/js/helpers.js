@@ -1,4 +1,5 @@
 import dataStore from './dataStore';
+import {THE_FACE2} from './constants';
 
 export function isUndefined(value) {
   return typeof value === "undefined";
@@ -18,7 +19,9 @@ export function helpMessage() {
     'submit video: /submit [youtube]',
     'change alias: /alias [alias]',
     'skip video: /skip',
-    'clear chat: /clear'
+    'clear chat: /clear',
+    'share url to invite your frens!',
+    THE_FACE2
   ];
   msgs.forEach((msg) => {
     let d = {

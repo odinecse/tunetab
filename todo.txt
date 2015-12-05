@@ -1,4 +1,0 @@
-* mute button
-* colorize chat messages
-  * message color for each user... based off ?
-* figure out how to not skip a video if someone is really behind the rest of the clients?

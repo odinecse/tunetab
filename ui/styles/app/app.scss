@@ -5,7 +5,7 @@ html {
 
   body {
     @extend html;
-    color: $chatColor;
+    color: $msgColor;
     font-family: $fontStack;
     font-size: $mainFontSize;
   }

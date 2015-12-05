@@ -13,8 +13,8 @@ function submit(video) {
     if(validSubmitTest(data.videos.current, video[1])) {
       let d = {
         msg: ERRORS.SUBMIT_DUPE,
-        alias: 'notification',
-        type: 'notification'
+        alias: 'error',
+        type: 'error'
       };
       dataStore.pushMessage(d);
     } else {
@@ -23,8 +23,8 @@ function submit(video) {
   } else {
     let d = {
       msg: ERRORS.SUBMIT_ERROR,
-      alias: 'notification',
-      type: 'notification'
+      alias: 'error',
+      type: 'error'
     };
     dataStore.pushMessage(d);
   }
