@@ -5,7 +5,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var applicationIo = require('./server/io/index')(io);
-var APP_PORT = 7076;
+var APP_PORT = 3000;
 
 function getToken(ln) {
   var buf = crypto.randomBytes(ln);

@@ -27,7 +27,6 @@ module.exports = function tick(room) {
       if(tickTest(room.videos, time)) {
         cleanUpMultipleIds(room);
         room.videos.videoTime = time;
-        console.log('videotime: ', room.videos.videoTime);
       }
     }
   }

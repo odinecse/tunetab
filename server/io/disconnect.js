@@ -2,6 +2,7 @@ var helpers = require('../helpers');
 var MESSAGES = require('../constants').MESSAGES;
 
 module.exports = function disconnect(globalData, room) {
+
   return function(){
     // disconnect occasionally misfires of fires before login...
     if(!helpers.isUndefined(room.users)) {
@@ -18,10 +19,10 @@ module.exports = function disconnect(globalData, room) {
           {
             users: room.users,
             userCount: room.userCount,
-          }
-        );
+          });
       }
-      console.log('disconnect');
     }
+
   }
+
 }

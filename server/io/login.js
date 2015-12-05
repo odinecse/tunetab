@@ -33,9 +33,5 @@ module.exports = function login(globalData, room) {
         userCount: room.userCount,
       }
     );
-
-    console.log('LOGIN');
-    console.log('USERSTORE:', globalData.users);
-    console.log('VIDEOSTORE:', globalData.videos);
   }
 }
