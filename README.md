@@ -1,7 +1,7 @@
 # tunetab
 A classy youtube with friends "app". Submit videos, chat, skip ones you don't like. 
 
-Uses node.js, socket.io and react with webpack. Exercise in writing "clean" react code.
+Uses node.js, socket.io and react with babel and webpack. Exercise in writing "clean" react code.
 
 ### install/run
 * `npm install` dependencies 
