@@ -1,5 +1,9 @@
 import dataStore from './dataStore';
 
+export function isUndefined(value) {
+  return typeof value === "undefined";
+}
+
 export function isEmpty(object) {
   for(var key in object) {
     if(object.hasOwnProperty(key)){

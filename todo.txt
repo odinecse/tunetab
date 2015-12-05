@@ -1,5 +1,4 @@
 * mute button
-* figure out a way to scroll previous/upcoming containers only when necessary...
 * colorize chat messages
   * message color for each user... based off ?
-* figure out how to not skip a video if someone is really behind the rest of the clients
+* figure out how to not skip a video if someone is really behind the rest of the clients?

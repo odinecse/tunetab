@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
+import {isUndefined} from '../../helpers';
 import PlaylistItem from './_PlaylistItem';
 
 export default class UpcomingVideos extends Component {
@@ -8,6 +9,21 @@ export default class UpcomingVideos extends Component {
   constructor(props) {
     super(props);
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
+    this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    let oneVideo = this.props.upcomingVideos.slice(-1)[0];
+    let oneNextVideo = nextProps.upcomingVideos.slice(-1)[0];
+    if(isUndefined(oneVideo)) {
+      return true;
+    }
+    if(!isUndefined(oneVideo) && !isUndefined(oneNextVideo)) {
+      if(oneVideo.id === oneNextVideo.id) {
+        return false;
+      }
+    }
+    return true;
   }
 
   componentDidUpdate() {

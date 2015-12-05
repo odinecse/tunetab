@@ -24870,11 +24870,11 @@
 
 	var _constants = __webpack_require__(354);
 
-	var _ChatChat = __webpack_require__(356);
+	var _ChatChat = __webpack_require__(357);
 
 	var _ChatChat2 = _interopRequireDefault(_ChatChat);
 
-	var _VideoplayerVideoplayer = __webpack_require__(362);
+	var _VideoplayerVideoplayer = __webpack_require__(364);
 
 	var _VideoplayerVideoplayer2 = _interopRequireDefault(_VideoplayerVideoplayer);
 
@@ -25490,7 +25490,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _helpers = __webpack_require__(405);
+	var _helpers = __webpack_require__(356);
 
 	var _dataStore = __webpack_require__(352);
 
@@ -25569,6 +25569,50 @@
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
+	exports.isUndefined = isUndefined;
+	exports.isEmpty = isEmpty;
+	exports.helpMessage = helpMessage;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _dataStore = __webpack_require__(352);
+
+	var _dataStore2 = _interopRequireDefault(_dataStore);
+
+	function isUndefined(value) {
+	  return typeof value === "undefined";
+	}
+
+	function isEmpty(object) {
+	  for (var key in object) {
+	    if (object.hasOwnProperty(key)) {
+	      return false;
+	    }
+	  }
+	  return true;
+	}
+
+	function helpMessage() {
+	  var msgs = ['submit video: /submit [youtube]', 'change alias: /alias [alias]', 'skip video: /skip', 'clear chat: /clear'];
+	  msgs.forEach(function (msg) {
+	    var d = {
+	      msg: msg,
+	      alias: 'help',
+	      type: 'help'
+	    };
+	    _dataStore2['default'].pushMessage(d);
+	  });
+	}
+
+/***/ },
+/* 357 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -25584,11 +25628,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Messages = __webpack_require__(357);
+	var _Messages = __webpack_require__(358);
 
 	var _Messages2 = _interopRequireDefault(_Messages);
 
-	var _Chatform = __webpack_require__(360);
+	var _Chatform = __webpack_require__(361);
 
 	var _Chatform2 = _interopRequireDefault(_Chatform);
 
@@ -25624,7 +25668,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 357 */
+/* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25651,7 +25695,7 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _Message = __webpack_require__(358);
+	var _Message = __webpack_require__(359);
 
 	var _Message2 = _interopRequireDefault(_Message);
 
@@ -25713,7 +25757,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 358 */
+/* 359 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25736,7 +25780,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _classnames = __webpack_require__(359);
+	var _classnames = __webpack_require__(360);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -25776,10 +25820,10 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 359 */
+/* 360 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	  Copyright (c) 2015 Jed Watson.
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
@@ -25820,9 +25864,9 @@
 			module.exports = classNames;
 		} else if (true) {
 			// register as 'classnames', consistent with npm package name
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
 				return classNames;
-			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		} else {
 			window.classNames = classNames;
 		}
@@ -25830,7 +25874,7 @@
 
 
 /***/ },
-/* 360 */
+/* 361 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25857,7 +25901,7 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _outgoingActions = __webpack_require__(361);
+	var _outgoingActions = __webpack_require__(362);
 
 	var _outgoingActions2 = _interopRequireDefault(_outgoingActions);
 
@@ -25945,7 +25989,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 361 */
+/* 362 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25956,7 +26000,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _messageActionParser = __webpack_require__(409);
+	var _messageActionParser = __webpack_require__(363);
 
 	var _messageActionParser2 = _interopRequireDefault(_messageActionParser);
 
@@ -25997,7 +26041,98 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 362 */
+/* 363 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports['default'] = messageActionParser;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _outgoingActions = __webpack_require__(362);
+
+	var _outgoingActions2 = _interopRequireDefault(_outgoingActions);
+
+	var _dataStore = __webpack_require__(352);
+
+	var _dataStore2 = _interopRequireDefault(_dataStore);
+
+	var _helpers = __webpack_require__(356);
+
+	var _constants = __webpack_require__(354);
+
+	function validSubmitTest(currentVideo, videoId) {
+	  return currentVideo !== null && videoId === currentVideo.id;
+	}
+
+	function submit(video) {
+	  var data = _dataStore2['default'].getData();
+	  if (video) {
+	    if (validSubmitTest(data.videos.current, video[1])) {
+	      var d = {
+	        msg: _constants.ERRORS.SUBMIT_DUPE,
+	        alias: 'notification',
+	        type: 'notification'
+	      };
+	      _dataStore2['default'].pushMessage(d);
+	    } else {
+	      _outgoingActions2['default'].submitVideo({ video: video[1] });
+	    }
+	  } else {
+	    var d = {
+	      msg: _constants.ERRORS.SUBMIT_ERROR,
+	      alias: 'notification',
+	      type: 'notification'
+	    };
+	    _dataStore2['default'].pushMessage(d);
+	  }
+	}
+
+	function messageActionParser(data) {
+	  var msg = data.msg;
+	  var skipRX = /^\/skip/i;
+	  var helpRX = /^\/help/i;
+	  var clearRX = /^\/clear/i;
+	  var aliasRX = /^\/alias\s([^(\s|\b)]*)/i;
+	  var submitRX = /^\/submit\s([^(\s|\b)]*)/i;
+	  var youtubeRX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+
+	  var aliasMatch = msg.match(aliasRX);
+	  var submitMatch = msg.match(submitRX);
+
+	  if (submitMatch) {
+	    var videoURL = submitMatch[1];
+	    var videoTest = videoURL.match(youtubeRX);
+	    submit(videoTest);
+	    return false;
+	  }
+	  if (aliasMatch) {
+	    _outgoingActions2['default'].updateAlias({ alias: aliasMatch[1] });
+	    return false;
+	  }
+	  if (skipRX.test(msg)) {
+	    _outgoingActions2['default'].skipVideo();
+	    return false;
+	  }
+	  if (helpRX.test(msg)) {
+	    (0, _helpers.helpMessage)();
+	    return false;
+	  }
+	  if (clearRX.test(msg)) {
+	    _dataStore2['default'].clearMessages();
+	    return false;
+	  }
+	  return true;
+	}
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 364 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26020,11 +26155,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _PreviousVideos = __webpack_require__(363);
+	var _PreviousVideos = __webpack_require__(365);
 
 	var _PreviousVideos2 = _interopRequireDefault(_PreviousVideos);
 
-	var _YoutubeContainer = __webpack_require__(365);
+	var _YoutubeContainer = __webpack_require__(367);
 
 	var _YoutubeContainer2 = _interopRequireDefault(_YoutubeContainer);
 
@@ -26066,7 +26201,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 363 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26093,7 +26228,9 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _PlaylistItem = __webpack_require__(364);
+	var _helpers = __webpack_require__(356);
+
+	var _PlaylistItem = __webpack_require__(366);
 
 	var _PlaylistItem2 = _interopRequireDefault(_PlaylistItem);
 
@@ -26105,9 +26242,25 @@
 
 	    _get(Object.getPrototypeOf(PreviousVideos.prototype), 'constructor', this).call(this, props);
 	    this.componentDidUpdate = this.componentDidUpdate.bind(this);
+	    this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
 	  }
 
 	  _createClass(PreviousVideos, [{
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate(nextProps) {
+	      var oneVideo = this.props.previousVideos.slice(-1)[0];
+	      var oneNextVideo = nextProps.previousVideos.slice(-1)[0];
+	      if ((0, _helpers.isUndefined)(oneVideo)) {
+	        return true;
+	      }
+	      if (!(0, _helpers.isUndefined)(oneVideo) && !(0, _helpers.isUndefined)(oneNextVideo)) {
+	        if (oneVideo.id === oneNextVideo.id) {
+	          return false;
+	        }
+	      }
+	      return true;
+	    }
+	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
 	      this.refs.overflow.scrollTop = this.refs.overflow.scrollHeight;
@@ -26154,7 +26307,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 364 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26216,7 +26369,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 365 */
+/* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26239,7 +26392,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactYoutubePlayer = __webpack_require__(366);
+	var _reactYoutubePlayer = __webpack_require__(368);
 
 	var _reactYoutubePlayer2 = _interopRequireDefault(_reactYoutubePlayer);
 
@@ -26247,11 +26400,11 @@
 
 	var _dataStore2 = _interopRequireDefault(_dataStore);
 
-	var _helpers = __webpack_require__(405);
+	var _helpers = __webpack_require__(356);
 
 	var _constants = __webpack_require__(354);
 
-	var _outgoingActions = __webpack_require__(361);
+	var _outgoingActions = __webpack_require__(362);
 
 	var _outgoingActions2 = _interopRequireDefault(_outgoingActions);
 
@@ -26360,12 +26513,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 366 */
+/* 368 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _lodashLangIsString2 = __webpack_require__(367);
+	var _lodashLangIsString2 = __webpack_require__(369);
 
 	var _lodashLangIsString3 = _interopRequireDefault(_lodashLangIsString2);
 
@@ -26385,11 +26538,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _youtubePlayer = __webpack_require__(369);
+	var _youtubePlayer = __webpack_require__(371);
 
 	var _youtubePlayer2 = _interopRequireDefault(_youtubePlayer);
 
-	var _isNumeric = __webpack_require__(404);
+	var _isNumeric = __webpack_require__(406);
 
 	var _isNumeric2 = _interopRequireDefault(_isNumeric);
 
@@ -26720,10 +26873,10 @@
 
 
 /***/ },
-/* 367 */
+/* 369 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObjectLike = __webpack_require__(368);
+	var isObjectLike = __webpack_require__(370);
 
 	/** `Object#toString` result references. */
 	var stringTag = '[object String]';
@@ -26761,7 +26914,7 @@
 
 
 /***/ },
-/* 368 */
+/* 370 */
 /***/ function(module, exports) {
 
 	/**
@@ -26779,16 +26932,16 @@
 
 
 /***/ },
-/* 369 */
+/* 371 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _lodashCollectionForEach2 = __webpack_require__(370);
+	var _lodashCollectionForEach2 = __webpack_require__(372);
 
 	var _lodashCollectionForEach3 = _interopRequireDefault(_lodashCollectionForEach2);
 
-	var _lodashStringCapitalize2 = __webpack_require__(395);
+	var _lodashStringCapitalize2 = __webpack_require__(397);
 
 	var _lodashStringCapitalize3 = _interopRequireDefault(_lodashStringCapitalize2);
 
@@ -26796,23 +26949,23 @@
 	    value: true
 	});
 
-	var _sister = __webpack_require__(397);
+	var _sister = __webpack_require__(399);
 
 	var _sister2 = _interopRequireDefault(_sister);
 
-	var _bluebird = __webpack_require__(398);
+	var _bluebird = __webpack_require__(400);
 
 	var _bluebird2 = _interopRequireDefault(_bluebird);
 
-	var _functionNames = __webpack_require__(400);
+	var _functionNames = __webpack_require__(402);
 
 	var _functionNames2 = _interopRequireDefault(_functionNames);
 
-	var _eventNames = __webpack_require__(401);
+	var _eventNames = __webpack_require__(403);
 
 	var _eventNames2 = _interopRequireDefault(_eventNames);
 
-	var _loadYouTubeIframeAPI = __webpack_require__(402);
+	var _loadYouTubeIframeAPI = __webpack_require__(404);
 
 	var _loadYouTubeIframeAPI2 = _interopRequireDefault(_loadYouTubeIframeAPI);
 
@@ -26944,12 +27097,12 @@
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 370 */
+/* 372 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrayEach = __webpack_require__(371),
-	    baseEach = __webpack_require__(372),
-	    createForEach = __webpack_require__(392);
+	var arrayEach = __webpack_require__(373),
+	    baseEach = __webpack_require__(374),
+	    createForEach = __webpack_require__(394);
 
 	/**
 	 * Iterates over elements of `collection` invoking `iteratee` for each element.
@@ -26987,7 +27140,7 @@
 
 
 /***/ },
-/* 371 */
+/* 373 */
 /***/ function(module, exports) {
 
 	/**
@@ -27015,11 +27168,11 @@
 
 
 /***/ },
-/* 372 */
+/* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseForOwn = __webpack_require__(373),
-	    createBaseEach = __webpack_require__(391);
+	var baseForOwn = __webpack_require__(375),
+	    createBaseEach = __webpack_require__(393);
 
 	/**
 	 * The base implementation of `_.forEach` without support for callback
@@ -27036,11 +27189,11 @@
 
 
 /***/ },
-/* 373 */
+/* 375 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseFor = __webpack_require__(374),
-	    keys = __webpack_require__(378);
+	var baseFor = __webpack_require__(376),
+	    keys = __webpack_require__(380);
 
 	/**
 	 * The base implementation of `_.forOwn` without support for callback
@@ -27059,10 +27212,10 @@
 
 
 /***/ },
-/* 374 */
+/* 376 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var createBaseFor = __webpack_require__(375);
+	var createBaseFor = __webpack_require__(377);
 
 	/**
 	 * The base implementation of `baseForIn` and `baseForOwn` which iterates
@@ -27082,10 +27235,10 @@
 
 
 /***/ },
-/* 375 */
+/* 377 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toObject = __webpack_require__(376);
+	var toObject = __webpack_require__(378);
 
 	/**
 	 * Creates a base function for `_.forIn` or `_.forInRight`.
@@ -27115,10 +27268,10 @@
 
 
 /***/ },
-/* 376 */
+/* 378 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(377);
+	var isObject = __webpack_require__(379);
 
 	/**
 	 * Converts `value` to an object if it's not one.
@@ -27135,7 +27288,7 @@
 
 
 /***/ },
-/* 377 */
+/* 379 */
 /***/ function(module, exports) {
 
 	/**
@@ -27169,13 +27322,13 @@
 
 
 /***/ },
-/* 378 */
+/* 380 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(379),
-	    isArrayLike = __webpack_require__(382),
-	    isObject = __webpack_require__(377),
-	    shimKeys = __webpack_require__(386);
+	var getNative = __webpack_require__(381),
+	    isArrayLike = __webpack_require__(384),
+	    isObject = __webpack_require__(379),
+	    shimKeys = __webpack_require__(388);
 
 	/* Native method references for those with the same name as other `lodash` methods. */
 	var nativeKeys = getNative(Object, 'keys');
@@ -27220,10 +27373,10 @@
 
 
 /***/ },
-/* 379 */
+/* 381 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isNative = __webpack_require__(380);
+	var isNative = __webpack_require__(382);
 
 	/**
 	 * Gets the native function at `key` of `object`.
@@ -27242,11 +27395,11 @@
 
 
 /***/ },
-/* 380 */
+/* 382 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isFunction = __webpack_require__(381),
-	    isObjectLike = __webpack_require__(368);
+	var isFunction = __webpack_require__(383),
+	    isObjectLike = __webpack_require__(370);
 
 	/** Used to detect host constructors (Safari > 5). */
 	var reIsHostCtor = /^\[object .+?Constructor\]$/;
@@ -27296,10 +27449,10 @@
 
 
 /***/ },
-/* 381 */
+/* 383 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(377);
+	var isObject = __webpack_require__(379);
 
 	/** `Object#toString` result references. */
 	var funcTag = '[object Function]';
@@ -27340,11 +27493,11 @@
 
 
 /***/ },
-/* 382 */
+/* 384 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getLength = __webpack_require__(383),
-	    isLength = __webpack_require__(385);
+	var getLength = __webpack_require__(385),
+	    isLength = __webpack_require__(387);
 
 	/**
 	 * Checks if `value` is array-like.
@@ -27361,10 +27514,10 @@
 
 
 /***/ },
-/* 383 */
+/* 385 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseProperty = __webpack_require__(384);
+	var baseProperty = __webpack_require__(386);
 
 	/**
 	 * Gets the "length" property value of `object`.
@@ -27382,7 +27535,7 @@
 
 
 /***/ },
-/* 384 */
+/* 386 */
 /***/ function(module, exports) {
 
 	/**
@@ -27402,7 +27555,7 @@
 
 
 /***/ },
-/* 385 */
+/* 387 */
 /***/ function(module, exports) {
 
 	/**
@@ -27428,14 +27581,14 @@
 
 
 /***/ },
-/* 386 */
+/* 388 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArguments = __webpack_require__(387),
-	    isArray = __webpack_require__(388),
-	    isIndex = __webpack_require__(389),
-	    isLength = __webpack_require__(385),
-	    keysIn = __webpack_require__(390);
+	var isArguments = __webpack_require__(389),
+	    isArray = __webpack_require__(390),
+	    isIndex = __webpack_require__(391),
+	    isLength = __webpack_require__(387),
+	    keysIn = __webpack_require__(392);
 
 	/** Used for native method references. */
 	var objectProto = Object.prototype;
@@ -27475,11 +27628,11 @@
 
 
 /***/ },
-/* 387 */
+/* 389 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArrayLike = __webpack_require__(382),
-	    isObjectLike = __webpack_require__(368);
+	var isArrayLike = __webpack_require__(384),
+	    isObjectLike = __webpack_require__(370);
 
 	/** Used for native method references. */
 	var objectProto = Object.prototype;
@@ -27515,12 +27668,12 @@
 
 
 /***/ },
-/* 388 */
+/* 390 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(379),
-	    isLength = __webpack_require__(385),
-	    isObjectLike = __webpack_require__(368);
+	var getNative = __webpack_require__(381),
+	    isLength = __webpack_require__(387),
+	    isObjectLike = __webpack_require__(370);
 
 	/** `Object#toString` result references. */
 	var arrayTag = '[object Array]';
@@ -27561,7 +27714,7 @@
 
 
 /***/ },
-/* 389 */
+/* 391 */
 /***/ function(module, exports) {
 
 	/** Used to detect unsigned integer values. */
@@ -27591,14 +27744,14 @@
 
 
 /***/ },
-/* 390 */
+/* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArguments = __webpack_require__(387),
-	    isArray = __webpack_require__(388),
-	    isIndex = __webpack_require__(389),
-	    isLength = __webpack_require__(385),
-	    isObject = __webpack_require__(377);
+	var isArguments = __webpack_require__(389),
+	    isArray = __webpack_require__(390),
+	    isIndex = __webpack_require__(391),
+	    isLength = __webpack_require__(387),
+	    isObject = __webpack_require__(379);
 
 	/** Used for native method references. */
 	var objectProto = Object.prototype;
@@ -27661,12 +27814,12 @@
 
 
 /***/ },
-/* 391 */
+/* 393 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getLength = __webpack_require__(383),
-	    isLength = __webpack_require__(385),
-	    toObject = __webpack_require__(376);
+	var getLength = __webpack_require__(385),
+	    isLength = __webpack_require__(387),
+	    toObject = __webpack_require__(378);
 
 	/**
 	 * Creates a `baseEach` or `baseEachRight` function.
@@ -27698,11 +27851,11 @@
 
 
 /***/ },
-/* 392 */
+/* 394 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var bindCallback = __webpack_require__(393),
-	    isArray = __webpack_require__(388);
+	var bindCallback = __webpack_require__(395),
+	    isArray = __webpack_require__(390);
 
 	/**
 	 * Creates a function for `_.forEach` or `_.forEachRight`.
@@ -27724,10 +27877,10 @@
 
 
 /***/ },
-/* 393 */
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var identity = __webpack_require__(394);
+	var identity = __webpack_require__(396);
 
 	/**
 	 * A specialized version of `baseCallback` which only supports `this` binding
@@ -27769,7 +27922,7 @@
 
 
 /***/ },
-/* 394 */
+/* 396 */
 /***/ function(module, exports) {
 
 	/**
@@ -27795,10 +27948,10 @@
 
 
 /***/ },
-/* 395 */
+/* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseToString = __webpack_require__(396);
+	var baseToString = __webpack_require__(398);
 
 	/**
 	 * Capitalizes the first character of `string`.
@@ -27822,7 +27975,7 @@
 
 
 /***/ },
-/* 396 */
+/* 398 */
 /***/ function(module, exports) {
 
 	/**
@@ -27841,7 +27994,7 @@
 
 
 /***/ },
-/* 397 */
+/* 399 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -27907,7 +28060,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 398 */
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process, global, setImmediate) {/* @preserve
@@ -32797,10 +32950,10 @@
 
 	},{"./es5.js":14}]},{},[4])(4)
 	});                    ;if (typeof window !== 'undefined' && window !== null) {                               window.P = window.Promise;                                                     } else if (typeof self !== 'undefined' && self !== null) {                             self.P = self.Promise;                                                         }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(192), (function() { return this; }()), __webpack_require__(399).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(192), (function() { return this; }()), __webpack_require__(401).setImmediate))
 
 /***/ },
-/* 399 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(192).nextTick;
@@ -32879,10 +33032,10 @@
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(399).setImmediate, __webpack_require__(399).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(401).setImmediate, __webpack_require__(401).clearImmediate))
 
 /***/ },
-/* 400 */
+/* 402 */
 /***/ function(module, exports) {
 
 	/**
@@ -32898,7 +33051,7 @@
 	//# sourceMappingURL=functionNames.js.map
 
 /***/ },
-/* 401 */
+/* 403 */
 /***/ function(module, exports) {
 
 	/**
@@ -32914,7 +33067,7 @@
 	//# sourceMappingURL=eventNames.js.map
 
 /***/ },
-/* 402 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -32925,11 +33078,11 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _bluebird = __webpack_require__(398);
+	var _bluebird = __webpack_require__(400);
 
 	var _bluebird2 = _interopRequireDefault(_bluebird);
 
-	var _loadScript = __webpack_require__(403);
+	var _loadScript = __webpack_require__(405);
 
 	var _loadScript2 = _interopRequireDefault(_loadScript);
 
@@ -32969,7 +33122,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 403 */
+/* 405 */
 /***/ function(module, exports) {
 
 	
@@ -33040,7 +33193,7 @@
 
 
 /***/ },
-/* 404 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function(root) {
@@ -33070,46 +33223,6 @@
 
 
 /***/ },
-/* 405 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	exports.isEmpty = isEmpty;
-	exports.helpMessage = helpMessage;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _dataStore = __webpack_require__(352);
-
-	var _dataStore2 = _interopRequireDefault(_dataStore);
-
-	function isEmpty(object) {
-	  for (var key in object) {
-	    if (object.hasOwnProperty(key)) {
-	      return false;
-	    }
-	  }
-	  return true;
-	}
-
-	function helpMessage() {
-	  var msgs = ['submit video: /submit [youtube]', 'change alias: /alias [alias]', 'skip video: /skip', 'clear chat: /clear'];
-	  msgs.forEach(function (msg) {
-	    var d = {
-	      msg: msg,
-	      alias: 'help',
-	      type: 'help'
-	    };
-	    _dataStore2['default'].pushMessage(d);
-	  });
-	}
-
-/***/ },
-/* 406 */,
 /* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -33137,7 +33250,9 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _PlaylistItem = __webpack_require__(364);
+	var _helpers = __webpack_require__(356);
+
+	var _PlaylistItem = __webpack_require__(366);
 
 	var _PlaylistItem2 = _interopRequireDefault(_PlaylistItem);
 
@@ -33149,9 +33264,25 @@
 
 	    _get(Object.getPrototypeOf(UpcomingVideos.prototype), 'constructor', this).call(this, props);
 	    this.componentDidUpdate = this.componentDidUpdate.bind(this);
+	    this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
 	  }
 
 	  _createClass(UpcomingVideos, [{
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate(nextProps) {
+	      var oneVideo = this.props.upcomingVideos.slice(-1)[0];
+	      var oneNextVideo = nextProps.upcomingVideos.slice(-1)[0];
+	      if ((0, _helpers.isUndefined)(oneVideo)) {
+	        return true;
+	      }
+	      if (!(0, _helpers.isUndefined)(oneVideo) && !(0, _helpers.isUndefined)(oneNextVideo)) {
+	        if (oneVideo.id === oneNextVideo.id) {
+	          return false;
+	        }
+	      }
+	      return true;
+	    }
+	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
 	      this.refs.overflow.scrollTop = 0;
@@ -33202,97 +33333,6 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 409 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	exports['default'] = messageActionParser;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _outgoingActions = __webpack_require__(361);
-
-	var _outgoingActions2 = _interopRequireDefault(_outgoingActions);
-
-	var _dataStore = __webpack_require__(352);
-
-	var _dataStore2 = _interopRequireDefault(_dataStore);
-
-	var _helpers = __webpack_require__(405);
-
-	var _constants = __webpack_require__(354);
-
-	function validSubmitTest(currentVideo, videoId) {
-	  return currentVideo !== null && videoId === currentVideo.id;
-	}
-
-	function submit(video) {
-	  var data = _dataStore2['default'].getData();
-	  if (video) {
-	    if (validSubmitTest(data.videos.current, video[1])) {
-	      var d = {
-	        msg: _constants.ERRORS.SUBMIT_DUPE,
-	        alias: 'notification',
-	        type: 'notification'
-	      };
-	      _dataStore2['default'].pushMessage(d);
-	    } else {
-	      _outgoingActions2['default'].submitVideo({ video: video[1] });
-	    }
-	  } else {
-	    var d = {
-	      msg: _constants.ERRORS.SUBMIT_ERROR,
-	      alias: 'notification',
-	      type: 'notification'
-	    };
-	    _dataStore2['default'].pushMessage(d);
-	  }
-	}
-
-	function messageActionParser(data) {
-	  var msg = data.msg;
-	  var skipRX = /^\/skip/i;
-	  var helpRX = /^\/help/i;
-	  var clearRX = /^\/clear/i;
-	  var aliasRX = /^\/alias\s([^(\s|\b)]*)/i;
-	  var submitRX = /^\/submit\s([^(\s|\b)]*)/i;
-	  var youtubeRX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
-
-	  var aliasMatch = msg.match(aliasRX);
-	  var submitMatch = msg.match(submitRX);
-
-	  if (submitMatch) {
-	    var videoURL = submitMatch[1];
-	    var videoTest = videoURL.match(youtubeRX);
-	    submit(videoTest);
-	    return false;
-	  }
-	  if (aliasMatch) {
-	    _outgoingActions2['default'].updateAlias({ alias: aliasMatch[1] });
-	    return false;
-	  }
-	  if (skipRX.test(msg)) {
-	    _outgoingActions2['default'].skipVideo();
-	    return false;
-	  }
-	  if (helpRX.test(msg)) {
-	    (0, _helpers.helpMessage)();
-	    return false;
-	  }
-	  if (clearRX.test(msg)) {
-	    _dataStore2['default'].clearMessages();
-	    return false;
-	  }
-	  return true;
-	}
-
-	module.exports = exports['default'];
 
 /***/ }
 /******/ ]);
