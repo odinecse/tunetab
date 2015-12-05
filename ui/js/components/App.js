@@ -7,9 +7,11 @@ import Chat from './Chat/Chat';
 import Videoplayer from './Videoplayer/Videoplayer';
 
 var socket = window.io();
-// use this to show welcome message too...
 var alias = Cookies.get(COOKIE_NAME) || false;
-// kicks off handshake, socket events processed in datastore
+/***
+    kicks off handshake, socket responds with 'welcome' message
+      see incomingActions.js
+**/
 socket.emit('login', {room: ROOM_ID, alias: alias});
 
 export default class App extends Component {
@@ -36,12 +38,9 @@ export default class App extends Component {
   render() {
     return (
       <div id="tt-container">
-        <Videoplayer  videos={this.state.videos}
-                      skipping={this.state.skipping} />
+        <Videoplayer videos={this.state.videos} />
         <Chat alias={this.state.alias}
-              messages={this.state.messages}
-              users={this.state.users}
-              userCount={this.state.userCount} />
+              messages={this.state.messages} />
       </div>
     );
   }

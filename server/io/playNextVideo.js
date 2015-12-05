@@ -20,7 +20,7 @@ module.exports = function playNextVideo(room) {
       room.skipVotes = 0;
       room.videos.videoTime = 0;
       resetUserVotes(room.users);
-      room.io.to(room.socket.id).emit('playVideo', 
+      room.io.to(room.id).emit('playVideo',
         {videos: room.videos});
     }
   }

@@ -11,10 +11,7 @@ export default class UpcomingVideos extends Component {
   }
 
   componentDidUpdate() {
-    if(this.props.skipping) {
-      console.log('UpcomingVideos:componentDidUpdate:Scroll');
-      this.refs.overflow.scrollTop = 0;
-    }
+    this.refs.overflow.scrollTop = 0;
   }
 
   render() {
@@ -31,7 +28,8 @@ export default class UpcomingVideos extends Component {
       });
     }
     return (
-      <div id="tt-upcoming-videos-container" className="tt-playlist-container tt-sideways-container">
+      <div  id="tt-upcoming-videos-container"
+            className="tt-playlist-container tt-sideways-container">
         <h2 className="tt-sideways">upcoming</h2>
         <div className="tt-overflow-container" ref="overflow">
           <ul id="tt-upcoming-videos" className="tt-playlist">
@@ -41,4 +39,5 @@ export default class UpcomingVideos extends Component {
       </div>
     );
   }
+
 }

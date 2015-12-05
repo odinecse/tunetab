@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import YoutubePlayer from 'react-youtube-player';
 
+import dataStore from '../../dataStore';
 import {isEmpty} from '../../helpers';
 import {THE_FACE} from '../../constants';
 import outgoingActions from '../../outgoingActions';
-import WelcomeMessage from './_WelcomeMessage';
 
 var interval = {};
-
 
 // socket will return current = null if last video in playlist, handle it...
 export default class YoutubeContainer extends Component {
@@ -21,9 +20,6 @@ export default class YoutubeContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if(nextProps.skipping) {
-      return true;
-    }
     if(nextProps.current !== null && this.props.current !== null) {
       if(this.props.current.id == nextProps.current.id) {
         return false;
@@ -54,7 +50,7 @@ export default class YoutubeContainer extends Component {
   }
 
   render() {
-    let player = <WelcomeMessage />;
+    let player = null;
     let title = THE_FACE;
     if(this.props.current) {
       title = this.props.current.title;

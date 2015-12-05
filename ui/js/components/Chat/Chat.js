@@ -4,6 +4,7 @@ import Messages from './_Messages';
 import Chatform from './_Chatform';
 
 export default class Chat extends Component {
+
   constructor(props) {
     super(props);
   }
@@ -18,4 +19,5 @@ export default class Chat extends Component {
       </div>
     );
   }
+
 }

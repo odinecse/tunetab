@@ -24879,9 +24879,11 @@
 	var _VideoplayerVideoplayer2 = _interopRequireDefault(_VideoplayerVideoplayer);
 
 	var socket = window.io();
-	// use this to show welcome message too...
 	var alias = _jsCookie2['default'].get(_constants.COOKIE_NAME) || false;
-	// kicks off handshake, socket events processed in datastore
+	/***
+	    kicks off handshake, socket responds with 'welcome' message
+	      see incomingActions.js
+	**/
 	socket.emit('login', { room: _constants.ROOM_ID, alias: alias });
 
 	var App = (function (_Component) {
@@ -24918,12 +24920,9 @@
 	      return _react2['default'].createElement(
 	        'div',
 	        { id: 'tt-container' },
-	        _react2['default'].createElement(_VideoplayerVideoplayer2['default'], { videos: this.state.videos,
-	          skipping: this.state.skipping }),
+	        _react2['default'].createElement(_VideoplayerVideoplayer2['default'], { videos: this.state.videos }),
 	        _react2['default'].createElement(_ChatChat2['default'], { alias: this.state.alias,
-	          messages: this.state.messages,
-	          users: this.state.users,
-	          userCount: this.state.userCount })
+	          messages: this.state.messages })
 	      );
 	    }
 	  }]);
@@ -25103,7 +25102,6 @@
 	  alias: '',
 	  users: {},
 	  userCount: 0,
-	  skipping: false,
 	  videos: {
 	    current: null,
 	    videoTime: 0,
@@ -25130,13 +25128,8 @@
 	    _jsCookie2['default'].set(_constants.COOKIE_NAME, data.alias, { expires: 666 });
 	    dataStore.emit('change');
 	  },
-	  setSkipping: function setSkipping(data) {
-	    _data.skipping = data.skipping;
-	    dataStore.emit('change');
-	  },
 	  setVideos: function setVideos(data) {
 	    _data.videos = data.videos;
-	    _data.skipping = false;
 	    dataStore.emit('change');
 	  },
 	  pushMessage: function pushMessage(data) {
@@ -25145,6 +25138,10 @@
 	      alias: data.alias,
 	      type: data.type
 	    });
+	    dataStore.emit('change');
+	  },
+	  clearMessages: function clearMessages() {
+	    _data.messages = [];
 	    dataStore.emit('change');
 	  },
 	  getData: function getData() {
@@ -25477,7 +25474,13 @@
 	var THE_FACE2 = 'ʕ⁰̈●̫⁰̈ʔ';
 	exports.THE_FACE2 = THE_FACE2;
 	var THE_FACE3 = 'ʕ•ᴥ•ʔ';
+
 	exports.THE_FACE3 = THE_FACE3;
+	var ERRORS = {
+	  SUBMIT_DUPE: '/submit error: can\'t submit save video twice',
+	  SUBMIT_ERROR: 'error submitting'
+	};
+	exports.ERRORS = ERRORS;
 
 /***/ },
 /* 355 */
@@ -25487,6 +25490,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
+	var _helpers = __webpack_require__(405);
+
 	var _dataStore = __webpack_require__(352);
 
 	var _dataStore2 = _interopRequireDefault(_dataStore);
@@ -25495,6 +25500,7 @@
 
 	socket.on('welcome', function (data) {
 	  console.log('SOCKET:WELCOME', data);
+	  (0, _helpers.helpMessage)();
 	  _dataStore2['default'].setAlias({ alias: data.alias });
 	  _dataStore2['default'].setVideos({ videos: data.videos });
 	});
@@ -25535,7 +25541,7 @@
 	});
 
 	socket.on('error', function (data) {
-	  console.log('SOCKET:NOTIFICATION', data);
+	  console.log('SOCKET:ERROR', data);
 	  var d = {
 	    msg: data.msg,
 	    alias: 'error',
@@ -25855,8 +25861,6 @@
 
 	var _outgoingActions2 = _interopRequireDefault(_outgoingActions);
 
-	var init = true;
-
 	var Chatform = (function (_Component) {
 	  _inherits(Chatform, _Component);
 
@@ -25952,75 +25956,11 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _dataStore = __webpack_require__(352);
+	var _messageActionParser = __webpack_require__(409);
 
-	var _dataStore2 = _interopRequireDefault(_dataStore);
+	var _messageActionParser2 = _interopRequireDefault(_messageActionParser);
 
 	var socket = window.io();
-
-	function messageActionParser(data) {
-	  var skipRX = /^\/skip/i;
-	  var helpRX = /^\/help/i;
-	  var aliasRX = /^\/alias\s([^(\s|\b)]*)/i;
-	  var submitRX = /^\/submit\s([^(\s|\b)]*)/i;
-	  var youtubeRX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
-
-	  var aliasMatch = data.msg.match(aliasRX);
-	  var submitMatch = data.msg.match(submitRX);
-
-	  if (submitMatch) {
-	    var videoURL = submitMatch[1];
-	    var videoTest = videoURL.match(youtubeRX);
-	    var _data = _dataStore2['default'].getData();
-	    if (videoTest) {
-	      if (_data.videos.current !== null && videoTest[1] === _data.videos.current.id) {
-	        console.log('/submit error: can\'t submit save video twice');
-	        var d = {
-	          msg: 'can\'t submit same video twice',
-	          alias: 'notification',
-	          type: 'notification'
-	        };
-	        _dataStore2['default'].pushMessage(d);
-	      } else {
-	        console.log('/submit', videoTest[1]);
-	        actions.submitVideo({ video: videoTest[1] });
-	      }
-	    } else {
-	      console.log('/submit error');
-	      var d = {
-	        msg: 'error submitting',
-	        alias: 'notification',
-	        type: 'notification'
-	      };
-	      _dataStore2['default'].pushMessage(d);
-	    }
-	    return false;
-	  }
-	  if (aliasMatch) {
-	    console.log('/alias', aliasMatch[1]);
-	    actions.updateAlias({ alias: aliasMatch[1] });
-	    return false;
-	  }
-	  if (skipRX.test(data.msg)) {
-	    console.log('/skip');
-	    actions.skipVideo();
-	    return false;
-	  }
-	  if (helpRX.test(data.msg)) {
-	    console.log('/help');
-	    var msgs = ['submit video: /submit https://youtu.be/RH1ekuvSYzE', 'change alias: /alias plumbus', 'skip video: /skip'];
-	    msgs.forEach(function (msg) {
-	      var d = {
-	        msg: msg,
-	        alias: 'notification',
-	        type: 'notification'
-	      };
-	      _dataStore2['default'].pushMessage(d);
-	    });
-	    return false;
-	  }
-	  return true;
-	}
 
 	var actions = {
 	  updateAlias: function updateAlias(data) {
@@ -26035,16 +25975,14 @@
 	    socket.emit('submitVideo', { video: data.video });
 	  },
 	  playNextVideo: function playNextVideo(data) {
-	    _dataStore2['default'].setSkipping({ skipping: true });
 	    socket.emit('playNextVideo', { videoId: data.videoId });
 	  },
 	  skipVideo: function skipVideo() {
-	    _dataStore2['default'].setSkipping({ skipping: true });
 	    socket.emit('skipVideo');
 	  },
 	  message: function message(data) {
 	    var msg = {};
-	    if (messageActionParser(data)) {
+	    if ((0, _messageActionParser2['default'])(data)) {
 	      msg = {
 	        alias: data.alias,
 	        msg: data.msg,
@@ -26112,12 +26050,10 @@
 	        _react2['default'].createElement(
 	          'div',
 	          { id: 'tt-videoplayer' },
-	          _react2['default'].createElement(_PreviousVideos2['default'], { previousVideos: this.props.videos.previous,
-	            skipping: this.props.skipping }),
+	          _react2['default'].createElement(_PreviousVideos2['default'], { previousVideos: this.props.videos.previous }),
 	          _react2['default'].createElement(_YoutubeContainer2['default'], { current: this.props.videos.current,
 	            videoTime: this.props.videos.videoTime }),
-	          _react2['default'].createElement(_UpcomingVideos2['default'], { upcomingVideos: this.props.videos.upcoming,
-	            skipping: this.props.skipping })
+	          _react2['default'].createElement(_UpcomingVideos2['default'], { upcomingVideos: this.props.videos.upcoming })
 	        )
 	      );
 	    }
@@ -26161,8 +26097,6 @@
 
 	var _PlaylistItem2 = _interopRequireDefault(_PlaylistItem);
 
-	var init = true;
-
 	var PreviousVideos = (function (_Component) {
 	  _inherits(PreviousVideos, _Component);
 
@@ -26176,11 +26110,7 @@
 	  _createClass(PreviousVideos, [{
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
-	      if (this.props.skipping || init) {
-	        console.log('PreviousVideos:componentDidUpdate:Scroll');
-	        this.refs.overflow.scrollTop = this.refs.overflow.scrollHeight;
-	        init = false;
-	      }
+	      this.refs.overflow.scrollTop = this.refs.overflow.scrollHeight;
 	    }
 	  }, {
 	    key: 'render',
@@ -26197,7 +26127,8 @@
 	      }
 	      return _react2['default'].createElement(
 	        'div',
-	        { id: 'tt-previous-videos-container', className: 'tt-playlist-container tt-sideways-container' },
+	        { id: 'tt-previous-videos-container',
+	          className: 'tt-playlist-container tt-sideways-container' },
 	        _react2['default'].createElement(
 	          'h2',
 	          { className: 'tt-sideways' },
@@ -26312,6 +26243,10 @@
 
 	var _reactYoutubePlayer2 = _interopRequireDefault(_reactYoutubePlayer);
 
+	var _dataStore = __webpack_require__(352);
+
+	var _dataStore2 = _interopRequireDefault(_dataStore);
+
 	var _helpers = __webpack_require__(405);
 
 	var _constants = __webpack_require__(354);
@@ -26319,10 +26254,6 @@
 	var _outgoingActions = __webpack_require__(361);
 
 	var _outgoingActions2 = _interopRequireDefault(_outgoingActions);
-
-	var _WelcomeMessage = __webpack_require__(406);
-
-	var _WelcomeMessage2 = _interopRequireDefault(_WelcomeMessage);
 
 	var interval = {};
 
@@ -26344,9 +26275,6 @@
 	  _createClass(YoutubeContainer, [{
 	    key: 'shouldComponentUpdate',
 	    value: function shouldComponentUpdate(nextProps) {
-	      if (nextProps.skipping) {
-	        return true;
-	      }
 	      if (nextProps.current !== null && this.props.current !== null) {
 	        if (this.props.current.id == nextProps.current.id) {
 	          return false;
@@ -26385,7 +26313,7 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      var player = _react2['default'].createElement(_WelcomeMessage2['default'], null);
+	      var player = null;
 	      var title = _constants.THE_FACE;
 	      if (this.props.current) {
 	        title = this.props.current.title;
@@ -33143,14 +33071,21 @@
 
 /***/ },
 /* 405 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
+	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
 	exports.isEmpty = isEmpty;
+	exports.helpMessage = helpMessage;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _dataStore = __webpack_require__(352);
+
+	var _dataStore2 = _interopRequireDefault(_dataStore);
 
 	function isEmpty(object) {
 	  for (var key in object) {
@@ -33161,122 +33096,20 @@
 	  return true;
 	}
 
-/***/ },
-/* 406 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(193);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var PreviousVideos = (function (_Component) {
-	  _inherits(PreviousVideos, _Component);
-
-	  function PreviousVideos() {
-	    _classCallCheck(this, PreviousVideos);
-
-	    _get(Object.getPrototypeOf(PreviousVideos.prototype), "constructor", this).apply(this, arguments);
-	  }
-
-	  _createClass(PreviousVideos, [{
-	    key: "render",
-	    value: function render() {
-	      return _react2["default"].createElement(
-	        "div",
-	        { id: "tt-welcome-message" },
-	        _react2["default"].createElement(
-	          "p",
-	          null,
-	          "Hi, type these commands in the chat."
-	        ),
-	        _react2["default"].createElement(
-	          "p",
-	          null,
-	          "submit a video"
-	        ),
-	        _react2["default"].createElement(
-	          "p",
-	          { className: "tt-indent" },
-	          _react2["default"].createElement(
-	            "span",
-	            { className: "tt-code" },
-	            "/submit https://youtu.be/RH1ekuvSYzE"
-	          )
-	        ),
-	        _react2["default"].createElement(
-	          "p",
-	          null,
-	          "change your alias"
-	        ),
-	        _react2["default"].createElement(
-	          "p",
-	          { className: "tt-indent" },
-	          _react2["default"].createElement(
-	            "span",
-	            { className: "tt-code" },
-	            "/alias plumbus"
-	          )
-	        ),
-	        _react2["default"].createElement(
-	          "p",
-	          null,
-	          "skip the current video"
-	        ),
-	        _react2["default"].createElement(
-	          "p",
-	          { className: "tt-indent" },
-	          _react2["default"].createElement(
-	            "span",
-	            { className: "tt-code" },
-	            "/skip"
-	          )
-	        ),
-	        _react2["default"].createElement(
-	          "p",
-	          null,
-	          "help (see these commands)"
-	        ),
-	        _react2["default"].createElement(
-	          "p",
-	          { className: "tt-indent" },
-	          _react2["default"].createElement(
-	            "span",
-	            { className: "tt-code" },
-	            "/help"
-	          )
-	        ),
-	        _react2["default"].createElement(
-	          "p",
-	          null,
-	          "have fun!"
-	        )
-	      );
-	    }
-	  }]);
-
-	  return PreviousVideos;
-	})(_react.Component);
-
-	exports["default"] = PreviousVideos;
-	module.exports = exports["default"];
+	function helpMessage() {
+	  var msgs = ['submit video: /submit [youtube]', 'change alias: /alias [alias]', 'skip video: /skip', 'clear chat: /clear'];
+	  msgs.forEach(function (msg) {
+	    var d = {
+	      msg: msg,
+	      alias: 'help',
+	      type: 'help'
+	    };
+	    _dataStore2['default'].pushMessage(d);
+	  });
+	}
 
 /***/ },
+/* 406 */,
 /* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -33321,10 +33154,7 @@
 	  _createClass(UpcomingVideos, [{
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
-	      if (this.props.skipping) {
-	        console.log('UpcomingVideos:componentDidUpdate:Scroll');
-	        this.refs.overflow.scrollTop = 0;
-	      }
+	      this.refs.overflow.scrollTop = 0;
 	    }
 	  }, {
 	    key: 'render',
@@ -33341,7 +33171,8 @@
 	      }
 	      return _react2['default'].createElement(
 	        'div',
-	        { id: 'tt-upcoming-videos-container', className: 'tt-playlist-container tt-sideways-container' },
+	        { id: 'tt-upcoming-videos-container',
+	          className: 'tt-playlist-container tt-sideways-container' },
 	        _react2['default'].createElement(
 	          'h2',
 	          { className: 'tt-sideways' },
@@ -33371,6 +33202,97 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 409 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports['default'] = messageActionParser;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _outgoingActions = __webpack_require__(361);
+
+	var _outgoingActions2 = _interopRequireDefault(_outgoingActions);
+
+	var _dataStore = __webpack_require__(352);
+
+	var _dataStore2 = _interopRequireDefault(_dataStore);
+
+	var _helpers = __webpack_require__(405);
+
+	var _constants = __webpack_require__(354);
+
+	function validSubmitTest(currentVideo, videoId) {
+	  return currentVideo !== null && videoId === currentVideo.id;
+	}
+
+	function submit(video) {
+	  var data = _dataStore2['default'].getData();
+	  if (video) {
+	    if (validSubmitTest(data.videos.current, video[1])) {
+	      var d = {
+	        msg: _constants.ERRORS.SUBMIT_DUPE,
+	        alias: 'notification',
+	        type: 'notification'
+	      };
+	      _dataStore2['default'].pushMessage(d);
+	    } else {
+	      _outgoingActions2['default'].submitVideo({ video: video[1] });
+	    }
+	  } else {
+	    var d = {
+	      msg: _constants.ERRORS.SUBMIT_ERROR,
+	      alias: 'notification',
+	      type: 'notification'
+	    };
+	    _dataStore2['default'].pushMessage(d);
+	  }
+	}
+
+	function messageActionParser(data) {
+	  var msg = data.msg;
+	  var skipRX = /^\/skip/i;
+	  var helpRX = /^\/help/i;
+	  var clearRX = /^\/clear/i;
+	  var aliasRX = /^\/alias\s([^(\s|\b)]*)/i;
+	  var submitRX = /^\/submit\s([^(\s|\b)]*)/i;
+	  var youtubeRX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+
+	  var aliasMatch = msg.match(aliasRX);
+	  var submitMatch = msg.match(submitRX);
+
+	  if (submitMatch) {
+	    var videoURL = submitMatch[1];
+	    var videoTest = videoURL.match(youtubeRX);
+	    submit(videoTest);
+	    return false;
+	  }
+	  if (aliasMatch) {
+	    _outgoingActions2['default'].updateAlias({ alias: aliasMatch[1] });
+	    return false;
+	  }
+	  if (skipRX.test(msg)) {
+	    _outgoingActions2['default'].skipVideo();
+	    return false;
+	  }
+	  if (helpRX.test(msg)) {
+	    (0, _helpers.helpMessage)();
+	    return false;
+	  }
+	  if (clearRX.test(msg)) {
+	    _dataStore2['default'].clearMessages();
+	    return false;
+	  }
+	  return true;
+	}
+
+	module.exports = exports['default'];
 
 /***/ }
 /******/ ]);

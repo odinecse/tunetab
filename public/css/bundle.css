@@ -2570,35 +2570,6 @@ input {
 #tt-upcoming-videos-container {
   color: #deff86; }
 
-#tt-welcome-message {
-  position: absolute;
-  top: 30%;
-  left: 15%; }
-  #tt-welcome-message p {
-    margin: 0; }
-  #tt-welcome-message .tt-indent {
-    margin-left: 40px; }
-  #tt-welcome-message .tt-code {
-    color: #f86f3f;
-    margin-left: 8px;
-    margin-right: 8px; }
-
-.tt-text-glow {
-  -webkit-animation: neon4 1s ease-in-out infinite alternate;
-          animation: neon4 1s ease-in-out infinite alternate; }
-
-@-webkit-keyframes neon4 {
-  from {
-    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 27px #B6FF00, 0 0 33px #B6FF00, 0 0 40px #B6FF00, 0 0 55px #B6FF00, 0 0 75px #B6FF00; }
-  to {
-    text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 8px #fff, 0 0 11px #B6FF00, 0 0 14px #B6FF00, 0 0 19px #B6FF00, 0 0 25px #B6FF00, 0 0 33px #B6FF00; } }
-
-@keyframes neon4 {
-  from {
-    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 27px #B6FF00, 0 0 33px #B6FF00, 0 0 40px #B6FF00, 0 0 55px #B6FF00, 0 0 75px #B6FF00; }
-  to {
-    text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 8px #fff, 0 0 11px #B6FF00, 0 0 14px #B6FF00, 0 0 19px #B6FF00, 0 0 25px #B6FF00, 0 0 33px #B6FF00; } }
-
 .tt-playlist-container {
   height: 100%; }
 

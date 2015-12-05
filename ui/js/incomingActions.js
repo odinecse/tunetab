@@ -1,9 +1,11 @@
+import {helpMessage} from './helpers';
 import dataStore from './dataStore';
 
 var socket = window.io();
 
 socket.on('welcome', function(data){
   console.log('SOCKET:WELCOME', data);
+  helpMessage();
   dataStore.setAlias({alias: data.alias});
   dataStore.setVideos({videos: data.videos});
 });
@@ -17,7 +19,6 @@ socket.on('usersInfo', function(data){
   console.log('SOCKET:USERSINFO', data);
   dataStore.setUsers(data);
 });
-
 
 socket.on('message', function(data){
   console.log('SOCKET:MESSAGE', data);
@@ -45,7 +46,7 @@ socket.on('notification', function(data){
 });
 
 socket.on('error', function(data){
-  console.log('SOCKET:NOTIFICATION', data);
+  console.log('SOCKET:ERROR', data);
   let d = {
     msg: data.msg,
     alias: 'error',

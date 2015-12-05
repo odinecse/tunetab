@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 
 import outgoingActions from '../../outgoingActions';
 
-var init = true;
-
 export default class Chatform extends Component {
 
   constructor(props) {
@@ -64,4 +62,5 @@ export default class Chatform extends Component {
       </div>
     );
   }
+
 }

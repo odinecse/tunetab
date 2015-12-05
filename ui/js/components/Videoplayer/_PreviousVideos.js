@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 
 import PlaylistItem from './_PlaylistItem';
 
-var init = true;
-
 export default class PreviousVideos extends Component {
 
   constructor(props) {
@@ -13,11 +11,7 @@ export default class PreviousVideos extends Component {
   }
 
   componentDidUpdate() {
-    if(this.props.skipping || init) {
-      console.log('PreviousVideos:componentDidUpdate:Scroll')
-      this.refs.overflow.scrollTop = this.refs.overflow.scrollHeight;
-      init = false;
-    }
+    this.refs.overflow.scrollTop = this.refs.overflow.scrollHeight;
   }
 
   render() {
@@ -34,7 +28,8 @@ export default class PreviousVideos extends Component {
       }).reverse();
     }
     return (
-      <div id="tt-previous-videos-container" className="tt-playlist-container tt-sideways-container">
+      <div  id="tt-previous-videos-container"
+            className="tt-playlist-container tt-sideways-container">
         <h2 className="tt-sideways">previous</h2>
         <div className="tt-overflow-container" ref="overflow">
           <ul id="tt-previous-videos" className="tt-playlist">
@@ -44,4 +39,5 @@ export default class PreviousVideos extends Component {
       </div>
     );
   }
+
 }

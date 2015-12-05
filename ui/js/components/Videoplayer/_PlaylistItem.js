@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 export default class PlaylistItem extends Component {
+
   render() {
     return (
       <li className="tt-playlistitem">
@@ -13,4 +14,5 @@ export default class PlaylistItem extends Component {
       </li>
     );
   }
+
 }
