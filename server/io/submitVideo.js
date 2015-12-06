@@ -1,7 +1,7 @@
 var request = require('request');
 var MESSAGES = require('../constants').MESSAGES;
 var isUndefined = require('../helpers').isUndefined;
-var YOUTUBE_API_KEY = require('../constants').YOUTUBE_API_KEY;
+var YOUTUBE_API_KEY = require('../config').YOUTUBE_API_KEY;
 var YOUTUBE_API_URL = require('../constants').YOUTUBE_API_URL;
 
 function responseTest(items) {

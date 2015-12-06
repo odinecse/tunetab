@@ -14,6 +14,5 @@ module.exports.MESSAGES = {
   }
 };
 
-module.exports.YOUTUBE_API_KEY = 'AIzaSyBlK4TcgxsU4KRFsvSCrBaxerOF6fya0Eo';
 module.exports.YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/';
 module.exports.MAX_PREVIOUS_VIDEOS = 15;

@@ -5,7 +5,8 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var applicationIo = require('./server/io/index')(io);
-var APP_PORT = 3000;
+var APP_PORT = require('./config').APP_PORT;
+var GOOGLE_ANALYTICS_ID = require('./config').GOOGLE_ANALYTICS_ID;
 
 function getToken(ln) {
   var buf = crypto.randomBytes(ln);
@@ -22,7 +23,10 @@ app.get('/', function(req, res) {
 });
 
 app.get('/r/:token', function(req, res) {
-  res.render('room.ejs', {room: req.params.token});
+  res.render('room.ejs', {
+    room: req.params.token,
+    googleAnalyticsId: 
+  });
 });
 
 io.on('connection', applicationIo);
