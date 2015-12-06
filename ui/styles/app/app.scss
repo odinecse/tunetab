@@ -85,6 +85,12 @@ input {
   width: 100%;
 }
 
+#tt-previous-videos-container .tt-overflow-container,
+#tt-upcoming-videos-container .tt-overflow-container {
+  height: 100%;
+}
+
+
 .tt-overflow-container {
   overflow-y: scroll;
   overflow-x: hidden;
