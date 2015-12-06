@@ -32,3 +32,20 @@ export function helpMessage() {
     dataStore.pushMessage(d);
   });
 }
+
+export function shouldPlaylistUpdate(currentPropsVideos, nextPropsVideos) {
+    let oneVideo = currentPropsVideos.slice(0, 1)[0];
+    let oneNextVideo = nextPropsVideos.slice(0, 1)[0];
+    if(currentPropsVideos.length !== nextPropsVideos.length) {
+      return true;
+    }
+    if(isUndefined(oneVideo)) {
+      return true;
+    }
+    if(!isUndefined(oneVideo) && !isUndefined(oneNextVideo)) {
+      if(oneVideo.id === oneNextVideo.id) {
+        return false;
+      }
+    }
+    return true;
+}

@@ -25,7 +25,7 @@ app.get('/', function(req, res) {
 app.get('/r/:token', function(req, res) {
   res.render('room.ejs', {
     room: req.params.token,
-    googleAnalyticsId: 
+    googleAnalyticsId: GOOGLE_ANALYTICS_ID
   });
 });
 
