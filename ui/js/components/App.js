@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 import dataStore from '../dataStore';
-import incomingActions from '../incomingActions';
+import incomingActions from '../actions/incomingActions';
 import {COOKIE_NAME, ROOM_ID} from '../constants';
 import Chat from './Chat/Chat';
 import Videoplayer from './Videoplayer/Videoplayer';

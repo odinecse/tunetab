@@ -4,7 +4,7 @@ import YoutubePlayer from 'react-youtube-player';
 import dataStore from '../../dataStore';
 import {isEmpty} from '../../helpers';
 import {THE_FACE} from '../../constants';
-import outgoingActions from '../../outgoingActions';
+import outgoingActions from '../../actions/outgoingActions';
 
 var interval = {};
 

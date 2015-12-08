@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import outgoingActions from '../../outgoingActions';
+import outgoingActions from '../../actions/outgoingActions';
 
 export default class Chatform extends Component {
 

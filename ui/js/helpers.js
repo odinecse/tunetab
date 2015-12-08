@@ -1,5 +1,5 @@
 import dataStore from './dataStore';
-import {THE_FACE2} from './constants';
+import {THE_FACE2, HELP_MESSAGE, ABOUT_MESSAGE} from './constants';
 
 export function isUndefined(value) {
   return typeof value === "undefined";
@@ -14,41 +14,51 @@ export function isEmpty(object) {
   return true;
 }
 
-export function helpMessage() {
-  // set time out here to make it more obvious
-  let msgs = [
-    'submit video: /submit [search terms]',
-    '------------: or ',
-    'submit video: /submit [youtube url]',
-    'change alias: /alias [alias]',
-    'skip video: /skip',
-    'clear chat: /clear',
-    'share url to invite your frens!',
-    THE_FACE2
-  ];
-  msgs.forEach((msg) => {
-    let d = {
-      msg: msg,
-      alias: 'help',
+export function oldSchool(arr) {
+  let funkytime = function(i) {
+    return i % 3 === 0 ? 180 : 60;
+  }
+  let timeout = {}
+  let iterator = function (i) {
+    let msg = {
+      msg: arr[i],
+      alias: '',
       type: 'help'
     };
-    dataStore.pushMessage(d);
-  });
+    if(arr.length === i + 1) {
+      window.clearTimeout(timeout);
+      return;
+    }
+    dataStore.pushMessage(msg);
+    timeout = window.setTimeout(function () {
+      iterator(++i);
+    }, funkytime(i));
+  };
+
+  iterator(0);
+}
+
+export function helpMessage() {
+  oldSchool(HELP_MESSAGE);
+}
+
+export function aboutMessage() {
+  oldSchool(ABOUT_MESSAGE);
 }
 
 export function shouldPlaylistUpdate(currentPropsVideos, nextPropsVideos) {
-    let oneVideo = currentPropsVideos.slice(0, 1)[0];
-    let oneNextVideo = nextPropsVideos.slice(0, 1)[0];
-    if(currentPropsVideos.length !== nextPropsVideos.length) {
-      return true;
-    }
-    if(isUndefined(oneVideo)) {
-      return true;
-    }
-    if(!isUndefined(oneVideo) && !isUndefined(oneNextVideo)) {
-      if(oneVideo.id === oneNextVideo.id) {
-        return false;
-      }
-    }
+  let oneVideo = currentPropsVideos.slice(0, 1)[0];
+  let oneNextVideo = nextPropsVideos.slice(0, 1)[0];
+  if(currentPropsVideos.length !== nextPropsVideos.length) {
     return true;
+  }
+  if(isUndefined(oneVideo)) {
+    return true;
+  }
+  if(!isUndefined(oneVideo) && !isUndefined(oneNextVideo)) {
+    if(oneVideo.id === oneNextVideo.id) {
+      return false;
+    }
+  }
+  return true;
 }

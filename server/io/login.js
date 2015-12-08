@@ -25,8 +25,6 @@ module.exports = function login(globalData, room) {
         videos: room.videos
       }
     );
-    room.socket.broadcast.to(room.id).emit('announcement',
-      {msg: MESSAGES.CONNECTED(room.user.alias)});
     room.io.to(room.id).emit('usersInfo',
       {
         users: room.users,

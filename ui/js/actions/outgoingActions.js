@@ -1,5 +1,5 @@
 import messageActionParser from './messageActionParser';
-import {ROOM_ID} from './constants';
+import {ROOM_ID} from '../constants';
 
 var socket = window.io();
 
@@ -13,8 +13,20 @@ var actions = {
     });
   },
   submitVideo(data) {
-    socket.emit('submitVideo', {video: data.video});
-    window.ga('send', 'event', 'videoSubmit', ROOM_ID, data.video);
+    if(data.type === 'url') {
+      socket.emit('submitVideo', {video: data.video, type: 'url'});
+      window.ga('send', 'event', 'videoSubmit', 'url', ROOM_ID, data.video);
+    } else if(data.type === 'search') {
+      socket.emit('submitVideo', {search: data.search, type: 'search'});
+      window.ga('send', 'event', 'videoSubmit', 'search', ROOM_ID, data.search);
+    }
+
+  },
+  undoSubmit() {
+    socket.emit('undoSubmit');
+  },
+  rooms() {
+    socket.emit('rooms');
   },
   playNextVideo(data) {
     socket.emit('playNextVideo', {videoId: data.videoId});

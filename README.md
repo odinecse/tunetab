@@ -1,5 +1,5 @@
 # tunetab
-A classy youtube with friends "app". Submit videos, chat, skip ones you don't like. 
+A classy youtube with friends "app". Submit videos, chat, skip ones you don't like.
 
 Check it out in the wild here: [tunetab.us](http://tunetab.us/).
 
@@ -7,7 +7,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 
 ### install/run
 * `cp config.sample.js config.js` this is gitignored, you need to get a youtube api key and google analytics id
-* `npm install` dependencies 
+* `npm install` dependencies
 * `npm start` starts server
 * `npm run build` dev build, watches files for changes
 * `npm run build-prod` prod build with some minification and stuff
@@ -20,6 +20,19 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 * mute button
 * allow all sorts of fun commands to replay videos or delete videos you submitted from cue
 * tests, lol
+
+### fun ideas
+* submit
+  [x] submit by search of youtube api
+  [ ] more advanced version would return a few results you can pick through
+  [ ] undo last submit
+* general
+  [ ] refocus input on click in chat bar
+  [ ] add about
+  [ ] list current users, return user info on skip votes too
+* rooms
+  [ ] list global rooms
+  [ ] join them
 
 ### issues
 * figure out how to not skip a video if someone is really behind the rest of the clients? general skip syncing issues.

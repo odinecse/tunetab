@@ -16,7 +16,8 @@ module.exports = function(io) {
       id: '',
       user: {
         alias: animal.rand() + randInt(1, 999),
-        skip: false
+        skip: false,
+        lastSubmitted: null
       },
       userCount: 0,
       skipVotes: 0,
@@ -25,18 +26,22 @@ module.exports = function(io) {
       videos: {}
     }
     var login = require('./login')(globalData, socketData);
+    var rooms = require('./rooms')(globalData, socketData);
     var updateAlias = require('./updateAlias')(socketData);
     var message = require('./message')(socketData);
     var submitVideo = require('./submitVideo')(socketData);
+    var undoSubmit = require('./undoSubmit')(socketData);
     var playNextVideo = require('./playNextVideo')(socketData);
     var skipVideo = require('./skipVideo')(socketData);
     var tick = require('./tick')(socketData);
     var disconnect = require('./disconnect')(globalData, socketData);
 
     socket.on('login', login);
+    socket.on('rooms', rooms);
     socket.on('updateAlias', updateAlias);
     socket.on('message', message);
     socket.on('submitVideo', submitVideo);
+    socket.on('undoSubmit', undoSubmit);
     socket.on('playNextVideo', playNextVideo);
     socket.on('skipVideo', skipVideo);
     socket.on('tick', tick);

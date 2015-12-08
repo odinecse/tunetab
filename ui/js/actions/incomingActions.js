@@ -1,5 +1,5 @@
-import {helpMessage} from './helpers';
-import dataStore from './dataStore';
+import {helpMessage} from '../helpers';
+import dataStore from '../dataStore';
 
 var socket = window.io();
 
@@ -39,7 +39,7 @@ socket.on('notification', function(data){
   console.log('SOCKET:NOTIFICATION', data);
   let d = {
     msg: data.msg,
-    alias: 'room',
+    alias: '',
     type: 'notification'
   };
   dataStore.pushMessage(d);

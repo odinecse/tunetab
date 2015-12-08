@@ -6,8 +6,6 @@ module.exports = function disconnect(globalData, room) {
   return function(){
     // disconnect occasionally misfires of fires before login...
     if(!helpers.isUndefined(room.users)) {
-      room.io.to(room.id).emit('announcement',
-        {msg: MESSAGES.DISCONNECTED(room.user.alias)});
       delete room.user;
       delete room.users[room.socket.id];
       room.userCount = helpers.countUsers(room.users);

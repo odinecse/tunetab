@@ -1,7 +1,7 @@
 import outgoingActions from './outgoingActions';
-import dataStore from './dataStore';
-import {helpMessage} from './helpers';
-import {ERRORS} from './constants';
+import dataStore from '../dataStore';
+import {helpMessage, aboutMessage} from '../helpers';
+import {ERRORS} from '../constants';
 
 function validSubmitTest(currentVideo, videoId) {
   return currentVideo !== null && videoId === currentVideo.id;
@@ -22,24 +22,25 @@ function submitURL(video) {
 }
 
 function submitSearch(video) {
-  outgoingActions.submitVideo({search: video[1], type: 'search'});
+  outgoingActions.submitVideo({search: video, type: 'search'});
 }
 
 export default function messageActionParser(data) {
   const msg = data.msg;
-
-  // add about
-  // add rooms list
-  // add room join
   const skipRX = /^\/skip/i;
   const helpRX = /^\/help/i;
+  const aboutRX = /^\/about/i;
+  const roomsRX = /^\/rooms/i;
   const clearRX = /^\/clear/i;
   const aliasRX = /^\/alias\s([^(\s|\b)]*)/i;
   const submitRX = /^\/submit\s([^(\b)]*)/i;
+  const undoRX = /^\/undo/i;
   const youtubeRX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
 
   let aliasMatch = msg.match(aliasRX);
   let submitMatch = msg.match(submitRX);
+
+
 
   if(submitMatch) {
     let videoMatch = submitMatch[1];
@@ -55,8 +56,20 @@ export default function messageActionParser(data) {
     outgoingActions.updateAlias({alias: aliasMatch[1]});
     return false;
   }
+  if(undoRX.test(msg)) {
+    outgoingActions.undoSubmit();
+    return false;
+  }
   if(skipRX.test(msg)) {
     outgoingActions.skipVideo();
+    return false;
+  }
+  if(roomsRX.test(msg)) {
+    outgoingActions.rooms();
+    return false;
+  }
+  if(aboutRX.test(msg)) {
+    aboutMessage();
     return false;
   }
   if(helpRX.test(msg)) {
@@ -69,12 +82,3 @@ export default function messageActionParser(data) {
   }
   return true;
 }
-
-
-
-// let d = {
-//   msg: ERRORS.SUBMIT_ERROR,
-//   alias: 'error',
-//   type: 'error'
-// };
-// dataStore.pushMessage(d);
