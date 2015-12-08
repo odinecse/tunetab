@@ -1,5 +1,5 @@
 import dataStore from './dataStore';
-import {THE_FACE2, HELP_MESSAGE, ABOUT_MESSAGE} from './constants';
+import {HELP_MESSAGE, ABOUT_MESSAGE} from './constants';
 
 export function isUndefined(value) {
   return typeof value === "undefined";
@@ -25,7 +25,7 @@ export function oldSchool(arr) {
       alias: '',
       type: 'help'
     };
-    if(arr.length === i + 1) {
+    if(arr.length < i + 1) {
       window.clearTimeout(timeout);
       return;
     }
