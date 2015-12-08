@@ -15,22 +15,22 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 ### fun ideas
 - submit
   - [x] submit by search of youtube api
-  - [ ] more advanced version would return a few results you can pick through
   - [x] undo last submit
+  - [ ] more advanced version would return a few results you can pick through
+- rooms
+  - [x] list global rooms
+  - [ ] join them
 - general
+  - [x] add about
   - [ ] mute button
   - [ ] more fun commands
   - [ ] refocus input on click in chat bar
-  - [x] add about
   - [ ] list current users, return user info on skip votes too
   - [ ] tests
   - [ ] better deploy
   - [ ] live reloading for react and css
   - [ ] play around with redux for datastore
   - [ ] store room states in db?
--  rooms
-  [x] list global rooms
-  [ ] join them
 
 ### issues
 * figure out how to not skip a video if someone is really behind the rest of the clients? general skip syncing issues.
