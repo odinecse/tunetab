@@ -12,26 +12,24 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 * `npm run build` dev build, watches files for changes
 * `npm run build-prod` prod build with some minification and stuff
 
-### da future
-* deploy process
-* live reloading for react and css
-* play around with redux for datastore
-* store room states in db?
-* mute button
-* allow all sorts of fun commands to replay videos or delete videos you submitted from cue
-* tests, lol
-
 ### fun ideas
-* submit
-  [x] submit by search of youtube api
-  [ ] more advanced version would return a few results you can pick through
-  [ ] undo last submit
-* general
-  [ ] refocus input on click in chat bar
-  [ ] add about
-  [ ] list current users, return user info on skip votes too
-* rooms
-  [ ] list global rooms
+- submit
+  - [x] submit by search of youtube api
+  - [ ] more advanced version would return a few results you can pick through
+  - [x] undo last submit
+- general
+  - [ ] mute button
+  - [ ] more fun commands
+  - [ ] refocus input on click in chat bar
+  - [x] add about
+  - [ ] list current users, return user info on skip votes too
+  - [ ] tests
+  - [ ] better deploy
+  - [ ] live reloading for react and css
+  - [ ] play around with redux for datastore
+  - [ ] store room states in db?
+-  rooms
+  [x] list global rooms
   [ ] join them
 
 ### issues
