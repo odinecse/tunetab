@@ -15,8 +15,11 @@ export function isEmpty(object) {
 }
 
 export function helpMessage() {
+  // set time out here to make it more obvious
   let msgs = [
-    'submit video: /submit [youtube]',
+    'submit video: /submit [search terms]',
+    '------------: or ',
+    'submit video: /submit [youtube url]',
     'change alias: /alias [alias]',
     'skip video: /skip',
     'clear chat: /clear',
