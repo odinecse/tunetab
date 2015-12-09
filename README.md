@@ -25,8 +25,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] list current users on login
   - [ ] vote count on vote
 - general
-  - [ ] enforce roomanmes?
-  - [ ] auto play next functionality for music exploration...
+  - [x] auto play next functionality for music exploration...
   - [x] add about
   - [ ] mute button
   - [ ] more fun commands
