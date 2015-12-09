@@ -8,7 +8,6 @@ import outgoingActions from '../../actions/outgoingActions';
 
 var interval = {};
 
-// socket will return current = null if last video in playlist, handle it...
 export default class YoutubeContainer extends Component {
 
   constructor(props) {

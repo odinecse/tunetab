@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 
 import outgoingActions from '../../actions/outgoingActions';
 
+var interval = {};
+
 export default class Chatform extends Component {
 
   constructor(props) {
@@ -10,9 +12,27 @@ export default class Chatform extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.send = this.send.bind(this);
     this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
+    this.componentWillMount = this.componentWillMount.bind(this);
+    this.componentWillUnmount = this.componentWillUnmount.bind(this);
     this.state = {
       msg: ''
     }
+  }
+
+  refocus() {
+    if(this.refs.chatInput !== null) {
+      this.refs.chatInput.focus();
+    }
+  }
+
+  componentWillMount() {
+    interval = window.setInterval(() => {
+      this.refocus();
+    }, 500);
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(interval);
   }
 
   handleChange(e) {
@@ -47,11 +67,7 @@ export default class Chatform extends Component {
             <i className="fa fa-chevron-right tt-blink"></i>
           </span>
           <input  id="tt-chatform-input"
-                  ref={function(input) {
-                    if (input != null) {
-                      input.focus();
-                    }
-                  }}
+                  ref="chatInput"
                   value={this.state.msg}
                   className="tt-input"
                   onKeyDown={this.handleOnKeyPress}

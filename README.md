@@ -27,7 +27,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] add about
   - [ ] mute button
   - [ ] more fun commands
-  - [ ] refocus input on click in chat bar
+  - [x] refocus input on click in chat bar
   - [ ] tests
   - [ ] better deploy
   - [ ] live reloading for react and css
