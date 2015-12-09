@@ -1,13 +1,14 @@
-import {helpMessage} from '../helpers';
+import {welcomeMessage} from '../staticMessages';
 import dataStore from '../dataStore';
 
 var socket = window.io();
 
 socket.on('welcome', function(data){
   console.log('SOCKET:WELCOME', data);
-  helpMessage();
   dataStore.setAlias({alias: data.alias});
   dataStore.setVideos({videos: data.videos});
+  dataStore.setUsers({users: data.users, userCount: data.userCount});
+  welcomeMessage({alias: data.alias, users: data.users});
 });
 
 socket.on('aliasUpdated', function(data){

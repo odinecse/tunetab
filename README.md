@@ -20,12 +20,14 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 - rooms
   - [x] list global rooms
   - [ ] join them
+- users
+  - [x] list current users on login
+  - [ ] vote count on vote
 - general
   - [x] add about
   - [ ] mute button
   - [ ] more fun commands
   - [ ] refocus input on click in chat bar
-  - [ ] list current users, return user info on skip votes too
   - [ ] tests
   - [ ] better deploy
   - [ ] live reloading for react and css

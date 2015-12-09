@@ -22,7 +22,9 @@ module.exports = function login(globalData, room) {
     room.io.to(room.socket.id).emit('welcome',
       {
         alias: room.user.alias,
-        videos: room.videos
+        videos: room.videos,
+        users: room.users,
+        userCount: room.userCount,
       }
     );
     room.io.to(room.id).emit('usersInfo',

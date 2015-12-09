@@ -1,6 +1,6 @@
 import outgoingActions from './outgoingActions';
 import dataStore from '../dataStore';
-import {helpMessage, aboutMessage} from '../helpers';
+import {helpMessage, aboutMessage, usersMessage} from '../staticMessages';
 import {ERRORS} from '../constants';
 
 function validSubmitTest(currentVideo, videoId) {
@@ -31,6 +31,7 @@ export default function messageActionParser(data) {
   const helpRX = /^\/help/i;
   const aboutRX = /^\/about/i;
   const roomsRX = /^\/rooms/i;
+  const usersRX = /^\/users/i;
   const clearRX = /^\/clear/i;
   const aliasRX = /^\/alias\s([^(\s|\b)]*)/i;
   const submitRX = /^\/submit\s([^(\b)]*)/i;
@@ -39,8 +40,6 @@ export default function messageActionParser(data) {
 
   let aliasMatch = msg.match(aliasRX);
   let submitMatch = msg.match(submitRX);
-
-
 
   if(submitMatch) {
     let videoMatch = submitMatch[1];
@@ -66,6 +65,10 @@ export default function messageActionParser(data) {
   }
   if(roomsRX.test(msg)) {
     outgoingActions.rooms();
+    return false;
+  }
+  if(usersRX.test(msg)) {
+    usersMessage(dataStore.getData());
     return false;
   }
   if(aboutRX.test(msg)) {

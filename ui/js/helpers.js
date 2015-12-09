@@ -1,6 +1,3 @@
-import dataStore from './dataStore';
-import {HELP_MESSAGE, ABOUT_MESSAGE} from './constants';
-
 export function isUndefined(value) {
   return typeof value === "undefined";
 }
@@ -12,38 +9,6 @@ export function isEmpty(object) {
     }
   }
   return true;
-}
-
-export function oldSchool(arr) {
-  let funkytime = function(i) {
-    return i % 3 === 0 ? 180 : 60;
-  }
-  let timeout = {}
-  let iterator = function (i) {
-    let msg = {
-      msg: arr[i],
-      alias: '',
-      type: 'help'
-    };
-    if(arr.length < i + 1) {
-      window.clearTimeout(timeout);
-      return;
-    }
-    dataStore.pushMessage(msg);
-    timeout = window.setTimeout(function () {
-      iterator(++i);
-    }, funkytime(i));
-  };
-
-  iterator(0);
-}
-
-export function helpMessage() {
-  oldSchool(HELP_MESSAGE);
-}
-
-export function aboutMessage() {
-  oldSchool(ABOUT_MESSAGE);
 }
 
 export function shouldPlaylistUpdate(currentPropsVideos, nextPropsVideos) {
