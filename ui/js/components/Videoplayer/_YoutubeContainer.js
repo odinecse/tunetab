@@ -53,7 +53,7 @@ export default class YoutubeContainer extends Component {
       title = this.props.current.title;
       player = <YoutubePlayer ref={(player) => {
                                 if(player !== null) {
-                                  this.player = player.player
+                                  this.player = player.player;
                                   this.player.seekTo(this.props.videoTime);
                                 }
                               }}
@@ -62,6 +62,7 @@ export default class YoutubeContainer extends Component {
                                 {
                                   controls: 0,
                                   disablekb: 1,
+                                  autoplay: 1,
                                   enablejsapi: 1,
                                   fs: 0,
                                   modestbranding: 1,
