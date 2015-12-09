@@ -77,9 +77,12 @@ export default function messageActionParser(data) {
     return false;
   }
   if(recommendRX.test(msg)) {
-    var data = dataStore.getData()
-    var videoId = data.videos.current.id;
-    outgoingActions.submitRelated({videoId: videoId});
+    var data = dataStore.getData();
+    var videoId = '';
+    if(data.videos.current !== null) {
+      videoId = data.videos.current.id;
+      outgoingActions.submitRelated({videoId: videoId});
+    }
     return false;
   }
   if(helpRX.test(msg)) {
