@@ -13,6 +13,9 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 * `npm run build-prod` prod build with some minification and stuff
 
 ### fun ideas
+- broken
+  - [ ] skipping after a pause?
+  - [ ] pausing breaks everthing
 - submit
   - [ ] NO DUPLICATES!
   - [x] submit by search of youtube api

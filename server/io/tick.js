@@ -2,11 +2,11 @@ var isUndefined = require('../helpers').isUndefined;
 
 // this occasionally gets called from old connections, so need to do this test
 function checkDataIntegrity(roomVideos) {
-	return !isUndefined(roomVideos) && !isUndefined(roomVideos.videoTime);
+  return !isUndefined(roomVideos) && !isUndefined(roomVideos.videoTime);
 }
 
 function tickTest(roomVideos, time) {
-	return roomVideos.current !== null && roomVideos.videoTime < time;
+  return roomVideos.current !== null && roomVideos.videoTime < time;
 }
 
 function cleanUpMultipleIds(room, alias) {
