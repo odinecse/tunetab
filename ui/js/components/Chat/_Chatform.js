@@ -28,7 +28,7 @@ export default class Chatform extends Component {
   componentWillMount() {
     interval = window.setInterval(() => {
       this.refocus();
-    }, 500);
+    }, 5000);
   }
 
   componentWillUnmount() {
