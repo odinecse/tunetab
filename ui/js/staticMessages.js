@@ -34,7 +34,7 @@ export const HELP_MESSAGE = [
   'undo submit (if not already playing): ',
   '---> /undo',
   ' ',
-  'get a recommendation (based of current video): ',
+  'get a recommendation (based off of current video): ',
   '---> /rec',
   ' ',
   'change alias: ',
