@@ -23,8 +23,10 @@ app.get('/', function(req, res) {
 });
 
 app.get('/r/:token', function(req, res) {
+  var token = req.params.token;
+  token = token.slice(0, 17);
   res.render('room.ejs', {
-    room: req.params.token,
+    room: token,
     googleAnalyticsId: GOOGLE_ANALYTICS_ID
   });
 });

@@ -1,4 +1,6 @@
 var isUndefined = require('../../helpers').isUndefined;
+var MAX_REC_ID_INDEX = require('../../constants').MAX_REC_ID_INDEX;
+var MESSAGES = require('../../constants').MESSAGES;
 
 function submitLogic(submittedVideo, room) {
   if(room.videos.current === null) {
@@ -29,6 +31,29 @@ function processVideoURLSubmit(videoId, room) {
   }
 }
 
+function processVideoRecSubmit(room) {
+  return function(body, endOfPlaylist) {
+    var index = room.currentRecIndex;
+    var length = body.items.length - 1;
+    var submittedVideo = {};
+    
+    if(index === MAX_REC_ID_INDEX || index >= length || length < 0) {
+      room.io.to(room.id).emit('announcement',
+          {msg: MESSAGES.NO_MORE_RECS});
+      return;
+    }
+
+    submittedVideo = {
+      id: body.items[index].id.videoId,
+      title: body.items[index].snippet.title,
+      thumb: body.items[index].snippet.thumbnails.default,
+      user: room.user.alias,
+    };
+    room.currentRecIndex++;
+    submitLogic(submittedVideo, room);
+  }
+}
+
 function processVideoSearchSubmit(room) {
   return function(body) {
     var submittedVideo = {
@@ -45,5 +70,6 @@ module.exports = {
   submitLogic: submitLogic,
   responseTest: responseTest,
   processVideoURLSubmit: processVideoURLSubmit,
+  processVideoRecSubmit: processVideoRecSubmit,
   processVideoSearchSubmit: processVideoSearchSubmit
 }

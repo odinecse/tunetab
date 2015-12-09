@@ -28,13 +28,11 @@ export default class YoutubeContainer extends Component {
   }
 
   clearPing() {
-    console.log('clearPing');
     window.clearInterval(interval)
   }
 
   setPing() {
     if(isEmpty(interval)) {
-      console.log('setPing');
       interval = window.setInterval(() => {
         let promise = this.player.getCurrentTime();
         promise.then(function(time) {

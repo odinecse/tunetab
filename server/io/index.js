@@ -22,6 +22,7 @@ module.exports = function(io) {
       userCount: 0,
       skipVotes: 0,
       skipThreshold: 1,
+      currentRecIndex: 0,
       users: {},
       videos: {}
     }

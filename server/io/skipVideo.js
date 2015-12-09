@@ -19,7 +19,7 @@ module.exports = function skipVideo(room) {
       room.skipThreshold = skipStuff.skipThreshold;
 
       if(room.skipVotes >= room.skipThreshold) {
-        playNextVideo({videoId: room.videos.current.id});
+        playNextVideo({videoId: room.videos.current.id, skip: true});
         room.io.to(room.id).emit('announcement',
           {msg: MESSAGES.SKIPPING_VIDEO});
       } else {

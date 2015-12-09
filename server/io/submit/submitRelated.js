@@ -1,10 +1,12 @@
 var request = require('request');
+
 var MESSAGES = require('../../constants').MESSAGES;
+var isUndefined = require('../../helpers').isUndefined;
 var YOUTUBE_API_URL = require('../../constants').YOUTUBE_API_URL;
 var YOUTUBE_API_KEY = require('../../../config').YOUTUBE_API_KEY;
 
 var responseTest = require('./submitHelpers').responseTest;
-var processVideoSearchSubmit = require('./submitHelpers').processVideoSearchSubmit;
+var processVideoRecSubmit = require('./submitHelpers').processVideoRecSubmit;
 
 module.exports = function submitRelated(room) {
   return function(data) {
@@ -18,7 +20,7 @@ module.exports = function submitRelated(room) {
     }, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         if(responseTest(body.items)) {
-          processFunction = processVideoSearchSubmit(room);
+          processFunction = processVideoRecSubmit(room);
           processFunction(body);
         } else {
           room.io.to(room.socket.id).emit('error',

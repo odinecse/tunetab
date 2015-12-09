@@ -30,7 +30,7 @@ export default function messageActionParser(data) {
   const skipRX = /^\/skip/i;
   const helpRX = /^\/help/i;
   const aboutRX = /^\/about/i;
-  const recommendRX = /^\/recommend/i;
+  const recRX = /^\/rec/i;
   const roomsRX = /^\/rooms/i;
   const usersRX = /^\/users/i;
   const clearRX = /^\/clear/i;
@@ -76,7 +76,7 @@ export default function messageActionParser(data) {
     aboutMessage();
     return false;
   }
-  if(recommendRX.test(msg)) {
+  if(recRX.test(msg)) {
     var data = dataStore.getData();
     var videoId = '';
     if(data.videos.current !== null) {

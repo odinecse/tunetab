@@ -41,7 +41,7 @@ module.exports = function submitVideo(room) {
     }, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         if(responseTest(body.items)) {
-          processFunction(body);
+          processFunction(body, true);
         } else {
           room.io.to(room.socket.id).emit('error',
             {msg: errorMsg});

@@ -6,6 +6,7 @@ module.exports.MESSAGES = {
   SUBMIT_UKNOWN_ERROR: 'unknown submit type, unknown error',
   ALREADY_VOTED: 'you\'ve already voted',
   SKIPPING_VIDEO: 'skipping video!',
+  NO_MORE_RECS: 'i\'m out of recommendations!',
   NOTHING_TO_SKIP: 'nothing to skip',
   WANTS_TO_SKIP: function(alias) {
     return alias + ' wants to skip this video!';
@@ -14,3 +15,4 @@ module.exports.MESSAGES = {
 
 module.exports.YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/';
 module.exports.MAX_PREVIOUS_VIDEOS = 15;
+module.exports.MAX_REC_ID_INDEX = 3;

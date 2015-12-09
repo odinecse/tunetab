@@ -35,7 +35,7 @@ export const HELP_MESSAGE = [
   '---> /undo',
   ' ',
   'get a recommendation (based of current video): ',
-  '---> /recommend',
+  '---> /rec',
   ' ',
   'change alias: ',
   '---> /alias [alias]',
