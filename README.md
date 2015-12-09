@@ -14,6 +14,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 
 ### fun ideas
 - submit
+  - [ ] NO DUPLICATES!
   - [x] submit by search of youtube api
   - [x] undo last submit
   - [ ] more advanced version would return a few results you can pick through
