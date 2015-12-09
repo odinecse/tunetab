@@ -11,22 +11,22 @@ module.exports = function playNextVideo(room) {
     var previousId = room.videos.current.id;
     var submitRelated = require('./submit/submitRelated')(room);
     if(nextTest(room.videos, data.videoId)) {
+      room.skipVotes = 0;
+      room.currentRecIndex = 0;
+      room.videos.videoTime = 0;
+      resetUserVotes(room.users);
       if(room.videos.previous.length > MAX_PREVIOUS_VIDEOS) {
         room.videos.previous.pop();
       }
       room.videos.previous.unshift(room.videos.current);
       if(room.videos.upcoming.length > 0) {
         room.videos.current = room.videos.upcoming.shift();
+        room.io.to(room.id).emit('playVideo',
+          {videos: room.videos});
       } else {
         room.videos.current = null;
         submitRelated({videoId: previousId});
       }
-      room.skipVotes = 0;
-      room.currentRecIndex = 0;
-      room.videos.videoTime = 0;
-      resetUserVotes(room.users);
-      room.io.to(room.id).emit('playVideo',
-        {videos: room.videos});
     }
   }
 }

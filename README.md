@@ -18,7 +18,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [ ] skipping after a pause?
   - [ ] pausing breaks everthing
 - submit
-  - [ ] NO DUPLICATES!
+  - [ ] NO DUPLICATES! - keep a history of videos, dont recommend videos already played, incrememnet rec count, increase rec count...
   - [x] submit by search of youtube api
   - [x] undo last submit
   - [ ] more advanced version would return a few results you can pick through
