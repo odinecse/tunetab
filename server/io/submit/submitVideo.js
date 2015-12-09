@@ -1,49 +1,11 @@
 var request = require('request');
-var MESSAGES = require('../constants').MESSAGES;
-var isUndefined = require('../helpers').isUndefined;
-var YOUTUBE_API_KEY = require('../../config').YOUTUBE_API_KEY;
-var YOUTUBE_API_URL = require('../constants').YOUTUBE_API_URL;
+var MESSAGES = require('../../constants').MESSAGES;
+var YOUTUBE_API_URL = require('../../constants').YOUTUBE_API_URL;
+var YOUTUBE_API_KEY = require('../../../config').YOUTUBE_API_KEY;
 
-function responseTest(items) {
-  return !isUndefined(items) && !isUndefined(items[0]);
-}
-
-function processVideoURLSubmit(videoId, room) {
-  return function(body) {
-    var submittedVideo = {
-      id: videoId,
-      title: body.items[0].snippet.title,
-      thumb: body.items[0].snippet.thumbnails.default,
-      user: room.user.alias,
-    };
-    submitLogic(submittedVideo, room);
-  }
-}
-
-function processVideoSearchSubmit(room) {
-  return function(body) {
-    var submittedVideo = {
-      id: body.items[0].id.videoId,
-      title: body.items[0].snippet.title,
-      thumb: body.items[0].snippet.thumbnails.default,
-      user: room.user.alias,
-    };
-    submitLogic(submittedVideo, room);
-  }
-}
-
-function submitLogic(submittedVideo, room) {
-  if(room.videos.current === null) {
-    room.videos.current = submittedVideo;
-    room.io.to(room.id).emit('playVideo',
-      {videos: room.videos});
-  } else {
-    room.user.lastSubmitted = submittedVideo.id;
-    room.videos.upcoming.push(submittedVideo);
-    room.io.to(room.id).emit('videoSubmitted',
-      {videos: room.videos});
-  }
-}
+var responseTest = require('./submitHelpers').responseTest;
+var processVideoURLSubmit = require('./submitHelpers').processVideoURLSubmit;
+var processVideoSearchSubmit = require('./submitHelpers').processVideoSearchSubmit;
 
 module.exports = function submitVideo(room) {
   return function(data) {

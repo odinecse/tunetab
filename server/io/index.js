@@ -29,7 +29,8 @@ module.exports = function(io) {
     var rooms = require('./rooms')(globalData, socketData);
     var updateAlias = require('./updateAlias')(socketData);
     var message = require('./message')(socketData);
-    var submitVideo = require('./submitVideo')(socketData);
+    var submitVideo = require('./submit/submitVideo')(socketData);
+    var submitRelated = require('./submit/submitRelated')(socketData);
     var undoSubmit = require('./undoSubmit')(socketData);
     var playNextVideo = require('./playNextVideo')(socketData);
     var skipVideo = require('./skipVideo')(socketData);
@@ -41,6 +42,7 @@ module.exports = function(io) {
     socket.on('updateAlias', updateAlias);
     socket.on('message', message);
     socket.on('submitVideo', submitVideo);
+    socket.on('submitRelated', submitRelated);
     socket.on('undoSubmit', undoSubmit);
     socket.on('playNextVideo', playNextVideo);
     socket.on('skipVideo', skipVideo);

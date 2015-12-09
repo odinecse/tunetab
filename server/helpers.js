@@ -1,10 +1,8 @@
-// refactor?
-
-module.exports.isUndefined = function(value) {
+function isUndefined(value) {
   return typeof value === "undefined";
 };
 
-module.exports.calcSkipThreshold = function(roomUsers) {
+function calcSkipThreshold(roomUsers) {
   var userCount = 0;
   var skipVotes = 0;
   var skipThreshold = 0;
@@ -12,7 +10,7 @@ module.exports.calcSkipThreshold = function(roomUsers) {
     userCount++;
     if(roomUsers[user].skip) {
       skipVotes++;
-    } 
+    }
   }
   skipThreshold = Math.floor(userCount/2);
   skipThreshold = skipThreshold < 1 ? 1 : skipThreshold;
@@ -23,16 +21,24 @@ module.exports.calcSkipThreshold = function(roomUsers) {
   };
 }
 
-module.exports.resetUserVotes = function(roomUsers) {
+function resetUserVotes(roomUsers) {
   for(user in roomUsers) {
     roomUsers[user].skip = false;
   }
 }
 
-module.exports.countUsers = function(roomUsers) {
+function countUsers(roomUsers) {
   var userCount = 0;
   for(user in roomUsers) {
     userCount++;
   }
   return userCount;
+}
+
+
+module.exports = {
+  isUndefined: isUndefined,
+  calcSkipThreshold: calcSkipThreshold,
+  resetUserVotes: resetUserVotes,
+  countUsers: countUsers
 }

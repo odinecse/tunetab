@@ -7,6 +7,8 @@ function nextTest(roomVideos, videoId) {
 
 module.exports = function playNextVideo(room) {
   return function(data){
+    var previousId = room.videos.current.id;
+    var submitRelated = require('./submit/submitRelated')(room);
     if(nextTest(room.videos, data.videoId)) {
       if(room.videos.previous.length > MAX_PREVIOUS_VIDEOS) {
         room.videos.previous.pop();
@@ -16,6 +18,7 @@ module.exports = function playNextVideo(room) {
         room.videos.current = room.videos.upcoming.shift();
       } else {
         room.videos.current = null;
+        submitRelated({videoId: previousId});
       }
       room.skipVotes = 0;
       room.videos.videoTime = 0;

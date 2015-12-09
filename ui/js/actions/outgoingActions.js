@@ -20,7 +20,9 @@ var actions = {
       socket.emit('submitVideo', {search: data.search, type: 'search'});
       window.ga('send', 'event', 'videoSubmit', 'search', ROOM_ID, data.search);
     }
-
+  },
+  submitRelated(data) {
+    socket.emit('submitRelated', {videoId: data.videoId});
   },
   undoSubmit() {
     socket.emit('undoSubmit');

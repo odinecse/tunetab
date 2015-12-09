@@ -30,6 +30,7 @@ export default function messageActionParser(data) {
   const skipRX = /^\/skip/i;
   const helpRX = /^\/help/i;
   const aboutRX = /^\/about/i;
+  const recommendRX = /^\/recommend/i;
   const roomsRX = /^\/rooms/i;
   const usersRX = /^\/users/i;
   const clearRX = /^\/clear/i;
@@ -73,6 +74,12 @@ export default function messageActionParser(data) {
   }
   if(aboutRX.test(msg)) {
     aboutMessage();
+    return false;
+  }
+  if(recommendRX.test(msg)) {
+    var data = dataStore.getData()
+    var videoId = data.videos.current.id;
+    outgoingActions.submitRelated({videoId: videoId});
     return false;
   }
   if(helpRX.test(msg)) {

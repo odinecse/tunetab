@@ -17,6 +17,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] submit by search of youtube api
   - [x] undo last submit
   - [ ] more advanced version would return a few results you can pick through
+  - [x] recommend videos off current video
 - rooms
   - [x] list global rooms
   - [ ] join them
@@ -24,6 +25,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] list current users on login
   - [ ] vote count on vote
 - general
+  - [ ] auto play next functionality for music exploration...
   - [x] add about
   - [ ] mute button
   - [ ] more fun commands
