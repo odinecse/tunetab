@@ -14,6 +14,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 
 ### fun ideas
 - broken
+  - [ ] users call is broken about current user, just take that out
   - [ ] only works when tab in focus and running adblock, lol?
   - [ ] losing socket connection
     - [ ] skipping after a pause?
