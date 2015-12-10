@@ -21,6 +21,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
     - [ ] pausing breaks everthing
 - submit
   - [ ] notify room on successful recommendation
+    - [ ] flash upcoming playlists
   - [x] NO DUPLICATES! - keep a history of videos, dont recommend videos already played, incrememnet rec count, increase rec count...
   - [x] submit by search of youtube api
   - [x] undo last submit
