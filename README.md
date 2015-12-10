@@ -40,6 +40,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] list current users on login
   - [ ] vote count on vote
 - general
+  - [ ] stop recommender, pause problems
   - [ ] save videos you like, export those in json?
   - [x] auto play next functionality for music exploration...
   - [x] add about

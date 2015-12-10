@@ -7,7 +7,7 @@ module.exports.MESSAGES = {
   SUBMIT_UKNOWN_ERROR: 'unknown submit type, unknown error',
   ALREADY_VOTED: 'you\'ve already voted',
   SKIPPING_VIDEO: 'skipping video!',
-  NO_MORE_RECS: 'i\'m out of recommendations! (or you\'r search has already been played)',
+  NO_MORE_RECS: 'i\'m out of recommendations! (or your search has already been played)',
   NOTHING_TO_SKIP: 'nothing to skip',
   WANTS_TO_SKIP: function(alias) {
     return alias + ' wants to skip this video!';
