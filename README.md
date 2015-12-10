@@ -14,7 +14,8 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 
 ### fun ideas
 - broken
-  - [ ] new rec seems to always skip video on video end twice?
+  - [ ] new rec seems to always skip video on video end twice? 
+    - [ ] make sure skipping can only happen once per current video...
   - [ ] users call is broken about current user, just take that out
   - [ ] only works when tab in focus and running adblock, lol?
   - [ ] losing socket connection
@@ -37,6 +38,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] list current users on login
   - [ ] vote count on vote
 - general
+  - [ ] save videos you like, export those in json?
   - [x] auto play next functionality for music exploration...
   - [x] add about
   - [ ] mute button
