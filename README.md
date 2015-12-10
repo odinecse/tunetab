@@ -28,6 +28,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] NO DUPLICATES! - keep a history of videos, dont recommend videos already played, incrememnet rec count, increase rec count...
   - [x] submit by search of youtube api
   - [x] undo last submit
+    - [ ] take undo submits out of history too
     - [ ] undo array?
   - [ ] more advanced version would return a few results you can pick through
   - [x] recommend videos off current video
