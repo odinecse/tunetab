@@ -20,7 +20,7 @@ module.exports = function submitVideo(room) {
     var processFunction = function() {};
 
     if(submitType === "url") {
-      videoId = data.video;
+      videoId = data.videoId;
       url += 'videos?part=id%2Csnippet&id='
                 + videoId + '&key=' + YOUTUBE_API_KEY;
       errorMsg = MESSAGES.URL_SUBMIT_ERROR;
@@ -34,10 +34,11 @@ module.exports = function submitVideo(room) {
       processFunction = processVideoRecSubmit(room);
     } else if(submitType === "rec" || submitType === "recb") {
       // build out broadSearch
+      videoId = data.videoId;
       broadSearch = submitType === "recb" ? true : false;
       searchTerm = data.search;
       url += 'search?part=snippet&relatedToVideoId='
-                + data.videoId + 'AO4loowq93Y&type=video&maxResults=20&key='
+                + videoId + 'AO4loowq93Y&type=video&maxResults=20&key='
                 + YOUTUBE_API_KEY;
       errorMsg = MESSAGES.SEARCH_SUBMIT_ERROR;
       processFunction = processVideoRecSubmit(room, broadSearch);
