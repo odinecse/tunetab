@@ -1,11 +1,13 @@
 var request = require('request');
+
+var isUndefined = require('../../helpers').isUndefined;
 var MESSAGES = require('../../constants').MESSAGES;
 var YOUTUBE_API_URL = require('../../constants').YOUTUBE_API_URL;
 var YOUTUBE_API_KEY = require('../../../config').YOUTUBE_API_KEY;
 
-var responseTest = require('./submitHelpers').responseTest;
 var processVideoURLSubmit = require('./submitHelpers').processVideoURLSubmit;
-var processVideoSearchSubmit = require('./submitHelpers').processVideoSearchSubmit;
+var processVideoRecSubmit = require('./submitHelpers').processVideoRecSubmit;
+
 
 module.exports = function submitVideo(room) {
   return function(data) {
@@ -14,6 +16,7 @@ module.exports = function submitVideo(room) {
     var searchTerm = '';
     var url = YOUTUBE_API_URL;
     var errorMsg = MESSAGES.SUBMIT_UKNOWN_ERROR;
+    var broadSearch = false;
     var processFunction = function() {};
 
     if(submitType === "url") {
@@ -25,23 +28,33 @@ module.exports = function submitVideo(room) {
     } else if(submitType === "search") {
       searchTerm = data.search;
       url += 'search?part=snippet&q=' + searchTerm
-                + '&maxResults=1&orderby=viewCount&type=video&key='
+                + '&maxResults=3&orderby=viewCount&type=video&key='
                 + YOUTUBE_API_KEY;
       errorMsg = MESSAGES.SEARCH_SUBMIT_ERROR;
-      processFunction = processVideoSearchSubmit(room);
+      processFunction = processVideoRecSubmit(room);
+    } else if(submitType === "rec" || submitType === "recb") {
+      // build out broadSearch
+      broadSearch = submitType === "recb" ? true : false;
+      searchTerm = data.search;
+      url += 'search?part=snippet&relatedToVideoId='
+                + data.videoId + 'AO4loowq93Y&type=video&maxResults=20&key='
+                + YOUTUBE_API_KEY;
+      errorMsg = MESSAGES.SEARCH_SUBMIT_ERROR;
+      processFunction = processVideoRecSubmit(room, broadSearch);
     } else {
       room.io.to(room.socket.id).emit('error',
         {msg: errorMsg});
       return;
     }
+    console.log('youtube api call:', url);
 
     request({
       uri: url,
       json: true
     }, function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        if(responseTest(body.items)) {
-          processFunction(body, true);
+        if(!isUndefined(body.items) && !isUndefined(body.items[0])) {
+          processFunction(body);
         } else {
           room.io.to(room.socket.id).emit('error',
             {msg: errorMsg});

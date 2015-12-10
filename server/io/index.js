@@ -8,6 +8,22 @@ function randInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+/*
+  (created in login action)
+  videos contains: {
+    current: {videoObj};
+    videoTime: 0;
+    upcoming: [array of videoObjs];
+    previous = [array of videoObj];
+    history = [array of videoIds];
+  }
+  videoObj: {
+    id: videoId,
+    title: title,
+    thumb: thumb,
+    user: alias
+  }
+*/
 module.exports = function(io) {
   return function(socket) {
     var socketData = {
@@ -22,7 +38,6 @@ module.exports = function(io) {
       userCount: 0,
       skipVotes: 0,
       skipThreshold: 1,
-      currentRecIndex: 0,
       users: {},
       videos: {}
     }
@@ -31,7 +46,6 @@ module.exports = function(io) {
     var updateAlias = require('./updateAlias')(socketData);
     var message = require('./message')(socketData);
     var submitVideo = require('./submit/submitVideo')(socketData);
-    var submitRelated = require('./submit/submitRelated')(socketData);
     var undoSubmit = require('./undoSubmit')(socketData);
     var playNextVideo = require('./playNextVideo')(socketData);
     var skipVideo = require('./skipVideo')(socketData);
@@ -43,7 +57,6 @@ module.exports = function(io) {
     socket.on('updateAlias', updateAlias);
     socket.on('message', message);
     socket.on('submitVideo', submitVideo);
-    socket.on('submitRelated', submitRelated);
     socket.on('undoSubmit', undoSubmit);
     socket.on('playNextVideo', playNextVideo);
     socket.on('skipVideo', skipVideo);

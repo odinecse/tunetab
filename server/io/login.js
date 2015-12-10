@@ -15,6 +15,7 @@ module.exports = function login(globalData, room) {
       globalData.videos[room.id].videoTime = 0;
       globalData.videos[room.id].upcoming = [];
       globalData.videos[room.id].previous = [];
+      globalData.videos[room.id].history = [];
     }
     room.userCount = countUsers(room.users);
     room.videos = globalData.videos[room.id];

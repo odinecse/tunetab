@@ -14,15 +14,17 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 
 ### fun ideas
 - broken
-  - [ ] only works when in forfront and running adblock, lol?
-  - [ ] skipping after a pause?
-  - [ ] pausing breaks everthing
+  - [ ] only works when tab in focus and running adblock, lol?
+  - [ ] losing socket connection
+    - [ ] skipping after a pause?
+    - [ ] pausing breaks everthing
 - submit
-  - [ ] NO DUPLICATES! - keep a history of videos, dont recommend videos already played, incrememnet rec count, increase rec count...
+  - [x] NO DUPLICATES! - keep a history of videos, dont recommend videos already played, incrememnet rec count, increase rec count...
   - [x] submit by search of youtube api
   - [x] undo last submit
   - [ ] more advanced version would return a few results you can pick through
   - [x] recommend videos off current video
+    - [ ] broadSearch
 - rooms
   - [x] list global rooms
   - [ ] join them

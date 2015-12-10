@@ -2,6 +2,10 @@ function isUndefined(value) {
   return typeof value === "undefined";
 };
 
+function randomIntBetween(min, max) {
+  return Math.floor(Math.random()*(max-min+1)+min);
+}
+
 function calcSkipThreshold(roomUsers) {
   var userCount = 0;
   var skipVotes = 0;
@@ -38,6 +42,7 @@ function countUsers(roomUsers) {
 
 module.exports = {
   isUndefined: isUndefined,
+  randomIntBetween: randomIntBetween,
   calcSkipThreshold: calcSkipThreshold,
   resetUserVotes: resetUserVotes,
   countUsers: countUsers

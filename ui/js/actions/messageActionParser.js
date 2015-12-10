@@ -3,34 +3,13 @@ import dataStore from '../dataStore';
 import {helpMessage, aboutMessage, usersMessage} from '../staticMessages';
 import {ERRORS} from '../constants';
 
-function validSubmitTest(currentVideo, videoId) {
-  return currentVideo !== null && videoId === currentVideo.id;
-}
-
-function submitURL(video) {
-  const data = dataStore.getData();
-  if(validSubmitTest(data.videos.current, video[1])) {
-    let d = {
-      msg: ERRORS.SUBMIT_DUPE,
-      alias: 'error',
-      type: 'error'
-    };
-    dataStore.pushMessage(d);
-  } else {
-    outgoingActions.submitVideo({video: video[1], type: 'url'});
-  }
-}
-
-function submitSearch(video) {
-  outgoingActions.submitVideo({search: video, type: 'search'});
-}
-
 export default function messageActionParser(data) {
   const msg = data.msg;
   const skipRX = /^\/skip/i;
   const helpRX = /^\/help/i;
   const aboutRX = /^\/about/i;
   const recRX = /^\/rec/i;
+  const recbRX = /^\/recb/i;
   const roomsRX = /^\/rooms/i;
   const usersRX = /^\/users/i;
   const clearRX = /^\/clear/i;
@@ -46,9 +25,9 @@ export default function messageActionParser(data) {
     let videoMatch = submitMatch[1];
     let videoURLTest = videoMatch.match(youtubeRX);
     if(videoURLTest) {
-      submitURL(videoURLTest)
+      outgoingActions.submitVideo({videoId: videoURLTest[1], type: 'url'});
     } else {
-      submitSearch(videoMatch);
+      outgoingActions.submitVideo({search: videoMatch, type: 'search'});
     }
     return false;
   }
@@ -81,7 +60,16 @@ export default function messageActionParser(data) {
     var videoId = '';
     if(data.videos.current !== null) {
       videoId = data.videos.current.id;
-      outgoingActions.submitRelated({videoId: videoId});
+      outgoingActions.submitVideo({videoId: videoId, type: 'rec'});
+    }
+    return false;
+  }
+  if(recRX.test(msg)) {
+    var data = dataStore.getData();
+    var videoId = '';
+    if(data.videos.current !== null) {
+      videoId = data.videos.current.id;
+      outgoingActions.submitVideo({videoId: videoId, type: 'recb'});
     }
     return false;
   }

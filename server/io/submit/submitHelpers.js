@@ -1,8 +1,9 @@
 var isUndefined = require('../../helpers').isUndefined;
-var MAX_REC_ID_INDEX = require('../../constants').MAX_REC_ID_INDEX;
+var randomIntBetween = require('../../helpers').randomIntBetween;
 var MESSAGES = require('../../constants').MESSAGES;
 
 function submitLogic(submittedVideo, room) {
+  room.videos.history.push(submittedVideo.id);
   if(room.videos.current === null) {
     room.videos.current = submittedVideo;
     room.io.to(room.id).emit('playVideo',
@@ -15,12 +16,17 @@ function submitLogic(submittedVideo, room) {
   }
 }
 
-function responseTest(items) {
-  return !isUndefined(items) && !isUndefined(items[0]);
+function dupTest(history, videoId) {
+  return history.length > 0 && history.indexOf(videoId) > -1;
 }
 
 function processVideoURLSubmit(videoId, room) {
   return function(body) {
+    if(dupTest(room.videos.history, videoId)) {
+      room.io.to(room.socket.id).emit('error',
+          {msg: MESSAGES.SUBMIT_DUPLICATE});
+      return;
+    }
     var submittedVideo = {
       id: videoId,
       title: body.items[0].snippet.title,
@@ -32,14 +38,30 @@ function processVideoURLSubmit(videoId, room) {
 }
 
 function processVideoRecSubmit(room) {
-  return function(body, endOfPlaylist) {
-    var index = room.currentRecIndex;
+  // build out broadSearch
+  return function(body, broadSearch, searchIndex) {
+    var notRecursive =  isUndefined(searchIndex) ? true : false;
+    var index = notRecursive ? 0 : searchIndex;
     var length = body.items.length - 1;
     var submittedVideo = {};
-    
-    if(index === MAX_REC_ID_INDEX || index >= length || length < 0) {
+    var videoId = '';
+    var processFunction = function(){};
+
+    if(length < 0 || index > length) {
       room.io.to(room.id).emit('announcement',
           {msg: MESSAGES.NO_MORE_RECS});
+      return;
+    }
+
+    if(notRecursive) {
+      index = randomIntBetween(index, length);
+    }
+
+    videoId = body.items[index].id.videoId;
+    if(dupTest(room.videos.history, videoId)) {
+      processFunction = processVideoRecSubmit(room);
+      index++;
+      processFunction(body, broadSearch, index);
       return;
     }
 
@@ -54,22 +76,7 @@ function processVideoRecSubmit(room) {
   }
 }
 
-function processVideoSearchSubmit(room) {
-  return function(body) {
-    var submittedVideo = {
-      id: body.items[0].id.videoId,
-      title: body.items[0].snippet.title,
-      thumb: body.items[0].snippet.thumbnails.default,
-      user: room.user.alias,
-    };
-    submitLogic(submittedVideo, room);
-  }
-}
-
 module.exports = {
-  submitLogic: submitLogic,
-  responseTest: responseTest,
   processVideoURLSubmit: processVideoURLSubmit,
   processVideoRecSubmit: processVideoRecSubmit,
-  processVideoSearchSubmit: processVideoSearchSubmit
 }

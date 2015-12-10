@@ -9,10 +9,9 @@ function nextTest(roomVideos, videoId) {
 module.exports = function playNextVideo(room) {
   return function(data){
     var previousId = room.videos.current.id;
-    var submitRelated = require('./submit/submitRelated')(room);
+    var submitVideo = require('./submit/submitVideo')(room);
     if(nextTest(room.videos, data.videoId)) {
       room.skipVotes = 0;
-      room.currentRecIndex = 0;
       room.videos.videoTime = 0;
       resetUserVotes(room.users);
       if(room.videos.previous.length > MAX_PREVIOUS_VIDEOS) {
@@ -25,7 +24,7 @@ module.exports = function playNextVideo(room) {
           {videos: room.videos});
       } else {
         room.videos.current = null;
-        submitRelated({videoId: previousId});
+        submitVideo({videoId: previousId, type: 'rec'});
       }
     }
   }
