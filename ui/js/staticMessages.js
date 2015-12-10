@@ -53,6 +53,7 @@ export const LAST_MESSAGE = [
   ' ',
   'make your own url:',
   '---> http://tunetab.us/r/myroom',
+  ' (rooms is destroyed after all users leave)',
   ' ',
 ];
 
@@ -62,6 +63,9 @@ export const COMPLEX_COMMANDS = [
   ' ',
   'see list of users in room: ',
   '---> /users',
+  ' ',
+  'see list of active rooms: ',
+  '---> /rooms',
   ' ',
   'clear chat: ',
   '---> /clear',
