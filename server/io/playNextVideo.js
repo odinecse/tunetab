@@ -2,8 +2,18 @@ var resetUserVotes = require('../helpers').resetUserVotes;
 var isUndefined = require('../helpers').isUndefined;
 var MAX_PREVIOUS_VIDEOS = require('../constants').MAX_PREVIOUS_VIDEOS;
 
-function nextTest(roomVideos, videoId) {
+var returnFalse = function() {return false};
+var testFunct = function(roomVideos, videoId) {
   return roomVideos.current !== null && roomVideos.current.id === videoId;
+}
+var nextTest = function(roomVideos, videoId) {
+  nextTest = returnFalse;
+  return testFunct(roomVideos, videoId);
+}
+var resetTestFunctionDelay = function() {
+  setTimeout(function() {
+    nextTest = testFunct;
+  }, 3000);
 }
 
 module.exports = function playNextVideo(room) {
@@ -14,6 +24,7 @@ module.exports = function playNextVideo(room) {
       room.skipVotes = 0;
       room.videos.videoTime = 0;
       resetUserVotes(room.users);
+      resetTestFunctionDelay();
       if(room.videos.previous.length > MAX_PREVIOUS_VIDEOS) {
         room.videos.previous.pop();
       }

@@ -25,35 +25,46 @@ export function oldSchool(arr, type='help') {
   iterator(0);
 }
 
-export const HELP_MESSAGE = [
+export const BASIC_COMMANDS = [
   'submit video: ',
   '---> /submit [search terms]',
   '---> or ',
   '---> /submit [youtube url]',
   ' ',
-  'undo submit (if not already playing): ',
-  '---> /undo',
-  ' ',
-  'get a recommendation (based off of current video): ',
+  'get a recommendation: ',
   '---> /rec',
+  ' (based off of current video)',
   ' ',
-  'change alias: ',
-  '---> /alias [alias]',
+  'undo submit or recommendation: ',
+  '---> /undo',
+  ' (if not already playing)',
   ' ',
   'skip video: ',
   '---> /skip',
+  ' (if no next video, same as /rec)',
+  ' ',
+];
+
+export const LAST_MESSAGE = [
+  'see all commands: ',
+  '---> /help',
+  ' ',
+  'share url to invite your friends!',
+  ' ',
+  'make your own url:',
+  '---> http://tunetab.us/r/myroom',
+  ' ',
+];
+
+export const COMPLEX_COMMANDS = [
+  'change alias: ',
+  '---> /alias [alias]',
   ' ',
   'see list of users in room: ',
   '---> /users',
   ' ',
-  'see this message again: ',
-  '---> /help',
-  ' ',
   'clear chat: ',
   '---> /clear',
-  ' ',
-  'share url to invite your frens!',
-  THE_FACE3,
   ' ',
 ]
 
@@ -76,12 +87,14 @@ export const ABOUT_MESSAGE = [
 
 export function welcomeMessage(data) {
   var emptyArr = [];
-  var welcome = emptyArr.concat(HELP_MESSAGE, currentUsers(data), '')
+  var welcome = emptyArr.concat(BASIC_COMMANDS, LAST_MESSAGE, currentUsers(data), '');
   oldSchool(welcome);
 }
 
 export function helpMessage() {
-  oldSchool(HELP_MESSAGE);
+  var emptyArr = [];
+  var help = emptyArr.concat(BASIC_COMMANDS, COMPLEX_COMMANDS, LAST_MESSAGE);
+  oldSchool(help);
 }
 
 export function aboutMessage() {
@@ -98,7 +111,7 @@ export function currentUsers(data) {
     if(data.users[uId].alias === data.alias) {
       msg += 'YOU, ';
     } else {
-      msg += data.alias + ', ';
+      msg += data.users[uId].alias + ', ';
     }
   }
   return msg.slice(0, -2);

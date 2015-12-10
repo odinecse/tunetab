@@ -14,16 +14,17 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 
 ### fun ideas
 - broken
-  - [ ] new rec seems to always skip video on video end twice? 
-    - [ ] make sure skipping can only happen once per current video...
-  - [ ] users call is broken about current user, just take that out
+  - [x] new rec seems to always skip video on video end twice?
+    - [x] make sure skipping can only happen once per current video...
+  - [x] users call is broken about current user, just take that out
   - [ ] only works when tab in focus and running adblock, lol?
-  - [ ] losing socket connection
+  - [ ] losing socket connection, waht to do
     - [ ] skipping after a pause?
     - [ ] pausing breaks everthing
 - submit
   - [ ] notify room on successful recommendation
     - [ ] flash upcoming playlists
+  - [ ] broad recommendation `/recb` should take random item form history and do a rec based off that...
   - [x] NO DUPLICATES! - keep a history of videos, dont recommend videos already played, incrememnet rec count, increase rec count...
   - [x] submit by search of youtube api
   - [x] undo last submit
