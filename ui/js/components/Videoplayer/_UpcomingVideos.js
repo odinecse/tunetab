@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import classNames from 'classnames';
 
+import dataStore from '../../dataStore';
 import {shouldPlaylistUpdate} from '../../helpers';
 import PlaylistItem from './_PlaylistItem';
+
 
 export default class UpcomingVideos extends Component {
 
@@ -13,6 +16,7 @@ export default class UpcomingVideos extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
+    if(this.props.submitted !== nextProps.submitted) return true;
     return shouldPlaylistUpdate(this.props.upcomingVideos, nextProps.upcomingVideos);
   }
 
@@ -23,6 +27,7 @@ export default class UpcomingVideos extends Component {
   render() {
     let upcoming = null;
     let videos = this.props.upcomingVideos;
+    let flash = this.props.submitted;
     if(videos.length > 0) {
       upcoming = videos.map(function(video, i) {
         return (
@@ -38,6 +43,10 @@ export default class UpcomingVideos extends Component {
             className="tt-playlist-container tt-sideways-container">
         <h2 className="tt-sideways">upcoming</h2>
         <div className="tt-overflow-container" ref="overflow">
+          <div className={classNames({
+            'tt-container-flash': true,
+            'tt-container-flash-animation': flash,
+          })} ></div>
           <ul id="tt-upcoming-videos" className="tt-playlist">
             {upcoming}
           </ul>

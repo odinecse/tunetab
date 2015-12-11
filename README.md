@@ -22,17 +22,16 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
     - [ ] skipping after a pause?
     - [ ] pausing breaks everthing
 - submit
-  - [ ] notify room on successful recommendation
-    - [ ] flash upcoming playlists
-  - [ ] broad recommendation `/recb` should take random item form history and do a rec based off that...
+  - [x] notify room on successful recommendation
+    - [x] flash upcoming playlists
   - [x] NO DUPLICATES! - keep a history of videos, dont recommend videos already played, incrememnet rec count, increase rec count...
   - [x] submit by search of youtube api
   - [x] undo last submit
-    - [ ] take undo submits out of history too
+    - [x] take undo submits out of history too
     - [ ] undo array?
   - [ ] more advanced version would return a few results you can pick through
   - [x] recommend videos off current video
-    - [ ] broadSearch
+    - [ ] broad recommendation `/recb` should take random item form history and do a rec based off that...
 - rooms
   - [x] list global rooms
   - [ ] join them
@@ -40,11 +39,12 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] list current users on login
   - [ ] vote count on vote
 - general
+  - [ ] MAKE INTO PRIVATE VOYORISTIC APP, ONLY ROOM CREATOR CAN SKIP, etc... ?
   - [ ] stop recommender, pause problems
   - [ ] save videos you like, export those in json?
   - [x] auto play next functionality for music exploration...
   - [x] add about
-  - [ ] mute button
+  - [ ] mute command
   - [ ] more fun commands
   - [x] refocus input on click in chat bar
   - [ ] tests

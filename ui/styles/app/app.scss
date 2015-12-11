@@ -117,3 +117,35 @@ input {
   transform: translate(0,100%) rotate(270deg);
   transform-origin: 0 0;
 }
+
+@keyframes fadeIn { 
+  0% { 
+    opacity: 0;
+  }
+  50% { 
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.tt-container-flash {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: 0;
+  background: $upcomingFlashGradient;
+}
+
+.tt-container-flash-animation {
+  animation-name: fadeIn;
+  animation-duration: 200ms;
+  animation-timing-function: ease-out;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-play-state: running;
+  // animation-fill-mode: forwards;
+
+}
+
