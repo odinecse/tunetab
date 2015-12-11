@@ -41,8 +41,8 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] list current users on login
   - [ ] vote count on vote
 - general
-  - [ ] MAKE INTO PRIVATE VOYORISTIC APP, ONLY ROOM CREATOR CAN SKIP, etc... ?
-    - [ ] TUNETAB, A WAY OF TELLING YOUR FRIENDS, HEY LOOK AT THIS!
+  - [ ] make into private voyoristic app, only room creator can skip, etc... ?
+    - [ ] a way of telling your friends, hey look at this
   - [ ] stop recommender, pause problems
   - [ ] save videos you like, export those in json?
   - [x] auto play next functionality for music exploration...
