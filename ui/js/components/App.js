@@ -38,7 +38,8 @@ export default class App extends Component {
   render() {
     return (
       <div id="tt-container">
-        <Videoplayer videos={this.state.videos} />
+        <Videoplayer  videos={this.state.videos} 
+                      submitted={this.state.submitted} />
         <Chat alias={this.state.alias}
               messages={this.state.messages} />
       </div>

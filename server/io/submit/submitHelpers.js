@@ -14,6 +14,8 @@ function submitLogic(submittedVideo, room) {
     room.io.to(room.id).emit('videoSubmitted',
       {videos: room.videos});
   }
+  room.io.to(room.id).emit('announcement',
+    {msg: MESSAGES.SUBMITTED_ANNOUNCEMENT(submittedVideo.title, submittedVideo.user)});
 }
 
 function dupTest(history, videoId) {

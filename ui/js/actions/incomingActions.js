@@ -58,6 +58,10 @@ socket.on('error', function(data){
 
 socket.on('videoSubmitted', function(data){
   console.log('SOCKET:VIDEOSUBMITTED', data);
+  dataStore.setSubmitted({submitted: true})
+  window.setTimeout(() => {
+    dataStore.setSubmitted({submitted: false});
+  }, 500);
   dataStore.setVideos(data);
 });
 

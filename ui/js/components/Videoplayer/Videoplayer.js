@@ -13,7 +13,8 @@ export default class Videoplayer extends Component {
           <PreviousVideos previousVideos={this.props.videos.previous} />
           <YoutubeContainer current={this.props.videos.current}
                             videoTime={this.props.videos.videoTime} />
-          <UpcomingVideos upcomingVideos={this.props.videos.upcoming} />
+          <UpcomingVideos upcomingVideos={this.props.videos.upcoming}
+                          submitted={this.props.submitted} />
         </div>
       </div>
     );

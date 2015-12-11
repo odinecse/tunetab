@@ -11,6 +11,9 @@ module.exports.MESSAGES = {
   NOTHING_TO_SKIP: 'nothing to skip',
   WANTS_TO_SKIP: function(alias) {
     return alias + ' wants to skip this video!';
+  },
+  SUBMITTED_ANNOUNCEMENT: function(title, alias) {
+    return '"' + title + '" submitted by ' + alias;
   }
 };
 
