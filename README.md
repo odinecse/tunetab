@@ -14,6 +14,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 
 ### fun ideas
 - broken
+  - [ ] undefineds on restart if client reestablishes connection after disconnect and serevr restart
   - [x] new rec seems to always skip video on video end twice?
     - [x] make sure skipping can only happen once per current video...
   - [x] users call is broken about current user, just take that out
@@ -28,6 +29,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] submit by search of youtube api
   - [x] undo last submit
     - [x] take undo submits out of history too
+      - [ ] maybe it shouldn't?
     - [ ] undo array?
   - [ ] more advanced version would return a few results you can pick through
   - [x] recommend videos off current video
@@ -40,6 +42,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [ ] vote count on vote
 - general
   - [ ] MAKE INTO PRIVATE VOYORISTIC APP, ONLY ROOM CREATOR CAN SKIP, etc... ?
+    - [ ] TUNETAB, A WAY OF TELLING YOUR FRIENDS, HEY LOOK AT THIS!
   - [ ] stop recommender, pause problems
   - [ ] save videos you like, export those in json?
   - [x] auto play next functionality for music exploration...
