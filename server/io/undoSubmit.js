@@ -20,6 +20,7 @@ module.exports = function undoSubmit(room) {
     if(lastSubmitted !== null) {
       removeFromUpcoming(room.videos.upcoming, lastSubmitted);
       removeFromHistory(room.videos.history, lastSubmitted);
+      room.user.lastSubmitted = null;
       room.io.to(room.id).emit('videoSubmitted',
         {videos: room.videos});
     }
