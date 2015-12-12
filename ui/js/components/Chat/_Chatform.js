@@ -20,16 +20,15 @@ export default class Chatform extends Component {
   }
 
   refocus() {
-    if(this.refs.chatInput !== null) {
-      this.refs.chatInput.focus();
+    if(this.chatInput !== null) {
+      this.chatInput.focus();
     }
   }
 
   componentWillMount() {
-    this.refocus();
     interval = window.setInterval(() => {
       this.refocus();
-    }, 7000);
+    }, 5000);
   }
 
   componentWillUnmount() {
@@ -64,17 +63,25 @@ export default class Chatform extends Component {
       <div id="tt-chatform-container" className="cf">
         <div id="tt-chatform">
           <span id="tt-chatform-alias">
-            <span className="tt-alias" ref="alias">{this.props.alias}</span>
+            <span className="tt-alias">{this.props.alias}</span>
             <i className="fa fa-chevron-right tt-blink"></i>
           </span>
           <input  id="tt-chatform-input"
-                  ref="chatInput"
+                  ref={(input) => {
+                    if(input != null) {
+                      this.chatInput = input;
+                      input.focus();
+                    }
+                  }}
                   value={this.state.msg}
                   className="tt-input"
+                  autocomplete="off" 
+                  autocorrect="off" 
+                  autocapitalize="off" 
+                  spellcheck="false"
                   onKeyDown={this.handleOnKeyPress}
                   onChange={this.handleChange}
-                  type='text'
-                  autoComplete="off" />
+                  type='text' />
         </div>
       </div>
     );

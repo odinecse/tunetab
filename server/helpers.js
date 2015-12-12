@@ -39,11 +39,29 @@ function countUsers(roomUsers) {
   return userCount;
 }
 
+function removeFromArray(arr, id) {
+  var i = arr.indexOf(id);
+  if(i > -1) {
+    arr.splice(i, 1);
+  };
+}
+
+function removeFromCollection(collection, id, field) {
+  var i = collection.findIndex(function(item) {
+    return item[field] === id ? true : false;
+  });
+  if(i > -1) {
+    collection.splice(i, 1);
+  };
+}
+
 
 module.exports = {
   isUndefined: isUndefined,
   randomIntBetween: randomIntBetween,
   calcSkipThreshold: calcSkipThreshold,
   resetUserVotes: resetUserVotes,
-  countUsers: countUsers
+  countUsers: countUsers,
+  removeFromArray: removeFromArray,
+  removeFromCollection: removeFromCollection
 }

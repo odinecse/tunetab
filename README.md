@@ -12,8 +12,10 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 * `npm run build` dev build, watches files for changes
 * `npm run build-prod` prod build with some minification and stuff
 
-### fun ideas
+### NOTES
 - broken
+  - [x] wrap long titles in previous upcoming with elipsese
+  - [x] on alias update, push out userinfo update action from server to client
   - [ ] undefineds on restart if client reestablishes connection after disconnect and serevr restart
   - [x] new rec seems to always skip video on video end twice?
     - [x] make sure skipping can only happen once per current video...
@@ -29,8 +31,8 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] submit by search of youtube api
   - [x] undo last submit
     - [x] take undo submits out of history too
-      - [ ] maybe it shouldn't?
-    - [ ] undo array?
+      - [x] maybe it shouldn't?
+    - [x] undo array?
   - [ ] more advanced version would return a few results you can pick through
   - [x] recommend videos off current video
     - [ ] broad recommendation `/recb` should take random item form history and do a rec based off that...
@@ -47,14 +49,11 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [ ] save videos you like, export those in json?
   - [x] auto play next functionality for music exploration...
   - [x] add about
-  - [ ] mute command
+  - [x] mute command
   - [ ] more fun commands
-  - [x] refocus input on click in chat bar
+  - [ ] refocus input on click in chat bar
   - [ ] tests
   - [ ] better deploy
   - [ ] live reloading for react and css
   - [ ] play around with redux for datastore
   - [ ] store room states in db?
-
-### issues
-* figure out how to not skip a video if someone is really behind the rest of the clients? general skip syncing issues.

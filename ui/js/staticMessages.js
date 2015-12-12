@@ -49,15 +49,12 @@ export const LAST_MESSAGE = [
   'SEE ALL COMMANDS: ',
   '---> /help',
   ' ',
-  '----------------------------------------------------------------------',
-  ' ',
   'share url to invite your friends!',
   ' ',
   'make your own url:',
   '---> http://tunetab.us/r/myroom',
   ' (rooms is destroyed after all users leave)',
   ' ',
-  '----------------------------------------------------------------------',
 ];
 
 export const COMPLEX_COMMANDS = [

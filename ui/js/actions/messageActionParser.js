@@ -1,7 +1,6 @@
 import outgoingActions from './outgoingActions';
 import dataStore from '../dataStore';
 import {helpMessage, aboutMessage, usersMessage} from '../staticMessages';
-import {ERRORS} from '../constants';
 
 export default function messageActionParser(data) {
   const msg = data.msg;

@@ -1,4 +1,5 @@
 var isUndefined = require('../helpers').isUndefined;
+var MAX_TIME_DIFFERENCE = require('../constants').MAX_TIME_DIFFERENCE;
 
 // this occasionally gets called from old connections, so need to do this test
 function checkDataIntegrity(roomVideos) {
@@ -22,12 +23,18 @@ function cleanUpMultipleIds(room, alias) {
 
 module.exports = function tick(room) {
   return function(data){
-    var time = data.videoTime ? parseInt(data.videoTime, 10) : 0;
+    var clientTime = data.videoTime ? parseInt(data.videoTime, 10) : 0;
+    var roomTime = room.videos.videoTime;
+
     if(checkDataIntegrity(room.videos)) {
-      if(tickTest(room.videos, time)) {
-        cleanUpMultipleIds(room);
-        room.videos.videoTime = time;
+      cleanUpMultipleIds(room);
+      if(tickTest(room.videos, clientTime)) {
+        room.videos.videoTime = clientTime;  
+      } else if (roomTime > (clientTime + MAX_TIME_DIFFERENCE)) {
+        room.io.to(room.socket.id).emit('playVideo',
+          {videos: room.videos});
       }
     }
+
   }
 }

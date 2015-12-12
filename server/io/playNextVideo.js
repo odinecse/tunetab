@@ -1,5 +1,6 @@
 var resetUserVotes = require('../helpers').resetUserVotes;
 var isUndefined = require('../helpers').isUndefined;
+var removeFromArray = require('../helpers').removeFromArray;
 var MAX_PREVIOUS_VIDEOS = require('../constants').MAX_PREVIOUS_VIDEOS;
 
 var returnFalse = function() {return false};
@@ -31,6 +32,7 @@ module.exports = function playNextVideo(room) {
       room.videos.previous.unshift(room.videos.current);
       if(room.videos.upcoming.length > 0) {
         room.videos.current = room.videos.upcoming.shift();
+        removeFromArray(room.user.lastSubmitted, room.videos.current.id);
         room.io.to(room.id).emit('playVideo',
           {videos: room.videos});
       } else {

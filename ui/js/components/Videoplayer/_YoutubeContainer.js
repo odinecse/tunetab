@@ -3,7 +3,7 @@ import YoutubePlayer from 'react-youtube-player';
 
 import dataStore from '../../dataStore';
 import {isEmpty} from '../../helpers';
-import {THE_FACE} from '../../constants';
+import {THE_FACE, MAX_TIME_DIFFERENCE} from '../../constants';
 import outgoingActions from '../../actions/outgoingActions';
 
 var interval = {};
@@ -20,6 +20,9 @@ export default class YoutubeContainer extends Component {
 
   shouldComponentUpdate(nextProps) {
     if(nextProps.current !== null && this.props.current !== null) {
+      if(this.props.videoTime + MAX_TIME_DIFFERENCE < nextProps.videoTime) {
+        return true;
+      }
       if(this.props.current.id == nextProps.current.id) {
         return false;
       }
@@ -60,11 +63,11 @@ export default class YoutubeContainer extends Component {
                               videoId={this.props.current.id}
                               configuration={
                                 {
-                                  controls: 0,
+                                  controls: 1,
                                   disablekb: 1,
                                   autoplay: 1,
                                   enablejsapi: 1,
-                                  fs: 0,
+                                  fs: 1,
                                   modestbranding: 1,
                                   playsinline: 1,
                                   rel: 0,

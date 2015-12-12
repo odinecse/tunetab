@@ -9,7 +9,7 @@ function submitLogic(submittedVideo, room) {
     room.io.to(room.id).emit('playVideo',
       {videos: room.videos});
   } else {
-    room.user.lastSubmitted = submittedVideo.id;
+    room.user.lastSubmitted.push(submittedVideo.id);
     room.videos.upcoming.push(submittedVideo);
     room.io.to(room.id).emit('videoSubmitted',
       {videos: room.videos});
