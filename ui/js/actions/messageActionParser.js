@@ -13,11 +13,13 @@ export default function messageActionParser(data) {
   const usersRX = /^\/users/i;
   const clearRX = /^\/clear/i;
   const aliasRX = /^\/alias\s([^(\s|\b)]*)/i;
+  const joinRX = /^\/join\s([^(\s|\b)]*)/i;
   const submitRX = /^\/submit\s([^(\b)]*)/i;
   const undoRX = /^\/undo/i;
   const youtubeRX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
 
   let aliasMatch = msg.match(aliasRX);
+  let joinMatch = msg.match(joinRX);
   let submitMatch = msg.match(submitRX);
 
   if(submitMatch) {
@@ -32,6 +34,10 @@ export default function messageActionParser(data) {
   }
   if(aliasMatch) {
     outgoingActions.updateAlias({alias: aliasMatch[1]});
+    return false;
+  }
+  if(joinMatch) {
+    window.location = '/r/' + joinMatch[1];
     return false;
   }
   if(undoRX.test(msg)) {

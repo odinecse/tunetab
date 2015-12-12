@@ -38,7 +38,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
     - [ ] broad recommendation `/recb` should take random item form history and do a rec based off that...
 - rooms
   - [x] list global rooms
-  - [ ] join them
+  - [x] join them
 - users
   - [x] list current users on login
   - [ ] vote count on vote
