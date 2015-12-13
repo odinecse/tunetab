@@ -21,10 +21,10 @@ module.exports = function playNextVideo(room) {
   return function(data){
     var previousId = room.videos.current.id;
     var submitVideo = require('./submit/submitVideo')(room);
+    room.skipVotes = 0;
+    room.videos.videoTime = 0;
+    resetUserVotes(room.users);
     if(nextTest(room.videos, data.videoId)) {
-      room.skipVotes = 0;
-      room.videos.videoTime = 0;
-      resetUserVotes(room.users);
       resetTestFunctionDelay();
       if(room.videos.previous.length > MAX_PREVIOUS_VIDEOS) {
         room.videos.previous.pop();

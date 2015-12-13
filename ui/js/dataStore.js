@@ -7,6 +7,7 @@ var _data = {
   users: {},
   userCount: 0,
   submitted: false,
+  muted: false,
   videos: {
     current: null,
     videoTime: 0,
@@ -39,6 +40,10 @@ var dataStore = Object.assign({}, EventEmitter.prototype, {
   },
   setSubmitted(data) {
     _data.submitted = data.submitted;
+    dataStore.emit('change');
+  },
+  setMuted(data) {
+    _data.muted = data.muted;
     dataStore.emit('change');
   },
   pushMessage(data) {

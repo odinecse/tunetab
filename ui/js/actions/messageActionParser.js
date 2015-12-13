@@ -1,6 +1,6 @@
 import outgoingActions from './outgoingActions';
 import dataStore from '../dataStore';
-import {helpMessage, aboutMessage, usersMessage} from '../staticMessages';
+import {helpMessage, aboutMessage, usersMessage, mutedMessage} from '../staticMessages';
 
 export default function messageActionParser(data) {
   const msg = data.msg;
@@ -11,6 +11,8 @@ export default function messageActionParser(data) {
   const recbRX = /^\/recb/i;
   const roomsRX = /^\/rooms/i;
   const usersRX = /^\/users/i;
+  const muteRX = /^\/mute/i;
+  const unmuteRX = /^\/unmute/i;
   const clearRX = /^\/clear/i;
   const aliasRX = /^\/alias\s([^(\s|\b)]*)/i;
   const joinRX = /^\/join\s([^(\s|\b)]*)/i;
@@ -54,6 +56,18 @@ export default function messageActionParser(data) {
   }
   if(usersRX.test(msg)) {
     usersMessage(dataStore.getData());
+    return false;
+  }
+  if(muteRX.test(msg)) {
+    let m = {muted: true};
+    dataStore.setMuted(m);
+    mutedMessage(m);
+    return false;
+  }
+  if(unmuteRX.test(msg)) {
+    let m = {muted: false};
+    dataStore.setMuted(m);
+    mutedMessage(m);
     return false;
   }
   if(aboutRX.test(msg)) {

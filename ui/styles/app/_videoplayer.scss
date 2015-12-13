@@ -4,6 +4,7 @@
 
 #tt-ytplayer-container {
   color: $currentVideoColor;
+  pointer-events: none;
 }
 
 #tt-upcoming-videos-container {

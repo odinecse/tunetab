@@ -75,10 +75,10 @@ export default class Chatform extends Component {
                   }}
                   value={this.state.msg}
                   className="tt-input"
-                  autocomplete="off" 
-                  autocorrect="off" 
-                  autocapitalize="off" 
-                  spellcheck="false"
+                  autoComplete="off" 
+                  autoCorrect="off" 
+                  autoCapitalize="off" 
+                  spellCheck="false"
                   onKeyDown={this.handleOnKeyPress}
                   onChange={this.handleChange}
                   type='text' />

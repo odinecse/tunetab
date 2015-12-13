@@ -20,6 +20,9 @@ export default class YoutubeContainer extends Component {
 
   shouldComponentUpdate(nextProps) {
     if(nextProps.current !== null && this.props.current !== null) {
+      if(this.props.muted !== nextProps.muted) {
+        return true;
+      }
       if(this.props.videoTime + MAX_TIME_DIFFERENCE < nextProps.videoTime) {
         return true;
       }
@@ -52,18 +55,24 @@ export default class YoutubeContainer extends Component {
   render() {
     let player = null;
     let title = THE_FACE;
+    let mute = this.props.muted;
     if(this.props.current) {
       title = this.props.current.title;
       player = <YoutubePlayer ref={(player) => {
                                 if(player !== null) {
                                   this.player = player.player;
                                   this.player.seekTo(this.props.videoTime);
+                                  if(mute) {
+                                    this.player.mute();
+                                  } else {
+                                    this.player.unMute();
+                                  }
                                 }
                               }}
                               videoId={this.props.current.id}
                               configuration={
                                 {
-                                  controls: 1,
+                                  controls: 0,
                                   disablekb: 1,
                                   autoplay: 1,
                                   enablejsapi: 1,

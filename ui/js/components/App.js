@@ -39,6 +39,7 @@ export default class App extends Component {
     return (
       <div id="tt-container">
         <Videoplayer  videos={this.state.videos} 
+                      muted={this.state.muted}
                       submitted={this.state.submitted} />
         <Chat alias={this.state.alias}
               messages={this.state.messages} />

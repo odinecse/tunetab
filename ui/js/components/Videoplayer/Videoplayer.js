@@ -12,6 +12,7 @@ export default class Videoplayer extends Component {
         <div id="tt-videoplayer">
           <PreviousVideos previousVideos={this.props.videos.previous} />
           <YoutubeContainer current={this.props.videos.current}
+                            muted={this.props.muted}
                             videoTime={this.props.videos.videoTime} />
           <UpcomingVideos upcomingVideos={this.props.videos.upcoming}
                           submitted={this.props.submitted} />

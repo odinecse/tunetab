@@ -15,13 +15,13 @@ var actions = {
   submitVideo(data) {
     if(data.type === 'url') {
       socket.emit('submitVideo', {videoId: data.videoId, type: data.type});
-      window.ga('send', 'event', 'videoSubmit', ROOM_ID, 'url', data.videoId);
+      ga('send', 'event', 'videoSubmit', ROOM_ID, data.type, data.videoId);
     } else if(data.type === 'search') {
       socket.emit('submitVideo', {search: data.search, type: data.type});
-      window.ga('send', 'event', 'videoSubmit', ROOM_ID, 'search', data.search);
+      ga('send', 'event', 'videoSubmit', ROOM_ID, data.type, data.search);
     } else if(data.type === 'rec') {
       socket.emit('submitVideo', {videoId: data.videoId, type: data.type});
-      window.ga('send', 'event', 'videoSubmit', ROOM_ID, 'rec', data.videoId);
+      ga('send', 'event', 'videoSubmit', ROOM_ID, data.type, data.videoId);
     }
   },
   undoSubmit() {
@@ -44,7 +44,7 @@ var actions = {
         msg: data.msg,
         type: data.type
       };
-      window.ga('send', 'event', 'message', ROOM_ID, data.alias, data.msg);
+      ga('send', 'event', 'message', ROOM_ID, data.alias, data.msg);
       socket.emit('message', msg);
     }
   }

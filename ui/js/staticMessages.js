@@ -1,6 +1,15 @@
 import {THE_FACE3} from './constants';
 import dataStore from './dataStore';
 
+export function announce(msg, type='help') {
+  let m = {
+    msg: msg,
+    alias: '',
+    type: type
+  };
+  dataStore.pushMessage(m);
+}
+
 export function oldSchool(arr, type='help') {
   let funkytime = function(i) {
     return i % 3 === 0 ? 120 : 30;
@@ -42,6 +51,9 @@ export const BASIC_COMMANDS = [
   'skip video: ',
   '---> /skip',
   ' (if no next video, same as /rec)',
+  ' ',
+  'mute/unmute: ',
+  '---> /mute or /unmute',
   ' ',
 ];
 
@@ -94,19 +106,24 @@ export const ABOUT_MESSAGE = [
 ]
 
 export function welcomeMessage(data) {
-  var emptyArr = [];
-  var welcome = emptyArr.concat(BASIC_COMMANDS, LAST_MESSAGE, currentUsers(data), '');
+  let emptyArr = [];
+  let welcome = emptyArr.concat(BASIC_COMMANDS, LAST_MESSAGE, currentUsers(data), '');
   oldSchool(welcome);
 }
 
 export function helpMessage() {
-  var emptyArr = [];
-  var help = emptyArr.concat(BASIC_COMMANDS, COMPLEX_COMMANDS, LAST_MESSAGE);
+  let emptyArr = [];
+  let help = emptyArr.concat(BASIC_COMMANDS, COMPLEX_COMMANDS, LAST_MESSAGE);
   oldSchool(help);
 }
 
 export function aboutMessage() {
   oldSchool(ABOUT_MESSAGE);
+}
+
+export function mutedMessage(data) {
+  let msg = data.muted ? 'muting' : 'unmuting'
+  announce(msg);
 }
 
 export function usersMessage(data) {
