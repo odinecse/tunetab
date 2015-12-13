@@ -14,7 +14,8 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 
 ### NOTES
 - broken
-  - [ ] varibales like votes and videotime not being properly rest on nextvideo/skip
+  - [x] varibales like votes and videotime not being properly rest on nextvideo/skip
+    - [ ] need to revisit potential other runaway processes
   - [x] wrap long titles in previous upcoming with elipsese
   - [x] on alias update, push out userinfo update action from server to client
   - [ ] undefineds on restart if client reestablishes connection after disconnect and serevr restart
@@ -26,7 +27,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
     - [ ] skipping after a pause?
     - [ ] pausing breaks everthing
 - submit
-  - [ ] notify who skipping
+  - [x] notify who skipping
   - [x] notify room on successful recommendation
     - [x] flash upcoming playlists
   - [x] NO DUPLICATES! - keep a history of videos, dont recommend videos already played, incrememnet rec count, increase rec count...
