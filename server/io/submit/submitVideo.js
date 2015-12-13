@@ -38,7 +38,7 @@ module.exports = function submitVideo(room) {
       broadSearch = submitType === "recb" ? true : false;
       searchTerm = data.search;
       url += 'search?part=snippet&relatedToVideoId='
-                + videoId + 'AO4loowq93Y&type=video&maxResults=10&key='
+                + videoId + 'AO4loowq93Y&type=video&maxResults=20&key='
                 + YOUTUBE_API_KEY;
       errorMsg = MESSAGES.SEARCH_SUBMIT_ERROR;
       processFunction = processVideoRecSubmit(room, broadSearch);

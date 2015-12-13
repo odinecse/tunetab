@@ -6,7 +6,6 @@ module.exports.MESSAGES = {
   SEARCH_SUBMIT_ERROR: 'invalid search term, or search returned nothing',
   SUBMIT_UKNOWN_ERROR: 'unknown submit type, unknown error',
   ALREADY_VOTED: 'you\'ve already voted',
-  
   NO_MORE_RECS: 'i\'m out of recommendations! (or your search has already been played)',
   NOTHING_TO_SKIP: 'nothing to skip',
   SKIPPING_VIDEO: function(alias) {
@@ -17,7 +16,10 @@ module.exports.MESSAGES = {
   },
   SUBMITTED_ANNOUNCEMENT: function(title, alias) {
     return '"' + title + '" submitted by ' + alias;
-  }
+  },
+  NOW_PLAYING: function(title, alias) {
+    return 'now playing: "' + title + '" submitted by ' + alias;
+  },
 };
 
 module.exports.YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/';

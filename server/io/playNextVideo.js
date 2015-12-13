@@ -2,6 +2,7 @@ var resetUserVotes = require('../helpers').resetUserVotes;
 var isUndefined = require('../helpers').isUndefined;
 var removeFromArray = require('../helpers').removeFromArray;
 var MAX_PREVIOUS_VIDEOS = require('../constants').MAX_PREVIOUS_VIDEOS;
+var MESSAGES = require('../constants').MESSAGES;
 
 var returnFalse = function() {return false};
 var testFunct = function(roomVideos, videoId) {
@@ -33,12 +34,12 @@ module.exports = function playNextVideo(room) {
       if(room.videos.upcoming.length > 0) {
         room.videos.current = room.videos.upcoming.shift();
         removeFromArray(room.user.lastSubmitted, room.videos.current.id);
-        room.videos.videoTime = 0;
         room.io.to(room.id).emit('playVideo',
           {videos: room.videos});
+        room.io.to(room.id).emit('announcement',
+          {msg: MESSAGES.NOW_PLAYING(room.videos.current.title, room.videos.current.user)});
       } else {
         room.videos.current = null;
-        room.videos.videoTime = 0;
         submitVideo({videoId: previousId, type: 'rec'});
       }
     }

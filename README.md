@@ -14,11 +14,11 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 
 ### NOTES
 - broken
+  - [ ] undefineds on restart if client reestablishes connection after disconnect and serevr restart
+  - [ ] need to revisit potential other runaway processes
   - [x] varibales like votes and videotime not being properly rest on nextvideo/skip
-    - [ ] need to revisit potential other runaway processes
   - [x] wrap long titles in previous upcoming with elipsese
   - [x] on alias update, push out userinfo update action from server to client
-  - [ ] undefineds on restart if client reestablishes connection after disconnect and serevr restart
   - [x] new rec seems to always skip video on video end twice?
     - [x] make sure skipping can only happen once per current video...
   - [x] users call is broken about current user, just take that out
@@ -27,7 +27,9 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
     - [ ] skipping after a pause?
     - [ ] pausing breaks everthing
 - submit
-  - [ ] submit now playing submitted by so and so announcememnt
+  - [ ] more advanced version would return a few results you can pick through
+  - [ ] broad recommendation `/recb` should take random item form history and do a rec based off that...
+  - [x] submit now playing submitted by so and so announcememnt
   - [x] notify who skipping
   - [x] notify room on successful recommendation
     - [x] flash upcoming playlists
@@ -37,16 +39,20 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
     - [x] take undo submits out of history too
       - [x] maybe it shouldn't?
     - [x] undo array?
-  - [ ] more advanced version would return a few results you can pick through
   - [x] recommend videos off current video
-    - [ ] broad recommendation `/recb` should take random item form history and do a rec based off that...
 - rooms
+  - [ ] keep room alive, command /flag
+  - [ ] have way of autorunning rooms? server side browser?
+  - [ ] clone command to new room takes all upcoming tracks and moves them
   - [x] list global rooms
   - [x] join them
 - users
   - [x] list current users on login
   - [ ] vote count on vote
 - general
+  - [ ] better deploy
+  - [ ] tests
+  - [ ] play around with redux for datastore
   - [ ] make into private app, only room creator can skip, etc... ?
     - [ ] a way of telling your friends, hey look at this
   - [ ] stop recommender, pause problems
@@ -56,8 +62,5 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] mute command
   - [ ] more fun commands
   - [ ] refocus input on click in chat bar
-  - [ ] tests
-  - [ ] better deploy
-  - [ ] live reloading for react and css
-  - [ ] play around with redux for datastore
+  - [ ] live reloading for react and css  
   - [ ] store room states in db?
