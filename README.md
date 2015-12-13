@@ -27,6 +27,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
     - [ ] skipping after a pause?
     - [ ] pausing breaks everthing
 - submit
+  - [ ] submit now playing submitted by so and so announcememnt
   - [x] notify who skipping
   - [x] notify room on successful recommendation
     - [x] flash upcoming playlists
@@ -46,7 +47,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] list current users on login
   - [ ] vote count on vote
 - general
-  - [ ] make into private voyoristic app, only room creator can skip, etc... ?
+  - [ ] make into private app, only room creator can skip, etc... ?
     - [ ] a way of telling your friends, hey look at this
   - [ ] stop recommender, pause problems
   - [ ] save videos you like, export those in json?
