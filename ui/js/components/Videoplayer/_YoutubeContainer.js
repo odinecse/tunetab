@@ -43,6 +43,7 @@ export default class YoutubeContainer extends Component {
         let promise = this.player.getCurrentTime();
         promise.then(function(time) {
           outgoingActions.tick({videoTime: time || 0});
+          dataStore.setVideoTimeSilent({videoTime: time || 0});
         });
       }, 500);
     }

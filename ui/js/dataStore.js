@@ -38,6 +38,9 @@ var dataStore = Object.assign({}, EventEmitter.prototype, {
     _data.videos = data.videos;
     dataStore.emit('change');
   },
+  setVideoTimeSilent(data) {
+    _data.videos.videoTime = data.videoTime;
+  },
   setSubmitted(data) {
     _data.submitted = data.submitted;
     dataStore.emit('change');
