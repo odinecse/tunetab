@@ -33,10 +33,12 @@ module.exports = function playNextVideo(room) {
       if(room.videos.upcoming.length > 0) {
         room.videos.current = room.videos.upcoming.shift();
         removeFromArray(room.user.lastSubmitted, room.videos.current.id);
+        room.videos.videoTime = 0;
         room.io.to(room.id).emit('playVideo',
           {videos: room.videos});
       } else {
         room.videos.current = null;
+        room.videos.videoTime = 0;
         submitVideo({videoId: previousId, type: 'rec'});
       }
     }

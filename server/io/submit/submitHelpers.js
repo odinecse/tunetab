@@ -5,6 +5,7 @@ var MESSAGES = require('../../constants').MESSAGES;
 function submitLogic(submittedVideo, room) {
   room.videos.history.push(submittedVideo.id);
   if(room.videos.current === null) {
+    room.videos.videoTime = 0;
     room.videos.current = submittedVideo;
     room.io.to(room.id).emit('playVideo',
       {videos: room.videos});

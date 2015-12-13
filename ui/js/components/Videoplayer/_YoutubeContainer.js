@@ -3,7 +3,7 @@ import YoutubePlayer from 'react-youtube-player';
 
 import dataStore from '../../dataStore';
 import {isEmpty} from '../../helpers';
-import {THE_FACE, MAX_TIME_DIFFERENCE} from '../../constants';
+import {THE_FACE} from '../../constants';
 import outgoingActions from '../../actions/outgoingActions';
 
 var interval = {};
@@ -13,6 +13,7 @@ export default class YoutubeContainer extends Component {
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
     this.clearPing = this.clearPing.bind(this);
     this.setPing = this.setPing.bind(this);
     this.nextVideo = this.nextVideo.bind(this);
@@ -23,9 +24,6 @@ export default class YoutubeContainer extends Component {
       if(this.props.muted !== nextProps.muted) {
         return true;
       }
-      if(this.props.videoTime + MAX_TIME_DIFFERENCE < nextProps.videoTime) {
-        return true;
-      }
       if(this.props.current.id == nextProps.current.id) {
         return false;
       }
@@ -33,11 +31,17 @@ export default class YoutubeContainer extends Component {
     return true;
   }
 
+  componentDidUpdate() {
+    this.clearPing();
+  }
+
   clearPing() {
+    console.log('clearPing');
     window.clearInterval(interval)
   }
 
   setPing() {
+    console.log('setPing');
     if(isEmpty(interval)) {
       interval = window.setInterval(() => {
         let promise = this.player.getCurrentTime();
@@ -45,11 +49,13 @@ export default class YoutubeContainer extends Component {
           outgoingActions.tick({videoTime: time || 0});
           dataStore.setVideoTimeSilent({videoTime: time || 0});
         });
-      }, 500);
+      }, 900);
     }
   }
 
   nextVideo() {
+    this.clearPing();
+    dataStore.setVideoTimeSilent({videoTime: 0});
     outgoingActions.playNextVideo({videoId: this.props.current.id});
   }
 

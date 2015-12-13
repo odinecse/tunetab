@@ -47,6 +47,7 @@ export default function messageActionParser(data) {
     return false;
   }
   if(skipRX.test(msg)) {
+    dataStore.setVideoTimeSilent({videoTime: 0});
     outgoingActions.skipVideo();
     return false;
   }
