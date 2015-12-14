@@ -41,6 +41,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
     - [x] undo array?
   - [x] recommend videos off current video
 - rooms
+  - [ ] agree to pause a room at current state
   - [ ] keep room alive, command /flag
   - [ ] have way of autorunning rooms? server side browser?
   - [ ] clone command to new room takes all upcoming tracks and moves them
