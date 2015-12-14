@@ -14,6 +14,8 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 
 ### fun ideas
 - broken
+  - [ ] add /bug to send to ga
+  - [ ] what to do when playing non-ebedable video...
   - [ ] undefineds on restart if client reestablishes connection after disconnect and serevr restart
   - [x] new rec seems to always skip video on video end twice?
     - [x] make sure skipping can only happen once per current video...
@@ -35,19 +37,21 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] recommend videos off current video
     - [ ] broad recommendation `/recb` should take random item form history and do a rec based off that...
 - rooms
+  - [ ] keep rooms alive for 3 days after last user
+    - [ ] only save non random rooms? /t/ rooms when you use join or that are "public"
   - [x] list global rooms
   - [ ] join them
 - users
   - [x] list current users on login
   - [ ] vote count on vote
 - general
-  - [ ] make into private voyoristic app, only room creator can skip, etc... ?
-    - [ ] a way of telling your friends, hey look at this
+  - [ ] chat notification sound?
+  - [ ] make into private app, only room creator can skip, etc?
   - [ ] stop recommender, pause problems
   - [ ] save videos you like, export those in json?
   - [x] auto play next functionality for music exploration...
   - [x] add about
-  - [ ] mute command
+  - [x] mute command
   - [ ] more fun commands
   - [x] refocus input on click in chat bar
   - [ ] tests
