@@ -28,7 +28,7 @@ module.exports = function submitVideo(room) {
     } else if(submitType === "search") {
       searchTerm = data.search;
       url += 'search?part=snippet&q=' + searchTerm
-                + '&maxResults=5&videoEmbeddable=true&orderby=viewCount&type=video&key='
+                + '&maxResults=5&videoEmbeddable=true&order=viewCount&type=video&key='
                 + YOUTUBE_API_KEY;
       errorMsg = MESSAGES.SEARCH_SUBMIT_ERROR;
       processFunction = processVideoRecSubmit(room);
@@ -37,7 +37,7 @@ module.exports = function submitVideo(room) {
       videoId = data.videoId;
       broadSearch = submitType === "recb" ? true : false;
       searchTerm = data.search;
-      url += 'search?part=snippet&videoEmbeddable=true&relatedToVideoId='
+      url += 'search?part=snippet&videoEmbeddable=true&order=viewCount&relatedToVideoId='
                 + videoId + 'AO4loowq93Y&type=video&maxResults=20&key='
                 + YOUTUBE_API_KEY;
       errorMsg = MESSAGES.SEARCH_SUBMIT_ERROR;
