@@ -26,9 +26,14 @@
   h4 {
     position: absolute;
     top: 5px;
-    font-size: $mainFontSize;
-    left: 75px;
+    font-size: 14px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
     margin: 0;
+    padding: 0px 25px 0 70px;
   }
 }
 

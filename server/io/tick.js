@@ -22,12 +22,14 @@ function cleanUpMultipleIds(room, alias) {
 
 module.exports = function tick(room) {
   return function(data){
-    var time = data.videoTime ? parseInt(data.videoTime, 10) : 0;
+    var clientTime = data.videoTime ? parseInt(data.videoTime, 10) : 0;
+
     if(checkDataIntegrity(room.videos)) {
-      if(tickTest(room.videos, time)) {
-        cleanUpMultipleIds(room);
-        room.videos.videoTime = time;
+      cleanUpMultipleIds(room);
+      if(tickTest(room.videos, clientTime)) {
+        room.videos.videoTime = clientTime;  
       }
     }
+
   }
 }

@@ -33,7 +33,7 @@ module.exports = function(io) {
       user: {
         alias: animal.rand() + randInt(1, 999),
         skip: false,
-        lastSubmitted: null
+        lastSubmitted: []
       },
       userCount: 0,
       skipVotes: 0,

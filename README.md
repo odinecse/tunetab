@@ -12,11 +12,15 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 * `npm run build` dev build, watches files for changes
 * `npm run build-prod` prod build with some minification and stuff
 
-### fun ideas
+### NOTES
 - broken
   - [ ] add /bug to send to ga
   - [ ] what to do when playing non-ebedable video...
   - [ ] undefineds on restart if client reestablishes connection after disconnect and serevr restart
+  - [ ] need to revisit potential other runaway processes
+  - [x] varibales like votes and videotime not being properly rest on nextvideo/skip
+  - [x] wrap long titles in previous upcoming with elipsese
+  - [x] on alias update, push out userinfo update action from server to client
   - [x] new rec seems to always skip video on video end twice?
     - [x] make sure skipping can only happen once per current video...
   - [x] users call is broken about current user, just take that out
@@ -27,40 +31,40 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 - submit
   - [ ] re-submit
   - [ ] playlist format import/export
+  - [ ] more advanced version would return a few results you can pick through
+  - [ ] broad recommendation `/recb` should take random item form history and do a rec based off that...
+  - [x] submit now playing submitted by so and so announcememnt
+  - [x] notify who skipping
   - [x] notify room on successful recommendation
     - [x] flash upcoming playlists
   - [x] NO DUPLICATES! - keep a history of videos, dont recommend videos already played, incrememnet rec count, increase rec count...
   - [x] submit by search of youtube api
   - [x] undo last submit
     - [x] take undo submits out of history too
-      - [ ] maybe it shouldn't?
-    - [ ] undo array?
-  - [ ] more advanced version would return a few results you can pick through
+      - [x] maybe it shouldn't?
+    - [x] undo array?
   - [x] recommend videos off current video
-    - [ ] broad recommendation `/recb` should take random item form history and do a rec based off that...
 - rooms
   - [ ] keep rooms alive for 3 days after last user
     - [ ] only save non random rooms? /t/ rooms when you use join or that are "public"
+  - [ ] have way of autorunning rooms? server side browser?
+  - [ ] clone command to new room takes all upcoming tracks and moves them
   - [x] list global rooms
-  - [ ] join them
-- users
+  - [x] join them
   - [x] list current users on login
   - [ ] vote count on vote
 - general
   - [ ] chat notification sound?
   - [ ] make into private app, only room creator can skip, etc?
-  - [ ] stop recommender, pause problems
+  - [ ] better deploy
+  - [ ] tests
+  - [ ] play around with redux for datastore
+  - [ ] make into private app, only room creator can skip, etc... ?
   - [ ] save videos you like, export those in json?
   - [x] auto play next functionality for music exploration...
   - [x] add about
   - [x] mute command
   - [ ] more fun commands
-  - [x] refocus input on click in chat bar
-  - [ ] tests
-  - [ ] better deploy
+  - [ ] refocus input on click in chat bar
   - [ ] live reloading for react and css
-  - [ ] play around with redux for datastore
   - [ ] store room states in db?
-
-### issues
-* figure out how to not skip a video if someone is really behind the rest of the clients? general skip syncing issues.

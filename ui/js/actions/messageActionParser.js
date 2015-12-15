@@ -1,7 +1,6 @@
 import outgoingActions from './outgoingActions';
 import dataStore from '../dataStore';
-import {helpMessage, aboutMessage, usersMessage} from '../staticMessages';
-import {ERRORS} from '../constants';
+import {helpMessage, aboutMessage, usersMessage, mutedMessage} from '../staticMessages';
 
 export default function messageActionParser(data) {
   const msg = data.msg;
@@ -12,13 +11,17 @@ export default function messageActionParser(data) {
   const recbRX = /^\/recb/i;
   const roomsRX = /^\/rooms/i;
   const usersRX = /^\/users/i;
+  const muteRX = /^\/mute/i;
+  const unmuteRX = /^\/unmute/i;
   const clearRX = /^\/clear/i;
   const aliasRX = /^\/alias\s([^(\s|\b)]*)/i;
+  const joinRX = /^\/join\s([^(\s|\b)]*)/i;
   const submitRX = /^\/submit\s([^(\b)]*)/i;
   const undoRX = /^\/undo/i;
   const youtubeRX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
 
   let aliasMatch = msg.match(aliasRX);
+  let joinMatch = msg.match(joinRX);
   let submitMatch = msg.match(submitRX);
 
   if(submitMatch) {
@@ -35,11 +38,16 @@ export default function messageActionParser(data) {
     outgoingActions.updateAlias({alias: aliasMatch[1]});
     return false;
   }
+  if(joinMatch) {
+    window.location = '/r/' + joinMatch[1];
+    return false;
+  }
   if(undoRX.test(msg)) {
     outgoingActions.undoSubmit();
     return false;
   }
   if(skipRX.test(msg)) {
+    dataStore.setVideoTimeSilent({videoTime: 0});
     outgoingActions.skipVideo();
     return false;
   }
@@ -49,6 +57,18 @@ export default function messageActionParser(data) {
   }
   if(usersRX.test(msg)) {
     usersMessage(dataStore.getData());
+    return false;
+  }
+  if(muteRX.test(msg)) {
+    let m = {muted: true};
+    dataStore.setMuted(m);
+    mutedMessage(m);
+    return false;
+  }
+  if(unmuteRX.test(msg)) {
+    let m = {muted: false};
+    dataStore.setMuted(m);
+    mutedMessage(m);
     return false;
   }
   if(aboutRX.test(msg)) {
