@@ -25,6 +25,8 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
     - [ ] skipping after a pause?
     - [ ] pausing breaks everthing
 - submit
+  - [ ] re-submit
+  - [ ] playlist format import/export
   - [x] notify room on successful recommendation
     - [x] flash upcoming playlists
   - [x] NO DUPLICATES! - keep a history of videos, dont recommend videos already played, incrememnet rec count, increase rec count...
