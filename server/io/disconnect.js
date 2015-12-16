@@ -15,7 +15,8 @@ module.exports = function disconnect(globalData, room) {
       if(room.lastActive < (new Date() - threeDays)) {
         delete globalData[room.id];
       } else if(room.userCount === 0) {
-        console.log(globalData[room.id]);
+        // clear history
+        room.videos.history = [];
         globalData[room.id].inactive = true;
       } else {
         room.io.to(room.id).emit('usersInfo',
