@@ -1,7 +1,11 @@
 import {welcomeMessage} from '../staticMessages';
 import dataStore from '../dataStore';
+import notificationSound   from '../../files/notification.mp3';
 
 var socket = window.io();
+var notification = new Audio(notificationSound);
+
+notification.autoplay = false;
 
 socket.on('welcome', function(data){
   console.log('SOCKET:WELCOME', data);
@@ -22,6 +26,9 @@ socket.on('usersInfo', function(data){
 });
 
 socket.on('message', function(data){
+  notification.pause();
+  notification.currentTime = 0;
+  notification.play();
   console.log('SOCKET:MESSAGE', data);
   dataStore.pushMessage(data);
 });

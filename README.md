@@ -45,8 +45,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
     - [x] undo array?
   - [x] recommend videos off current video
 - rooms
-  - [ ] keep rooms alive for 3 days after last user
-    - [ ] only save non random rooms? /t/ rooms when you use join or that are "public"
+  - [x] keep rooms alive for 3 days after last user
   - [ ] have way of autorunning rooms? server side browser?
   - [ ] clone command to new room takes all upcoming tracks and moves them
   - [x] list global rooms
@@ -54,7 +53,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] list current users on login
   - [ ] vote count on vote
 - general
-  - [ ] chat notification sound?
+  - [x] chat notification sound?
   - [ ] make into private app, only room creator can skip, etc?
   - [ ] better deploy
   - [ ] tests
