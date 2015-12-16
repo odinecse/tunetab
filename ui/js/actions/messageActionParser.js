@@ -7,8 +7,7 @@ export default function messageActionParser(data) {
   const skipRX = /^\/skip/i;
   const helpRX = /^\/help/i;
   const aboutRX = /^\/about/i;
-  const recRX = /^\/rec/i;
-  const recbRX = /^\/recb/i;
+  const recRX = /^\/r/i;
   const roomsRX = /^\/rooms/i;
   const usersRX = /^\/users/i;
   const muteRX = /^\/mute/i;
@@ -16,8 +15,8 @@ export default function messageActionParser(data) {
   const clearRX = /^\/clear/i;
   const aliasRX = /^\/alias\s([^(\s|\b)]*)/i;
   const joinRX = /^\/join\s([^(\s|\b)]*)/i;
-  const submitRX = /^\/submit\s([^(\b)]*)/i;
-  const undoRX = /^\/undo/i;
+  const submitRX = /^\/s\s([^(\b)]*)/i;
+  const undoRX = /^\/u/i;
   const youtubeRX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
 
   let aliasMatch = msg.match(aliasRX);

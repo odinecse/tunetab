@@ -7,7 +7,7 @@ module.exports = function disconnect(globalData, room) {
   return function(){
     var threeDays = (1000*60*60*24*3);
     // disconnect occasionally misfires of fires before login...
-    if(!isUndefined(globalData[room.id]))
+    if(!isUndefined(globalData[room.id])) {
       delete room.user;
       delete room.users[room.socket.id];
       room.userCount = countUsers(room.users);
@@ -15,6 +15,7 @@ module.exports = function disconnect(globalData, room) {
       if(room.lastActive < (new Date() - threeDays)) {
         delete globalData[room.id];
       } else if(room.userCount === 0) {
+        console.log(globalData[room.id]);
         globalData[room.id].inactive = true;
       } else {
         room.io.to(room.id).emit('usersInfo',
@@ -23,7 +24,7 @@ module.exports = function disconnect(globalData, room) {
             userCount: room.userCount,
           });
       }
+    }
 
   }
-
 }
