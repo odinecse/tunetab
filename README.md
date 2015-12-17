@@ -15,7 +15,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 ### NOTES
 - broken
   - [ ] add /bug to send to ga
-  - [ ] what to do when playing non-ebedable video...
+  - [x] what to do when playing non-ebedable video...
   - [x] undefineds on restart if client reestablishes connection after disconnect and serevr restart
   - [ ] need to revisit potential other runaway processes
   - [x] varibales like votes and videotime not being properly rest on nextvideo/skip
