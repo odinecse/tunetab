@@ -31,6 +31,11 @@ app.get('/r/:token', function(req, res) {
   });
 });
 
+app.get('*', function(req, res) {
+  res.redirect('/');
+});
+
+
 io.on('connection', applicationIo);
 
 http.listen(APP_PORT, function(){
