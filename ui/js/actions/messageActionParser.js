@@ -14,14 +14,17 @@ export default function messageActionParser(data) {
   const clearRX = /^\/clear/i;
   const aliasRX = /^\/alias\s([^(\s|\b)]*)/i;
   const joinRX = /^\/join\s([^(\s|\b)]*)/i;
-  const submitRX = /^\/s\s([^(\b)]*)/i;
-  const undoRX = /^\/u/i;
-  const recRX = /^\/r/i;
+  const submitRX = /^\/submit\s([^(\b)]*)/i;
+  const submitRX2 = /^\/s\s([^(\b)]*)/i;
+  const undoRX = /^\/undo/i;
+  const undoRX2 = /^\/u/i;
+  const recRX = /^\/rec/i;
+  const recRX2 = /^\/r/i;
   const youtubeRX = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
 
   let aliasMatch = msg.match(aliasRX);
   let joinMatch = msg.match(joinRX);
-  let submitMatch = msg.match(submitRX);
+  let submitMatch = msg.match(submitRX) || msg.match(submitRX2);
 
 
   if(aliasMatch) {
@@ -70,11 +73,11 @@ export default function messageActionParser(data) {
     dataStore.clearMessages();
     return false;
   }
-  if(undoRX.test(msg)) {
+  if(undoRX.test(msg) || undoRX2.test(msg)) {
     outgoingActions.undoSubmit();
     return false;
   }
-  if(recRX.test(msg)) {
+  if(recRX.test(msg) || recRX2.test(msg)) {
     var data = dataStore.getData();
     var videoId = '';
     if(data.videos.current !== null) {
