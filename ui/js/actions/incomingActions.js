@@ -1,6 +1,8 @@
 import {welcomeMessage} from '../staticMessages';
 import dataStore from '../dataStore';
+import notificationSound from '../../files/notification.mp3';
 
+var notification = new Audio(notificationSound);
 var socket = window.io();
 
 socket.on('welcome', function(data){
@@ -22,6 +24,10 @@ socket.on('usersInfo', function(data){
 });
 
 socket.on('message', function(data){
+  let alias = dataStore.getData().alias;
+  if(alias !== data.alias) {
+    notification.play();
+  }
   console.log('SOCKET:MESSAGE', data);
   dataStore.pushMessage(data);
 });

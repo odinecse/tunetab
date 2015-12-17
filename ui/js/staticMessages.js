@@ -127,6 +127,7 @@ export function mutedMessage(data) {
 }
 
 export function usersMessage(data) {
+  console.log('usersMessage', data);
   oldSchool([' ', currentUsers(data), ' '], 'notification');
 }
 
