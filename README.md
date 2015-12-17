@@ -26,6 +26,8 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [ ] losing socket connection, waht to do
     - [ ] skipping after a pause?
     - [ ] pausing breaks everthing
+- deploy 
+  - [ ] `iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000`
 - submit
   - [ ] more advanced version would return a few results you can pick through
   - [ ] broad recommendation `/recb` should take random item form history and do a rec based off that...
