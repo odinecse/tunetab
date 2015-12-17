@@ -47,7 +47,7 @@ export default class YoutubeContainer extends Component {
           outgoingActions.tick({videoTime: time || 0});
           dataStore.setVideoTimeSilent({videoTime: time || 0});
         });
-      }, 400);
+      }, 800);
     }
   }
 
