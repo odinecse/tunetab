@@ -14,7 +14,9 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 
 ### NOTES
 - broken
-  - [ ] undefineds on restart if client reestablishes connection after disconnect and serevr restart
+  - [ ] add /bug to send to ga
+  - [ ] what to do when playing non-ebedable video...
+  - [x] undefineds on restart if client reestablishes connection after disconnect and serevr restart
   - [ ] need to revisit potential other runaway processes
   - [x] varibales like votes and videotime not being properly rest on nextvideo/skip
   - [x] wrap long titles in previous upcoming with elipsese
@@ -29,6 +31,8 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 - deploy 
   - [ ] `iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000`
 - submit
+  - [ ] re-submit
+  - [ ] playlist format import/export
   - [ ] more advanced version would return a few results you can pick through
   - [ ] broad recommendation `/recb` should take random item form history and do a rec based off that...
   - [x] submit now playing submitted by so and so announcememnt
@@ -43,26 +47,25 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
     - [x] undo array?
   - [x] recommend videos off current video
 - rooms
-  - [ ] keep room alive, command /flag
+  - [x] keep rooms alive for 3 days after last user
   - [ ] have way of autorunning rooms? server side browser?
   - [ ] clone command to new room takes all upcoming tracks and moves them
   - [x] list global rooms
   - [x] join them
-- users
   - [x] list current users on login
   - [ ] vote count on vote
 - general
+  - [x] chat notification sound?
+  - [ ] make into private app, only room creator can skip, etc?
   - [ ] better deploy
   - [ ] tests
   - [ ] play around with redux for datastore
   - [ ] make into private app, only room creator can skip, etc... ?
-    - [ ] a way of telling your friends, hey look at this
-  - [ ] stop recommender, pause problems
   - [ ] save videos you like, export those in json?
   - [x] auto play next functionality for music exploration...
   - [x] add about
   - [x] mute command
   - [ ] more fun commands
   - [ ] refocus input on click in chat bar
-  - [ ] live reloading for react and css  
+  - [ ] live reloading for react and css
   - [ ] store room states in db?

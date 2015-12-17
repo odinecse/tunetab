@@ -56,9 +56,10 @@ function processVideoRecSubmit(room) {
       return;
     }
 
-    if(notRecursive) {
-      index = randomIntBetween(index, length);
-    }
+    // causing bad experience?
+    // if(notRecursive) {
+    //   index = randomIntBetween(index, length);
+    // }
 
     videoId = body.items[index].id.videoId;
     if(dupTest(room.videos.history, videoId)) {

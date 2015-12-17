@@ -1,8 +1,5 @@
 var animal = require('node-animal');
-var globalData = {
-  users: {},
-  videos: {},
-};
+var globalData = {};
 
 function randInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -26,9 +23,10 @@ function randInt(min, max) {
 */
 module.exports = function(io) {
   return function(socket) {
-    var socketData = {
+    var room = {
       io: io,
       socket: socket,
+      lastActive: new Date(),
       id: '',
       user: {
         alias: animal.rand() + randInt(1, 999),
@@ -41,16 +39,16 @@ module.exports = function(io) {
       users: {},
       videos: {}
     }
-    var login = require('./login')(globalData, socketData);
-    var rooms = require('./rooms')(globalData, socketData);
-    var updateAlias = require('./updateAlias')(socketData);
-    var message = require('./message')(socketData);
-    var submitVideo = require('./submit/submitVideo')(socketData);
-    var undoSubmit = require('./undoSubmit')(socketData);
-    var playNextVideo = require('./playNextVideo')(socketData);
-    var skipVideo = require('./skipVideo')(socketData);
-    var tick = require('./tick')(socketData);
-    var disconnect = require('./disconnect')(globalData, socketData);
+    var login = require('./login')(globalData, room);
+    var rooms = require('./rooms')(globalData, room);
+    var updateAlias = require('./updateAlias')(room);
+    var message = require('./message')(room);
+    var submitVideo = require('./submit/submitVideo')(room);
+    var undoSubmit = require('./undoSubmit')(room);
+    var playNextVideo = require('./playNextVideo')(room);
+    var skipVideo = require('./skipVideo')(room);
+    var tick = require('./tick')(room);
+    var disconnect = require('./disconnect')(globalData, room);
 
     socket.on('login', login);
     socket.on('rooms', rooms);

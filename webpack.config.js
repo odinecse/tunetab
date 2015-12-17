@@ -22,6 +22,10 @@ module.exports = {
         loader: ExtractTextPlugin.extract('style', 'css!autoprefixer!sass')
       },
       {
+        test: /\.mp3$/,
+        loader: "file?name=../files/[name].[ext]"
+      },
+      {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url?limit=10000&mimetype=application/font-woff&name=../fonts/[name].[ext]"
       },

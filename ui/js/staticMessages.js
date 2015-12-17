@@ -36,16 +36,16 @@ export function oldSchool(arr, type='help') {
 
 export const BASIC_COMMANDS = [
   'submit video: ',
-  '---> /submit [search terms]',
+  '---> /s [search terms]',
   '---> or ',
-  '---> /submit [youtube url]',
+  '---> /s [youtube url]',
   ' ',
   'get a recommendation: ',
-  '---> /rec',
+  '---> /r',
   ' (based off of current video)',
   ' ',
   'undo submit or recommendation: ',
-  '---> /undo',
+  '---> /u',
   ' (if not already playing)',
   ' ',
   'skip video: ',
@@ -127,6 +127,7 @@ export function mutedMessage(data) {
 }
 
 export function usersMessage(data) {
+  console.log('usersMessage', data);
   oldSchool([' ', currentUsers(data), ' '], 'notification');
 }
 

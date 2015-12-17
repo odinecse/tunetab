@@ -1,17 +1,23 @@
-var helpers = require('../helpers');
+var isUndefined = require('../helpers').isUndefined;
+var countUsers = require('../helpers').countUsers;
 var MESSAGES = require('../constants').MESSAGES;
 
 module.exports = function disconnect(globalData, room) {
 
   return function(){
+    var threeDays = (1000*60*60*24*3);
     // disconnect occasionally misfires of fires before login...
-    if(!helpers.isUndefined(room.users)) {
+    if(!isUndefined(globalData[room.id])) {
       delete room.user;
       delete room.users[room.socket.id];
-      room.userCount = helpers.countUsers(room.users);
-      if(room.userCount === 0) {
-        delete globalData.users[room.id];
-        delete globalData.videos[room.id];
+      room.userCount = countUsers(room.users);
+      // delete if more than 3 days old without being active
+      if(room.lastActive < (new Date() - threeDays)) {
+        delete globalData[room.id];
+      } else if(room.userCount === 0) {
+        // clear history
+        room.videos.history = [];
+        globalData[room.id].inactive = true;
       } else {
         room.io.to(room.id).emit('usersInfo',
           {
@@ -22,5 +28,4 @@ module.exports = function disconnect(globalData, room) {
     }
 
   }
-
 }

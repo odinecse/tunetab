@@ -47,7 +47,7 @@ input {
   position: fixed;
   top: 0;
   right: 0;
-  width: 33.33%;
+  width: 27%;
 }
 
 #tt-chat {
@@ -60,7 +60,7 @@ input {
   position: fixed;
   top: 0;
   left: 0;
-  width: 66.66%;
+  width: 73%;
   height: 100%;
 }
 
@@ -71,17 +71,17 @@ input {
 }
 
 #tt-ytplayer-container {
-  height: 55%;
+  height: 68%;
   width: 100%;
 }
 
 #tt-previous-videos-container {
-  height: 20%;
+  height: 14%;
   width: 100%;
 }
 
 #tt-upcoming-videos-container {
-  height: 25%;
+  height: 18%;
   width: 100%;
 }
 
@@ -118,11 +118,11 @@ input {
   transform-origin: 0 0;
 }
 
-@keyframes fadeIn { 
-  0% { 
+@keyframes fadeIn {
+  0% {
     opacity: 0;
   }
-  50% { 
+  50% {
     opacity: 0.4;
   }
   100% {
