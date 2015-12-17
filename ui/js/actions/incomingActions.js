@@ -24,8 +24,7 @@ socket.on('usersInfo', function(data){
 });
 
 socket.on('message', function(data){
-  let alias = dataStore.getData().alias;
-  if(alias !== data.alias) {
+  if(!document.hasFocus()) {
     notification.play();
   }
   console.log('SOCKET:MESSAGE', data);
