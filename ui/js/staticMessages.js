@@ -65,7 +65,7 @@ export const LAST_MESSAGE = [
   ' ',
   'make your own url:',
   '---> http://tunetab.us/r/myroom',
-  ' (rooms is destroyed 3 days after all users leave)',
+  ' (room\'s destroyed 3 days after last active)',
   ' ',
 ];
 
@@ -127,7 +127,6 @@ export function mutedMessage(data) {
 }
 
 export function usersMessage(data) {
-  console.log('usersMessage', data);
   oldSchool([' ', currentUsers(data), ' '], 'notification');
 }
 

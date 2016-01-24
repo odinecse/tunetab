@@ -45,7 +45,6 @@ export default function messageActionParser(data) {
     return false;
   }
   if(usersRX.test(msg)) {
-    console.log('users');
     usersMessage(dataStore.getData());
     return false;
   }

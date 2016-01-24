@@ -55,12 +55,6 @@ function processVideoRecSubmit(room) {
           {msg: MESSAGES.NO_MORE_RECS});
       return;
     }
-
-    // causing bad experience?
-    // if(notRecursive) {
-    //   index = randomIntBetween(index, length);
-    // }
-
     videoId = body.items[index].id.videoId;
     if(dupTest(room.videos.history, videoId)) {
       processFunction = processVideoRecSubmit(room);
@@ -68,7 +62,6 @@ function processVideoRecSubmit(room) {
       processFunction(body, broadSearch, index);
       return;
     }
-
     submittedVideo = {
       id: body.items[index].id.videoId,
       title: body.items[index].snippet.title,

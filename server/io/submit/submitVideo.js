@@ -38,7 +38,7 @@ module.exports = function submitVideo(room) {
       broadSearch = submitType === "recb" ? true : false;
       searchTerm = data.search;
       url += 'search?part=snippet&videoEmbeddable=true&order=viewCount&relatedToVideoId='
-                + videoId + 'AO4loowq93Y&type=video&maxResults=20&key='
+                + videoId + '&type=video&maxResults=20&key='
                 + YOUTUBE_API_KEY;
       errorMsg = MESSAGES.SEARCH_SUBMIT_ERROR;
       processFunction = processVideoRecSubmit(room, broadSearch);
@@ -48,7 +48,6 @@ module.exports = function submitVideo(room) {
       return;
     }
     console.log('youtube api call:', url);
-
     request({
       uri: url,
       json: true
@@ -61,8 +60,10 @@ module.exports = function submitVideo(room) {
             {msg: errorMsg});
         }
       } else {
+        console.log('api error', body.error.errors);
+        var eMessage = 'e: ' + body.error.code + ' m:' + body.error.message;
         room.io.to(room.socket.id).emit('error',
-          {msg: MESSAGES.YOUTUBE_API_ERROR});
+          {msg: MESSAGES.YOUTUBE_API_ERROR(eMessage)});
       }
     });
 

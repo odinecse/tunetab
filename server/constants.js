@@ -1,6 +1,4 @@
 module.exports.MESSAGES = {
-  YOUTUBE_API_ERROR: 'unable to contact youtube',
-  YOUTUBE_API_ERROR_RELATED: 'unable to contact youtube to find a related video',
   URL_SUBMIT_ERROR: 'invalid video url',
   SUBMIT_DUPLICATE: 'video has already been played, video must be unique',
   SEARCH_SUBMIT_ERROR: 'invalid search term, or search returned nothing',
@@ -8,6 +6,9 @@ module.exports.MESSAGES = {
   ALREADY_VOTED: 'you\'ve already voted',
   NO_MORE_RECS: 'i\'m out of recommendations! (or your search has already been played)',
   NOTHING_TO_SKIP: 'nothing to skip',
+  YOUTUBE_API_ERROR: function(message) {
+    return 'unable to contact youtube, ' + message;
+  },
   SKIPPING_VIDEO: function(alias) {
     return 'video skipped by ' + alias;
   },
