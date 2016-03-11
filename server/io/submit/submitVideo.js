@@ -60,7 +60,8 @@ module.exports = function submitVideo(room) {
             {msg: errorMsg});
         }
       } else {
-        console.log('api error', body.error.errors);
+        // BUG HERE
+        // console.log('api error', body.error.errors);
         var eMessage = 'e: ' + body.error.code + ' m:' + body.error.message;
         room.io.to(room.socket.id).emit('error',
           {msg: MESSAGES.YOUTUBE_API_ERROR(eMessage)});

@@ -20,6 +20,7 @@ function submitLogic(submittedVideo, room) {
 }
 
 function dupTest(history, videoId) {
+  // BUG HERE
   return history.length > 0 && history.indexOf(videoId) > -1;
 }
 
@@ -66,6 +67,7 @@ function processVideoRecSubmit(room) {
       id: body.items[index].id.videoId,
       title: body.items[index].snippet.title,
       thumb: body.items[index].snippet.thumbnails.default,
+      // BUG HERE, alias somehow null?
       user: room.user.alias,
     };
     room.currentRecIndex++;

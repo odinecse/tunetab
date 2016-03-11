@@ -20,6 +20,7 @@ var resetTestFunctionDelay = function() {
 
 module.exports = function playNextVideo(room) {
   return function(data){
+    // BUG HERE
     var previousId = room.videos.current.id;
     var submitVideo = require('./submit/submitVideo')(room);
     room.skipVotes = 0;
