@@ -20,7 +20,12 @@ function submitLogic(submittedVideo, room) {
 }
 
 function dupTest(history, videoId) {
-  // BUG HERE
+  if(isUndefined(history) && isUndefined(history.length)) {
+    return false;
+  }
+  if(isUndefined(videoId)) {
+    return false;
+  }
   return history.length > 0 && history.indexOf(videoId) > -1;
 }
 
@@ -50,6 +55,11 @@ function processVideoRecSubmit(room) {
     var submittedVideo = {};
     var videoId = '';
     var processFunction = function(){};
+    var user = 'robot?';
+
+    if(!isUndefined(room.user) && !isUndefined(room.user.alias)) {
+      user = room.user.alias;
+    }
 
     if(length < 0 || index > length) {
       room.io.to(room.id).emit('announcement',
@@ -67,8 +77,7 @@ function processVideoRecSubmit(room) {
       id: body.items[index].id.videoId,
       title: body.items[index].snippet.title,
       thumb: body.items[index].snippet.thumbnails.default,
-      // BUG HERE, alias somehow null?
-      user: room.user.alias,
+      user: user,
     };
     room.currentRecIndex++;
     submitLogic(submittedVideo, room);

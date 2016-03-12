@@ -14,20 +14,20 @@ module.exports = function submitVideo(room) {
     var submitType = data.type;
     var videoId = '';
     var searchTerm = '';
-    var url = YOUTUBE_API_URL;
+    var apiQuery = '';
     var errorMsg = MESSAGES.SUBMIT_UKNOWN_ERROR;
     var broadSearch = false;
     var processFunction = function() {};
 
     if(submitType === "url") {
       videoId = data.videoId;
-      url += 'videos?part=id%2Csnippet&id='
+      apiQuery += 'videos?part=id%2Csnippet&id='
                 + videoId + '&key=' + YOUTUBE_API_KEY;
       errorMsg = MESSAGES.URL_SUBMIT_ERROR;
       processFunction = processVideoURLSubmit(videoId, room);
     } else if(submitType === "search") {
       searchTerm = data.search;
-      url += 'search?part=snippet&q=' + searchTerm
+      apiQuery += 'search?part=snippet&q=' + searchTerm
                 + '&maxResults=5&videoEmbeddable=true&order=viewCount&type=video&key='
                 + YOUTUBE_API_KEY;
       errorMsg = MESSAGES.SEARCH_SUBMIT_ERROR;
@@ -37,7 +37,7 @@ module.exports = function submitVideo(room) {
       videoId = data.videoId;
       broadSearch = submitType === "recb" ? true : false;
       searchTerm = data.search;
-      url += 'search?part=snippet&videoEmbeddable=true&order=viewCount&relatedToVideoId='
+      apiQuery += 'search?part=snippet&videoEmbeddable=true&order=viewCount&relatedToVideoId='
                 + videoId + '&type=video&maxResults=20&key='
                 + YOUTUBE_API_KEY;
       errorMsg = MESSAGES.SEARCH_SUBMIT_ERROR;
@@ -47,9 +47,9 @@ module.exports = function submitVideo(room) {
         {msg: errorMsg});
       return;
     }
-    console.log('youtube api call:', url);
+
     request({
-      uri: url,
+      uri: YOUTUBE_API_URL + apiQuery,
       json: true
     }, function (error, response, body) {
       if (!error && response.statusCode == 200) {
@@ -60,11 +60,14 @@ module.exports = function submitVideo(room) {
             {msg: errorMsg});
         }
       } else {
-        // BUG HERE
-        // console.log('api error', body.error.errors);
-        var eMessage = 'e: ' + body.error.code + ' m:' + body.error.message;
+        console.log('error query:', YOUTUBE_API_URL + apiQuery);
+        if(!isUndefined(body.error)){
+          console.log(body.error);
+          errorMsg = 'e: ' + body.error.code + ' m:' + body.error.message;
+        }
+
         room.io.to(room.socket.id).emit('error',
-          {msg: MESSAGES.YOUTUBE_API_ERROR(eMessage)});
+          {msg: MESSAGES.YOUTUBE_API_ERROR(errorMsg)});
       }
     });
 

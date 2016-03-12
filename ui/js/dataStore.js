@@ -3,11 +3,11 @@ import Cookies from 'js-cookie';
 import {COOKIE_NAME} from './constants';
 
 var _data = {
-  alias: '',
+  alias: 'neo',
   users: {},
   userCount: 0,
   submitted: false,
-  muted: false,
+  muted: true,
   videos: {
     current: null,
     videoTime: 0,
@@ -16,6 +16,14 @@ var _data = {
   },
   messages: []
 };
+
+function saveCookie() {
+  let cookieData = {
+    alias: _data.alias,
+    muted: _data.muted
+  }
+  Cookies.set(COOKIE_NAME, JSON.stringify(cookieData), { expires: 666});
+}
 
 var dataStore = Object.assign({}, EventEmitter.prototype, {
   addChangeListener(callback) {
@@ -31,7 +39,7 @@ var dataStore = Object.assign({}, EventEmitter.prototype, {
   },
   setAlias(data) {
     _data.alias = data.alias;
-    Cookies.set(COOKIE_NAME, data.alias, { expires: 666});
+    saveCookie();
     dataStore.emit('change');
   },
   setVideos(data) {
@@ -47,6 +55,7 @@ var dataStore = Object.assign({}, EventEmitter.prototype, {
   },
   setMuted(data) {
     _data.muted = data.muted;
+    saveCookie();
     dataStore.emit('change');
   },
   pushMessage(data) {

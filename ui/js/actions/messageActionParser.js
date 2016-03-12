@@ -1,16 +1,17 @@
 import outgoingActions from './outgoingActions';
 import dataStore from '../dataStore';
-import {helpMessage, aboutMessage, usersMessage, mutedMessage} from '../staticMessages';
+import {helpMessage, usersMessage, mutedMessage} from '../staticMessages';
 
 export default function messageActionParser(data) {
   const msg = data.msg;
   const skipRX = /^\/skip/i;
   const helpRX = /^\/help/i;
-  const aboutRX = /^\/about/i;
+  const gitRX = /^\/git/i;
   const roomsRX = /^\/rooms/i;
   const usersRX = /^\/users/i;
   const muteRX = /^\/mute/i;
   const unmuteRX = /^\/unmute/i;
+  const tweetRX = /^\/tweet/i;
   const clearRX = /^\/clear/i;
   const aliasRX = /^\/alias\s([^(\s|\b)]*)/i;
   const joinRX = /^\/join\s([^(\s|\b)]*)/i;
@@ -48,6 +49,18 @@ export default function messageActionParser(data) {
     usersMessage(dataStore.getData());
     return false;
   }
+  if(gitRX.test(msg)) {
+    window.open('https://github.com/odinecse/tunetab');
+    return false;
+  }
+  if(tweetRX.test(msg)) {
+    var message = encodeURI('hanging out here');
+    var url = `http://twitter.com/share?text=${message}&url=${encodeURI(window.location.href)}`;
+    var params = 'width=400,height=550,toolbar=0,location=0,status=0';
+    window.open(url, 'Tweet', params);
+    return false;
+  }
+
   if(muteRX.test(msg)) {
     let m = {muted: true};
     dataStore.setMuted(m);
@@ -58,10 +71,6 @@ export default function messageActionParser(data) {
     let m = {muted: false};
     dataStore.setMuted(m);
     mutedMessage(m);
-    return false;
-  }
-  if(aboutRX.test(msg)) {
-    aboutMessage();
     return false;
   }
   if(helpRX.test(msg)) {

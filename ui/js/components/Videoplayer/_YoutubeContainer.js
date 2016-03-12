@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import YoutubePlayer from 'react-youtube-player';
+import classNames from 'classnames';
 
 import dataStore from '../../dataStore';
 import {isEmpty} from '../../helpers';
@@ -96,6 +97,9 @@ export default class YoutubeContainer extends Component {
     return (
       <div id="tt-ytplayer-container" className="tt-sideways-container">
         <h1 className="tt-sideways">{title}</h1>
+        <div id="tt-ytplayer-overlays" className={classNames({'hidden': !mute})}>
+          <div className="tt-muted-overlay">muted, type /unmute</div>
+        </div>
         {player}
       </div>
     );

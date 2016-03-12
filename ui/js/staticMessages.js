@@ -1,4 +1,3 @@
-import {THE_FACE3} from './constants';
 import dataStore from './dataStore';
 
 export function announce(msg, type='help') {
@@ -34,91 +33,40 @@ export function oldSchool(arr, type='help') {
   iterator(0);
 }
 
-export const BASIC_COMMANDS = [
-  'submit video: ',
-  '---> /s [search terms]',
-  '---> or ',
-  '---> /s [youtube url]',
-  ' ',
-  'get a recommendation: ',
-  '---> /r',
-  ' (based off of current video)',
-  ' ',
-  'undo submit or recommendation: ',
-  '---> /u',
-  ' (if not already playing)',
-  ' ',
-  'skip video: ',
-  '---> /skip',
-  ' (if no next video, same as /rec)',
-  ' ',
-  'mute/unmute: ',
-  '---> /mute or /unmute',
-  ' ',
-];
-
-export const LAST_MESSAGE = [
-  'SEE ALL COMMANDS: ',
-  '---> /help',
-  ' ',
-  'share url to invite your friends!',
-  ' ',
-  'make your own url:',
-  '---> http://tunetab.us/r/myroom',
-  ' (room\'s destroyed 3 days after last active)',
-  ' ',
-];
-
-export const COMPLEX_COMMANDS = [
-  'change alias: ',
-  '---> /alias [alias]',
-  ' ',
-  'see list of users in room: ',
-  '---> /users',
-  ' ',
-  'see list of active rooms: ',
-  '---> /rooms',
-  ' ',
-  'join a room: ',
-  '---> /join [room name]',
-  ' (what you see when you type /rooms)',
-  ' ',
-  'clear chat: ',
-  '---> /clear',
-  ' ',
+export const WELCOME = [
+  'share this url to invite your friends!',
+  'it\'s like watching weird tv or something...',
+  '',
 ]
 
-export const ABOUT_MESSAGE = [
-  ' ',
-  ' ',
-  ' ',
-  ' ',
-  ' ',
-  '...created by Einars Odinecs',
-  ' ',
-  ' ',
-  ' ',
-  THE_FACE3,
-  ' ',
-  ' ',
-  ' ',
-  ' ',
-]
+export const COMMANDS = [
+  'COMMANDS:',
+  ' add video: /s [search|youtubeurl]',
+  ' rec: /r',
+  ' undo add or rec: /u',
+  ' skip: /skip',
+  ' mute/unmute: /mute|/unmute',
+  ' change alias: /alias [alias]',
+  ' users in room: /users',
+  ' list of active rooms: /rooms',
+  ' join/create room: /join [room name]',
+  ' tweet current room: /tweet',
+  ' clear chat: /clear',
+  ' help: /help',
+  ' tunetab github: /git',
+  '',
+  '',
+];
+
 
 export function welcomeMessage(data) {
   let emptyArr = [];
-  let welcome = emptyArr.concat(BASIC_COMMANDS, LAST_MESSAGE, currentUsers(data), '');
+  let welcome = emptyArr.concat(WELCOME, COMMANDS, currentUsers(data), '');
   oldSchool(welcome);
 }
 
 export function helpMessage() {
-  let emptyArr = [];
-  let help = emptyArr.concat(BASIC_COMMANDS, COMPLEX_COMMANDS, LAST_MESSAGE);
-  oldSchool(help);
-}
-
-export function aboutMessage() {
-  oldSchool(ABOUT_MESSAGE);
+  oldSchool(COMMANDS);
 }
 
 export function mutedMessage(data) {

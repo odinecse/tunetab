@@ -2,7 +2,7 @@ module.exports.MESSAGES = {
   URL_SUBMIT_ERROR: 'invalid video url',
   SUBMIT_DUPLICATE: 'video has already been played, video must be unique',
   SEARCH_SUBMIT_ERROR: 'invalid search term, or search returned nothing',
-  SUBMIT_UKNOWN_ERROR: 'unknown submit type, unknown error',
+  SUBMIT_UKNOWN_ERROR: 'unknown error :(',
   ALREADY_VOTED: 'you\'ve already voted',
   NO_MORE_RECS: 'i\'m out of recommendations! (or your search has already been played)',
   NOTHING_TO_SKIP: 'nothing to skip',
@@ -24,4 +24,5 @@ module.exports.MESSAGES = {
 };
 
 module.exports.YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/';
-module.exports.MAX_PREVIOUS_VIDEOS = 15;
+module.exports.MAX_PREVIOUS_VIDEOS = 25;
+module.exports.THE_MATRIX = 'lSlk_KG0p44';

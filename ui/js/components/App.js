@@ -7,12 +7,21 @@ import Chat from './Chat/Chat';
 import Videoplayer from './Videoplayer/Videoplayer';
 
 var socket = window.io();
-var alias = Cookies.get(COOKIE_NAME) || false;
+var cookie = Cookies.get(COOKIE_NAME) || false;
+var cookieData = {
+  alias: false,
+  muted: true
+};
+
+if(cookie) {
+  cookieData = JSON.parse(cookie);
+}
 /***
     kicks off handshake, socket responds with 'welcome' message
       see incomingActions.js
 **/
-socket.emit('login', {room: ROOM_ID, alias: alias});
+socket.emit('login', {room: ROOM_ID, alias: cookieData.alias});
+dataStore.setMuted({muted: cookieData.muted});
 
 export default class App extends Component {
   constructor(props) {
@@ -38,7 +47,7 @@ export default class App extends Component {
   render() {
     return (
       <div id="tt-container">
-        <Videoplayer  videos={this.state.videos} 
+        <Videoplayer  videos={this.state.videos}
                       muted={this.state.muted}
                       submitted={this.state.submitted} />
         <Chat alias={this.state.alias}

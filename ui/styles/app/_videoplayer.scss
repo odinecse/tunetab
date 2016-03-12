@@ -6,6 +6,24 @@
   color: $currentVideoColor;
 }
 
+#tt-ytplayer-overlays {
+  position: absolute;
+  background: $transparentOverlay;
+  top: 0;
+  border: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+}
+
+.tt-muted-overlay {
+  text-align: center;
+  position: relative;
+  top: 50%;
+  margin-top: -17px;
+  font-size: $superBigFontSize;
+}
+
 #tt-upcoming-videos-container {
   color: $upcomingVideoColor;
 }
@@ -50,3 +68,4 @@
   bottom: 5px;
   left: 75px;
 }
+
