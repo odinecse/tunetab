@@ -30,6 +30,7 @@ module.exports = function playNextVideo(room) {
       // trying to track down bug on room.videos.current.id being undefined
       console.log('room.videos.current.id', room);
       submitVideo({videoId: THE_MATRIX, type: 'url'});
+      return;
     }
     previousId = room.videos.current.id;
     if(nextTest(room.videos, data.videoId)) {
