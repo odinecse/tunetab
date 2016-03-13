@@ -20,12 +20,18 @@ var resetTestFunctionDelay = function() {
 }
 
 module.exports = function playNextVideo(room) {
-  return function(data){
-    var previousId = room.videos.current.id;
+  return function(data) {
     var submitVideo = require('./submit/submitVideo')(room);
+    var previousId = '';
     room.skipVotes = 0;
     room.videos.videoTime = 0;
     resetUserVotes(room.users);
+    if(isUndefined(room) || isUndefined(room.videos) || isUndefined(room.videos.current.id)) {
+      // trying to track down bug on room.videos.current.id being undefined
+      console.log('room.videos.current.id', room);
+      submitVideo({videoId: THE_MATRIX, type: 'url'});
+    }
+    previousId = room.videos.current.id;
     if(nextTest(room.videos, data.videoId)) {
       resetTestFunctionDelay();
       if(room.videos.previous.length > MAX_PREVIOUS_VIDEOS) {
@@ -39,8 +45,6 @@ module.exports = function playNextVideo(room) {
           {videos: room.videos});
         room.io.to(room.id).emit('announcement',
           {msg: MESSAGES.NOW_PLAYING(room.videos.current.title, room.videos.current.user)});
-      } else if(isUndefined(previousId)) {
-        submitVideo({videoId: THE_MATRIX, type: 'url'});
       } else {
         room.videos.current = null;
         submitVideo({videoId: previousId, type: 'autorec'});
