@@ -32,7 +32,8 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [ ] `sudo apt-get install build-essential g++`
   - [ ] `iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000`
 - submit
-  - [ ] remove from upcoming
+  - [ ] recomend search, same as search but for rec...
+  - [ ] edit upcoming via ids
   - [ ] re-submit
   - [x] more advanced version would return a few results you can pick through
   - [ ] broad recommendation `/recb` should take random item form history and do a rec based off that...
@@ -55,6 +56,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] list current users on login
   - [ ] vote count on vote
 - general
+  - [ ] REDIS
   - [ ] redo css with flexbox and BEM
   - [ ] reset room
   - [ ] update title with current video
