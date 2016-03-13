@@ -1,9 +1,9 @@
 export function isUndefined(value) {
-  return typeof value === "undefined";
+  return typeof value === 'undefined';
 }
 
 export function isEmpty(object) {
-  for(var key in object) {
+  for(let key in object) {
     if(object.hasOwnProperty(key)){
       return false;
     }

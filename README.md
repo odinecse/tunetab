@@ -28,13 +28,13 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [ ] losing socket connection, waht to do
     - [ ] skipping after a pause?
     - [ ] pausing breaks everthing
-- deploy 
+- deploy
   - [ ] `sudo apt-get install build-essential g++`
   - [ ] `iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000`
 - submit
+  - [ ] remove from upcoming
   - [ ] re-submit
-  - [ ] playlist format import/export
-  - [ ] more advanced version would return a few results you can pick through
+  - [x] more advanced version would return a few results you can pick through
   - [ ] broad recommendation `/recb` should take random item form history and do a rec based off that...
   - [x] submit now playing submitted by so and so announcememnt
   - [x] notify who skipping
@@ -45,7 +45,6 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] undo last submit
     - [x] take undo submits out of history too
       - [x] maybe it shouldn't?
-    - [x] undo array?
   - [x] recommend videos off current video
 - rooms
   - [x] keep rooms alive for 3 days after last user
@@ -56,6 +55,7 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
   - [x] list current users on login
   - [ ] vote count on vote
 - general
+  - [ ] redo css with flexbox and BEM
   - [ ] reset room
   - [ ] update title with current video
   - [x] chat notification sound?

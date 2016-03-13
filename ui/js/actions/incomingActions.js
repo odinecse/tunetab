@@ -1,6 +1,7 @@
 import {welcomeMessage} from '../staticMessages';
 import dataStore from '../dataStore';
 import notificationSound from '../../files/notification.mp3';
+import {customMessage} from '../staticMessages';
 
 var notification = new Audio(notificationSound);
 var socket = window.io();
@@ -49,6 +50,21 @@ socket.on('notification', function(data){
     type: 'notification'
   };
   dataStore.pushMessage(d);
+});
+
+socket.on('searchresults', function(data){
+  console.log('SOCKET:SEARCHRESULTS', data);
+  dataStore.searchResults(data.results);
+  let formatted = data.results.map(function(r, i){
+    var title = ' ' + i + ': ' + r.title.substring(0, 36).trim();
+    if(r.title.length > 36) {
+      title += '...';
+    }
+    return title;
+  });
+  formatted.push('', 'use /pick [number] to choose');
+  customMessage(['SEARCH RESULTS:', '--------------'],
+    formatted, 'notification');
 });
 
 socket.on('error', function(data){

@@ -7,6 +7,7 @@ var _data = {
   users: {},
   userCount: 0,
   submitted: false,
+  searchResults: [],
   muted: true,
   videos: {
     current: null,
@@ -64,6 +65,10 @@ var dataStore = Object.assign({}, EventEmitter.prototype, {
       alias: data.alias,
       type: data.type
     });
+    dataStore.emit('change');
+  },
+  searchResults(data) {
+    _data.searchResults = data;
     dataStore.emit('change');
   },
   clearMessages() {

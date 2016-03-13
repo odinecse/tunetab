@@ -41,15 +41,18 @@ export const WELCOME = [
 
 export const COMMANDS = [
   'COMMANDS:',
-  ' add video: /s [search|youtubeurl]',
-  ' rec: /r',
+  ' add video: /s [term|youtubeurl]',
+  ' -> (search selects first result)',
+  ' search: /search [term]',
+  ' -> (returns results to /pick from)',
+  ' recommend based off current: /r',
   ' undo add or rec: /u',
   ' skip: /skip',
   ' mute/unmute: /mute|/unmute',
   ' change alias: /alias [alias]',
   ' users in room: /users',
   ' list of active rooms: /rooms',
-  ' join/create room: /join [room name]',
+  ' join/create room: /join [name]',
   ' tweet current room: /tweet',
   ' clear chat: /clear',
   ' help: /help',
@@ -67,6 +70,12 @@ export function welcomeMessage(data) {
 
 export function helpMessage() {
   oldSchool(COMMANDS);
+}
+
+export function customMessage(intro, messages, type) {
+  let emptyArr = [];
+  let custom = emptyArr.concat(intro, messages, '');
+  oldSchool(custom, type);
 }
 
 export function mutedMessage(data) {

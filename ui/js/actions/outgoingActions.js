@@ -19,6 +19,9 @@ var actions = {
     } else if(data.type === 'search') {
       socket.emit('submitVideo', {search: data.search, type: data.type});
       ga('send', 'event', 'videoSubmit:' + data.type, ROOM_ID, data.search);
+    } else if(data.type === 'searchq') {
+      socket.emit('submitVideo', {search: data.search, type: data.type});
+      ga('send', 'event', 'videoSubmit:' + data.type, ROOM_ID, data.search);
     } else if(data.type === 'rec') {
       socket.emit('submitVideo', {videoId: data.videoId, type: data.type});
       ga('send', 'event', 'videoSubmit:' + data.type, ROOM_ID, data.videoId);

@@ -84,7 +84,17 @@ function processVideoRecSubmit(room) {
   }
 }
 
+function formatSearchResults(items) {
+  return items.map(function(item, i) {
+    return {
+      id: item.id.videoId,
+      title: item.snippet.title
+    };
+  });
+}
+
 module.exports = {
+  formatSearchResults: formatSearchResults,
   processVideoURLSubmit: processVideoURLSubmit,
   processVideoRecSubmit: processVideoRecSubmit,
 }

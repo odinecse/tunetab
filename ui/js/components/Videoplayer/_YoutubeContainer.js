@@ -97,7 +97,7 @@ export default class YoutubeContainer extends Component {
     return (
       <div id="tt-ytplayer-container" className="tt-sideways-container">
         <h1 className="tt-sideways">{title}</h1>
-        <div id="tt-ytplayer-overlays" className={classNames({'hidden': !mute})}>
+        <div id="tt-ytplayer-overlays" className={classNames({'hidden': !mute || player === null})}>
           <div className="tt-muted-overlay">muted, type /unmute</div>
         </div>
         {player}
