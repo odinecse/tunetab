@@ -26,7 +26,7 @@ module.exports = function playNextVideo(room) {
     room.skipVotes = 0;
     room.videos.videoTime = 0;
     resetUserVotes(room.users);
-    if(isUndefined(room) || isUndefined(room.videos) || isUndefined(room.videos.current.id)) {
+    if(isUndefined(room.videos.current)) {
       // trying to track down bug on room.videos.current.id being undefined
       console.log('room.videos.current.id', room);
       submitVideo({videoId: THE_MATRIX, type: 'url'});
