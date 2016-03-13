@@ -43,7 +43,7 @@ module.exports = function playNextVideo(room) {
         submitVideo({videoId: THE_MATRIX, type: 'url'});
       } else {
         room.videos.current = null;
-        submitVideo({videoId: previousId, type: 'rec'});
+        submitVideo({videoId: previousId, type: 'autorec'});
       }
     }
   }

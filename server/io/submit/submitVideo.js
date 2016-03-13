@@ -16,7 +16,6 @@ module.exports = function submitVideo(room) {
     var searchTerm = '';
     var apiQuery = '';
     var errorMsg = MESSAGES.SUBMIT_UKNOWN_ERROR;
-    var broadSearch = false;
     var processFunction = function() {};
 
     if(submitType === 'url') {
@@ -38,16 +37,21 @@ module.exports = function submitVideo(room) {
                 + '&maxResults=10&videoEmbeddable=true&order=viewCount&type=video&key='
                 + YOUTUBE_API_KEY;
       errorMsg = MESSAGES.SEARCH_SUBMIT_ERROR;
-    } else if(submitType === 'rec' || submitType === 'recb') {
-      // build out broadSearch
+    } else if(submitType === 'rec') {
       videoId = data.videoId;
-      broadSearch = submitType === 'recb' ? true : false;
+      searchTerm = data.search;
+      apiQuery += 'search?part=snippet&videoEmbeddable=true&order=viewCount&relatedToVideoId='
+                + videoId + '&type=video&maxResults=10&key='
+                + YOUTUBE_API_KEY;
+      errorMsg = MESSAGES.SEARCH_SUBMIT_ERROR;
+    } else if(submitType === 'autorec') {
+      videoId = data.videoId;
       searchTerm = data.search;
       apiQuery += 'search?part=snippet&videoEmbeddable=true&order=viewCount&relatedToVideoId='
                 + videoId + '&type=video&maxResults=20&key='
                 + YOUTUBE_API_KEY;
       errorMsg = MESSAGES.SEARCH_SUBMIT_ERROR;
-      processFunction = processVideoRecSubmit(room, broadSearch);
+      processFunction = processVideoRecSubmit(room);
     } else {
       room.io.to(room.socket.id).emit('error',
         {msg: errorMsg});
@@ -60,7 +64,7 @@ module.exports = function submitVideo(room) {
     }, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         if(!isUndefined(body.items) && !isUndefined(body.items[0])) {
-          if(submitType === 'searchq') {
+          if(submitType === 'searchq' || submitType === 'rec') {
             room.io.to(room.socket.id).emit('searchresults',
               {results: formatSearchResults(body.items)});
             return;

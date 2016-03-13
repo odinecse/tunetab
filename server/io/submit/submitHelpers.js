@@ -47,8 +47,7 @@ function processVideoURLSubmit(videoId, room) {
 }
 
 function processVideoRecSubmit(room) {
-  // build out broadSearch
-  return function(body, broadSearch, searchIndex) {
+  return function(body, searchIndex) {
     var notRecursive =  isUndefined(searchIndex) ? true : false;
     var index = notRecursive ? 0 : searchIndex;
     var length = body.items.length - 1;
@@ -70,7 +69,7 @@ function processVideoRecSubmit(room) {
     if(dupTest(room.videos.history, videoId)) {
       processFunction = processVideoRecSubmit(room);
       index++;
-      processFunction(body, broadSearch, index);
+      processFunction(body, index);
       return;
     }
     submittedVideo = {
