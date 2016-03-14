@@ -20,7 +20,7 @@ function submitLogic(submittedVideo, room) {
 }
 
 function dupTest(history, videoId) {
-  if(isUndefined(history) && isUndefined(history.length)) {
+  if(isUndefined(history)) {
     return false;
   }
   if(isUndefined(videoId)) {
