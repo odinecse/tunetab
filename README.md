@@ -13,7 +13,6 @@ Uses node.js, socket.io and react with babel and webpack. Exercise in writing "c
 * `npm run build-prod` prod build with some minification and stuff
 
 ### NOTES
-
 - submit
   - [ ] edit upcoming playlist via ids
 - rooms
