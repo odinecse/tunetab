@@ -1,9 +1,9 @@
-# tunetab
+# Derelict project, would take some work to get this running agian...
+
+---
+
+## tunetab
 A classy youtube with friends "app". Submit videos, chat, skip ones you don't like.
-
-Check it out in the wild here: [tunetab.us](http://tunetab.us/).
-
-Uses node.js, socket.io and react with babel and webpack. Exercise in writing "clean" react code.
 
 ### install/run
 * `cp config.sample.js config.js` this is gitignored, you need to get a youtube api key and google analytics id
